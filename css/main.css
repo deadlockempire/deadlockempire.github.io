@@ -29,3 +29,6 @@ div.clearboth {
    margin: 5px;
    border: 1px solid black;
 }
+.mainMenuSolvedLevel {
+    background-color: green;
+}
