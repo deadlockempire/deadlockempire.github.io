@@ -63,3 +63,6 @@ div.clearboth {
 div.instruction.current-instruction div.expansion {
 	font-weight: normal;
 }
+.critical-section {
+	font-style: italic;
+}

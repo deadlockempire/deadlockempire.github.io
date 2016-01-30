@@ -64,13 +64,22 @@ var redraw = function() {
 	undoButton.attr('disabled', undoHistory.length == 0);
 
 	for (var i = 0; i < getThreadCount(); i++) {
-		threadButtons[i].step.attr('disabled', isThreadFinished(i));
-
 		var program = level.threads[i].instructions;
 		var threadState = gameState.threadState[i];
 		var currentInstruction = program[threadState.programCounter[0]];
+
+		if (isThreadFinished(i)) {
+			threadButtons[i].step.attr('disabled', true);
+			threadButtons[i].step.attr('title', 'This thread is finished.');
+		} else if (currentInstruction.isBlocking && currentInstruction.isBlocking(threadState, gameState.globalState)) {
+			threadButtons[i].step.attr('disabled', true);
+			threadButtons[i].step.attr('title', 'This thread is blocked.');
+		} else {
+			threadButtons[i].step.attr('disabled', false);
+			threadButtons[i].step.attr('title', '');
+		}
+
 		var isExpandable = (currentInstruction instanceof ExpandableInstruction);
-		console.log(isExpandable);
 		threadButtons[i].expand.attr('disabled', !(isExpandable && !threadState.expanded));
 	}
 };
