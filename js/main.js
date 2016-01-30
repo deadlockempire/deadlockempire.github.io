@@ -136,12 +136,35 @@ var undo = function() {
 	redraw();
 };
 
+var resetLevel = function() {
+	startLevel(window.levelName);
+};
+
 var undoButton;
 
-var startLevel = function(level) {
+var startLevel = function(levelName) {
+	level = levels[levelName];
 	var mainArea = $('#mainarea');
 	mainArea.html("");
 	window.level = level;
+	window.levelName = levelName;
+
+	var globalButtons = $('<div class="global-buttons"></div>');
+	mainArea.append(globalButtons);
+
+	undoButton = $('<button class="btn btn-default"><span class="glyphicon glyphicon-step-backward"></span>&nbsp;Undo</button>');
+	undoButton.click(undo);
+	undoButton.attr('disabled', true);
+	globalButtons.append(undoButton);
+
+	var resetButton = $('<button class="btn btn-default"><span class="glyphicon glyphicon-repeat"></span>&nbsp;Reset level</button>');
+	resetButton.click(function() {
+		if (confirm('Really reset the level?')) {
+			resetLevel();
+		}
+	});
+	globalButtons.append(resetButton);
+
 	var sourcesSection = $('<div class="sources"></div>');
 
 	var threadCount = level.threads.length;
@@ -150,13 +173,16 @@ var startLevel = function(level) {
 	for (var i = 0; i < threadCount; i++) {
 		var thread = level.threads[i];
 
-		var threadArea = $('<div class="thread">thread ' + i + '</div>');
-		var stepButton = $('<button class="btn btn-default">Step</button>');
+		var threadArea = $('<div class="thread"></div>');
+		var stepButton = $('<button class="btn btn-default"><span class="glyphicon glyphicon-play"></span>&nbsp;Step</button>');
 		stepButton.data('thread', i);
 		stepButton.click(function() {
 			stepThread($(this).data('thread'));
 		});
 		threadArea.append(stepButton);
+
+		// Possible extra actions go here.
+
 		var source = $('<div class="code"></div>');
 
 		var instructions = [];
@@ -172,15 +198,10 @@ var startLevel = function(level) {
 		sourcesSection.append(threadArea);
 	}
 
-	mainArea.append('<div class="global-state"></div>');
-
-	undoButton = $('<button class="btn btn-default">Undo</button>');
-	undoButton.click(undo);
-	undoButton.attr('disabled', true);
-	mainArea.append(undoButton);
-
-	mainArea.append('<div class="clearboth"></div>');
 	mainArea.append(sourcesSection);
+	mainArea.append('<div class="clearboth"></div>');
+
+	mainArea.append('<div class="global-state"></div>');
 
 	gameState.threadState = [];
 	for (var i = 0; i < threadCount; i++) {
@@ -196,8 +217,7 @@ var startLevel = function(level) {
 };
 
 var startSelectedLevel = function() {
-	level = levels[$('#levelSelect').val()];
-	startLevel(level);
+	startLevel($('#levelSelect').val());
 };
 
 var clearProgressAction = function () {
