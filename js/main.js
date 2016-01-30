@@ -22,10 +22,35 @@ var AssignInstruction = function(code, variable, value) {
 	};
 };
 
-var Thread = function(instructions) {
-	this.instructions = instructions;
+var IfInstruction = function(code, test, name) {
+	this.code = code;
+	this.name = name;
+	this.execute = function(threadState, globalState) {
+		if (test(threadState, globalState)) {
+			threadState.programCounter++;  // goto true branch
+		} else {
+			// false -> find matching Else
+			var i;
+			console.log(threadState);
+			console.log(threadState.instructions);
+			for (i = 0; i < threadState.instructions.length; i++) {
+				var instruction = threadState.instructions[i];
+				console.log(instruction);
+				if ((instruction instanceof ElseInstruction) && instruction.name == name) {
+					break;
+				}
+			}
+			console.assert(i < threadState.instructions.length);
+			threadState.programCounter = i;
+		}
+	};
 };
 
+var ElseInstruction = function(code, name) {
+	this.code = code;
+	this.name = name;
+	this.execute = function(threadState) { threadState.programCounter++; };
+};
 
 var level = null;
 
@@ -37,7 +62,8 @@ var gameState = {
 	//	programCounter: (number of current instruction),
 	//	variables: {
 	//		'variableName': (value)
-	//	}
+	//	},
+	//	program: (instructions)
 	// }
 	threadState: null,
 
@@ -86,7 +112,7 @@ var stepThread = function(thread) {
 var startLevel = function(level) {
 	var mainArea = $('#mainarea');
 	mainArea.html("");
-    window.level = level;
+	window.level = level;
 	var sourcesSection = $('<div class="sources"></div>');
 	var threadCount = level.threads.length;
 	var width = 100.0 / threadCount;
@@ -124,7 +150,8 @@ var startLevel = function(level) {
 	for (var i = 0; i < threadCount; i++) {
 		threadStates[i] = {
 			programCounter: 0,
-			variables: {}
+			variables: {},
+			instructions: level.threads[i].instructions
 		};
 	}
 	gameState.threadState = threadStates;

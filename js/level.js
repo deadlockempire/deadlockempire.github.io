@@ -1,6 +1,6 @@
 var Level = function(name, intro, victoryText, threads) {
 	this.intro = intro;
-	this.name = name
+	this.name = name;
 	this.victoryText = victoryText;
 	this.threads = threads;
 };
