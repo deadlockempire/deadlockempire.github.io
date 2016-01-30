@@ -9,7 +9,8 @@ var Instruction = function(code) {
 var WinningInstruction = function(code) {
 	this.code = code;
 	this.execute = function(threadState, globalState) {
-		alert("you win");
+        showMessage('Level completed!', 'The congratulatory victory message is this: "' + window.level.victoryText + '"!"');
+		localStorage.setItem('level_' + window.level.id, "solved");
 	};
 };
 
@@ -201,12 +202,19 @@ var startSelectedLevel = function() {
 
 var clearProgressAction = function () {
 	localStorage.clear();
+	if (confirm("Progress has been cleared. Do you want to return to the main menu and refresh?")) {
+		returnToMainMenu();
+	}
 };
 
 $(function() {
 	$('button#start').click(startSelectedLevel);
 	$('button#goToMain').click(returnToMainMenu);
 	$('#clearProgress').click(clearProgressAction);
+	$('#alertHide').click(function () {
+		console.log("hiding");
+		$('#alert').hide();
+	});
 });
 
 $(function() {
