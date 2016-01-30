@@ -52,6 +52,8 @@ var checkForVictoryConditions = function() {
         showMessage('Level completed!', 'The congratulatory victory message is this: "' + window.level.victoryText + '"!"');
 		localStorage.setItem('level_' + window.level.id, "solved");
     }
+
+
 };
 
 var isThreadFinished = function(thread) {
