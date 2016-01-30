@@ -14,6 +14,10 @@ var returnToMainMenu = function() {
 
 	var makeLevelBox = function(levelId) {
 		var level = levels[levelId];
+		if (!level) {
+			console.log("ERROR: No such level: ", level);
+			return $('<div></div>');
+		}
 		var source = $('<div class="mainMenuLevel"></div>');
 		if (wasLevelCompleted(level.id)) {
 			source.addClass('completed');
