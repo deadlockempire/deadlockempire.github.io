@@ -172,6 +172,12 @@ var threadContextualButtons;
 var startLevel = function(levelName) {
 	undoHistory = [];
 	level = levels[levelName];
+	if (!level) {
+		console.log("trying to start nonexisting level ", levelName);
+		return;
+	}
+	console.log(level);
+
 	localStorage.setItem("lastLevel", levelName);
 	var mainArea = $('#mainarea');
 	mainArea.html("");
