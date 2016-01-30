@@ -310,7 +310,7 @@ $(function() {
 			var indent = 0;
 			for (var instructionName in thread.instructions) {
 				var instruction = thread.instructions[instructionName];
-				if (instruction instanceof  ElseInstruction ||
+				if (instruction instanceof  EndIfInstruction ||
 					instruction instanceof EndWhileInstruction) {
 					indent--;
 				}
