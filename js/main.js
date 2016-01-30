@@ -100,6 +100,7 @@ var undoButton;
 
 var startLevel = function(levelName) {
 	level = levels[levelName];
+	localStorage.setItem("lastLevel", levelName);
 	var mainArea = $('#mainarea');
 	mainArea.html("");
 	window.level = level;
@@ -199,14 +200,29 @@ var clearProgressAction = function () {
 
 $(function() {
 	$('button#start').click(startSelectedLevel);
-	$('button#goToMain').click(returnToMainMenu);
+	$('button#goToMain').click(function() {
+		localStorage.removeItem("lastLevel");
+		returnToMainMenu();
+	});
 	$('#clearProgress').click(clearProgressAction);
 	$('#alertHide').click(function () {
 		console.log("hiding");
 		$('#alert').hide();
 	});
+	var select = $("#levelSelect");
+	$.each(levels,function(key, value)
+	{
+		select.append('<option value=' + key + '>' + value.name + '</option>');
+	});
+
 });
 
 $(function() {
-	returnToMainMenu();
+	if (localStorage.getItem("lastLevel") && levels[localStorage.getItem("lastLevel")]) {
+
+		startLevel(localStorage.getItem("lastLevel"));
+	} else {
+		returnToMainMenu();
+	}
 });
+

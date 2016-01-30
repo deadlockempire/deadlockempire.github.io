@@ -104,3 +104,38 @@ var ElseInstruction = function(code, name) {
 	this.name = name;
 	this.execute = function(threadState) { threadState.programCounter++; };
 };
+
+var WhileInstruction = function(expressionString, test, name) {
+	this.code = "while (" + expressionString + ") {";
+	this.name = name;
+	this.execute = function(threadState, globalState, threadProgram) {
+		if (test(threadState, globalState)) {
+			threadState.programCounter++;  // goto true branch
+		} else {
+			// false -> find matching Else
+			var i;
+			for (i = 0; i < threadProgram.length; i++) {
+				var instruction = threadProgram[i];
+				if ((instruction instanceof EndWhileInstruction) && instruction.name == name) {
+					break;
+				}
+			}
+			threadState.programCounter = i + 1;
+		}
+	};
+};
+
+var EndWhileInstruction = function( name) {
+	this.code = "}";
+	this.name = name;
+	this.execute = function(threadState) {
+		for (i = 0; i < threadProgram.length; i++) {
+			var instruction = threadProgram[i];
+			if ((instruction instanceof WhileInstruction) && instruction.name == name) {
+				break;
+			}
+		}
+		threadState.programCounter = i;
+	};
+};
+
