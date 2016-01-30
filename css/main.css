@@ -52,20 +52,8 @@ div.clearboth {
 	font-weight: bold;
 	background-color: #f3ff74;
 }
-
-.mainMenuLevelCaption {
-    font-weight: bold;
-}
-.mainMenuLevelDescription {
-
-}
-.mainMenuLevel {
-   padding: 5px;
-   margin: 5px;
-   border: 1px solid black;
-}
 .mainMenuSolvedLevel {
-    background-color: #95ff5a;
+    /*background-color: #95ff5a;*/
 }
 
 .global-state {
@@ -106,4 +94,34 @@ div.instruction.current-instruction div.expansion {
 
 .sources {
 	clear: both;
+}
+
+.menu-completion-icon {
+	color: #afa;
+	float: left;
+	font-size: 2em;
+}
+
+.mainMenuLevel {
+	font-size: 1.3em;
+	padding: 5px;
+	border-bottom: 1px solid #ccc;
+}
+.mainMenuLevel:hover {
+	background-color: #f5f5f5;
+}
+.mainMenuLevel.completed:hover {
+	background-color: #f5fff5;
+}
+.mainMenuLevel.completed {
+	color: #666;
+}
+.mainMenuLevelCaption {
+	font-weight: bold;
+	margin-left: 4em;
+}
+
+.mainMenuLevelDescription {
+	/*clear: both;*/
+	margin-left: 4em;
 }
