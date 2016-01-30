@@ -20,14 +20,14 @@ var campaign = [
             "5-peterson"
         ]
     },
-    "locks": {
+    {
         name : "Locks",
         levels : [
             "L1-lock",
             "L2-deadlock"
         ]
     },
-    "story": {
+    {
         name : "The Deadlock Empire",
         levels : [
         ]

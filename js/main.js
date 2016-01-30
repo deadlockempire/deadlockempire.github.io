@@ -170,6 +170,7 @@ var threadButtons;
 var threadContextualButtons;
 
 var startLevel = function(levelName) {
+	undoHistory = [];
 	level = levels[levelName];
 	localStorage.setItem("lastLevel", levelName);
 	var mainArea = $('#mainarea');
