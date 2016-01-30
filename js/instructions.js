@@ -46,7 +46,7 @@ var FailureInstruction = function() {
 
 var CriticalSectionInstruction = function() {
     this.isCriticalSection = true;
-    this.code = "<b>critical_section</b>();";
+    this.code = "<span class='critical-section'>critical_section</span>();";
     this.tooltip = "If two threads are about to execute a Critical Section Instruction at the same time, you win the level.";
     this.execute = function (threadState, globalState) {
         moveToNextInstruction(threadState);
