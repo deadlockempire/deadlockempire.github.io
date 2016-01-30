@@ -4,6 +4,10 @@ function startLevelCreator(level) {
 	}
 }
 
+var wasLevelCompleted = function(levelId) {
+	return localStorage.getItem('level_' + levelId);
+}
+
 var returnToMainMenu = function() {
 	$("#mainarea").html("");
 	$("#alert").hide();
@@ -11,8 +15,7 @@ var returnToMainMenu = function() {
 	var makeLevelBox = function(levelId) {
 		var level = levels[levelId];
 		var source = $('<div class="mainMenuLevel"></div>');
-		var isCompleted = localStorage.getItem('level_' + level.id);
-		if (isCompleted) {
+		if (wasLevelCompleted(level.id)) {
 			source.addClass('completed');
 			source.append('<span class="menu-completion-icon glyphicon glyphicon-ok"></span>');
 		}
@@ -24,13 +27,22 @@ var returnToMainMenu = function() {
 	};
 
 	for (var campaignKey in campaign) {
+		if (campaignKey == "debuggingLevels" && !debugMode) {
+			continue;
+		}
 		var quest = campaign[campaignKey];
-		var heading = $('<h2></h2>');
+		var heading = $('<h2 class="menu-heading"></h2>');
 		heading.text(quest.name);
 		$('#mainarea').append(heading);
+		var foundUnfinished = false;
 		for (var i = 0; i < quest.levels.length; i++) {
 			var levelId = quest.levels[i];
 			var source = makeLevelBox(levelId);
+			if (!wasLevelCompleted(levelId) && !foundUnfinished) {
+				source.addClass('nextToPlay');
+				foundUnfinished = true;
+				source.prepend('<span class="menu-next-to-play-icon glyphicon glyphicon-tower"></span>');
+			}
 			$("#mainarea").append(source);
 		}
 	}

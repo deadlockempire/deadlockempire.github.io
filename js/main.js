@@ -1,5 +1,21 @@
 var level = null;
 
+var debugMode = false;
+
+var getQueryString = function ( field, url ) {
+	var href = url ? url : window.location.href;
+	var reg = new RegExp( '[?&]' + field + '=([^&#]*)', 'i' );
+	var string = reg.exec(href);
+	return string ? string[1] : null;
+};
+
+$(function() {
+	debugMode = (getQueryString('debug') != null);
+	if (!debugMode) {
+		$('#debug-toolbar').remove();
+	}
+});
+
 var gameState = {
 	// thread state:
 	// {
@@ -132,6 +148,10 @@ var getThreadCount = function() {
 
 var undoHistory = [];
 
+var isLevelPristine = function() {
+	return undoHistory.length == 0;
+};
+
 var saveForUndo = function() {
 	var state = {
 		threadState: gameState.threadState,
@@ -182,6 +202,13 @@ var startLevel = function(levelName) {
 
 	var resetButton = $('<button class="btn btn-warning" style="border-top-left-radius: 0; border-bottom-left-radius: 0;"><span class="glyphicon glyphicon-repeat"></span>&nbsp;Reset level</button>');
 	resetButton.click(function() {
+		// Don't ask for confirmation if the level is pristine (it
+		// should be a NOP anyway).
+		if (isLevelPristine()) {
+			resetLevel();
+			return;
+		}
+
 		bootbox.confirm('Really reset the level?', function(confirmed) {
 			if (confirmed) {
 				resetLevel();
@@ -193,6 +220,12 @@ var startLevel = function(levelName) {
 	globalButtons.append("&nbsp;&nbsp;");
 	var mainMenuButton = $('<button class="btn btn-danger"><span class="glyphicon glyphicon-menu-hamburger"></span>&nbsp;Return to main menu</button>');
 	mainMenuButton.click(function() {
+		// Don't ask for confirmation if the level is pristine.
+		if (isLevelPristine()) {
+			returnToMainMenu();
+			return;
+		}
+
 		bootbox.confirm('Really give up?', function(confirmed) {
 			if (confirmed) {
 				returnToMainMenu();
