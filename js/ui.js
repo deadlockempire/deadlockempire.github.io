@@ -9,13 +9,24 @@ var updateProgramCounters = function() {
 	$('.instruction').each(function() {
 		$(this).removeClass('current-instruction');
 	});
+	$('.expansion').each(function() {
+		$(this).css({display: "none"});
+	});
 	// update program counters
 	for (var i = 0; i < threadCount; i++) {
 		var threadState = gameState.threadState[i];
 		var pc = threadState.programCounter[0];
 
-		if (pc < gameState.threadInstructions[i].length) {
-			$(gameState.threadInstructions[i][pc]).addClass('current-instruction');
+		if (pc < level.threads[i].instructions.length) {
+			$('#instruction-' + i + '-' + pc).addClass('current-instruction');
+		}
+
+		if (level.threads[i].instructions[pc] instanceof ExpandableInstruction) {
+			$('#instruction-' + i + '-' + pc + '-expansion').css({display: (threadState.expanded ? 'block' : 'none')});
+
+			if (threadState.expanded) {
+				$('#instruction-' + i + '-' + pc + '-sub' + threadState.programCounter[1]).addClass('current-instruction');
+			}
 		}
 	}
 };
@@ -50,8 +61,9 @@ var redraw = function() {
 
 		var program = level.threads[i].instructions;
 		var threadState = gameState.threadState[i];
-		var currentInstruction = program[threadState.programCounter];
+		var currentInstruction = program[threadState.programCounter[0]];
 		var isExpandable = (currentInstruction instanceof ExpandableInstruction);
-		threadButtons[i].step.attr('disabled', isExpandable && !threadState.expanded);
+		console.log(isExpandable);
+		threadButtons[i].expand.attr('disabled', !(isExpandable && !threadState.expanded));
 	}
 };
