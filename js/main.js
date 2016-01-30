@@ -33,10 +33,12 @@ var assign = function(variable, type, value) {
 	};
 };
 
+/*
 var win = function() {
 	showMessage('Level completed!', 'The congratulatory victory message is this: "' + window.level.victoryText + '"!"');
 	localStorage.setItem('level_' + window.level.id, "solved");
 };
+*/
 
 var isThreadBlocked = function(threadId) {
 	if (isThreadFinished(threadId)) {
