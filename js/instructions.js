@@ -27,8 +27,6 @@ var CriticalSectionInstruction = function() {
     };
 };
 
-
-
 var WinningInstruction = function(code) {
 	this.code = code;
 	this.execute = function(threadState, globalState) {
@@ -73,3 +71,15 @@ var ElseInstruction = function(code, name) {
 	this.name = name;
 	this.execute = function(threadState) { threadState.programCounter++; };
 };
+
+/*
+var ExpandableInstruction = function(code, minorInstructions) {
+	this.code = code;
+	this.minorInstructions = minorInstructions;
+	this.execute = function(threadState, globalState, threadProgram) {
+		for (var i = 0; i < minorInstructions.length; i++) {
+			minorInstructions[i].execute(threadState, globalState, threadProgram);
+		}
+	};
+};
+*/

@@ -44,4 +44,8 @@ var redraw = function() {
 	updateProgramCounters();
 	updateGlobalVariables();
 	undoButton.attr('disabled', undoHistory.length == 0);
+
+	for (var i = 0; i < getThreadCount(); i++) {
+		threadStepButtons[i].attr('disabled', isThreadFinished(i));
+	}
 };
