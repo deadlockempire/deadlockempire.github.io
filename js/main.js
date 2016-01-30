@@ -1,25 +1,42 @@
 // constructor
 var Instruction = function(code) {
 	this.code = code;
+	this.execute = function() {};
 };
 
-var level = {
-	threads: [
-		[
-			new Instruction("Hello World!"),
-		],
-		[
-			new Instruction("foo"),
-			new Instruction("bar"),
-			new Instruction("zoo")
-		],
-		[
-			new Instruction("bar"),
-			new Instruction("foo"),
-			new Instruction("bar"),
-		]
-	]
+var WinningInstruction = function(code) {
+	this.code = code;
+	this.execute = function() { alert("you win"); };
 };
+
+var Level = function(intro, threads) {
+	this.intro = intro;
+	this.threads = threads;
+};
+
+var Thread = function(instructions) {
+	this.instructions = instructions;
+};
+
+var level = new Level(
+	"In this level, you want to finish the second thread.",
+	[
+		new Thread([
+			new Instruction("Hello World!"),
+		]),
+		new Thread([
+			new Instruction("foo"),
+			new Instruction("bar"),
+			new Instruction("zoo"),
+			new WinningInstruction("[REACH THIS TO WIN]")
+		]),
+		new Thread([
+			new Instruction("bar"),
+			new WinningInstruction("[OR REACH THIS TO WIN]"),
+			new Instruction("bar"),
+		])
+	]
+);
 
 var gameState = {
 	threadInstructions: null,
@@ -39,9 +56,11 @@ var updateProgramCounters = function() {
 };
 
 var stepThread = function(thread) {
-	var maxInstructions = level.threads[thread].length;
+	var maxInstructions = level.threads[thread].instructions.length;
+	var pc = gameState.programCounters[thread];
 	console.log(maxInstructions, gameState.programCounters);
-	if (gameState.programCounters[thread] + 1 < maxInstructions) {
+	if (pc + 1 < maxInstructions) {
+		level.threads[thread].instructions[pc].execute();
 		gameState.programCounters[thread]++;
 		updateProgramCounters();
 	} else {
@@ -69,8 +88,8 @@ var startLevel = function() {
 		var source = $('<div class="code"></div>');
 
 		var instructions = [];
-		for (var j = 0; j < thread.length; j++) {
-			var instruction = $('<div class="instruction">' + thread[j].code + '</div>');
+		for (var j = 0; j < thread.instructions.length; j++) {
+			var instruction = $('<div class="instruction">' + thread.instructions[j].code + '</div>');
 			instructions[j] = instruction;
 			source.append(instruction);
 		}
