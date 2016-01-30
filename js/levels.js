@@ -292,8 +292,7 @@ var levels = {
 	 C1 = false
 	 }
 	 }*/
-		/*
-			new Thread(
+			new Thread([
 				new WhileInstruction(new LiteralExpression(true), "eternal"),
 				createAssignment("flag1", new LiteralExpression(true)),
 				createAssignment("turn", new LiteralExpression(2)),
@@ -312,11 +311,9 @@ var levels = {
 				new CriticalSectionInstruction(),
 				createAssignment("flag1", new LiteralExpression(false)),
 				new EndWhileInstruction("eternal")
-			),
-			*/
-		/*
+			]),
 
-			new Thread(
+			new Thread([
 				new WhileInstruction(new LiteralExpression(true), "eternal"),
 				createAssignment("flag2", new LiteralExpression(true)),
 				createAssignment("turn", new LiteralExpression(3)),
@@ -335,9 +332,9 @@ var levels = {
 				new CriticalSectionInstruction(),
 				createAssignment("flag2", new LiteralExpression(false)),
 				new EndWhileInstruction("eternal")
-			),
+			]),
 
-			new Thread(
+			new Thread([
 				new WhileInstruction(new LiteralExpression(true), "eternal"),
 				createAssignment("flag3", new LiteralExpression(true)),
 				createAssignment("turn", new LiteralExpression(1)),
@@ -356,8 +353,7 @@ var levels = {
 				new CriticalSectionInstruction(),
 				createAssignment("flag3", new LiteralExpression(false)),
 				new EndWhileInstruction("eternal")
-			)
-			*/
+			])
 
 		],
 		{

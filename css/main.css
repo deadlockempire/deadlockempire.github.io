@@ -35,6 +35,7 @@ body {
 }
 
 .thread .code {
+	margin-top: 5px;
 	font-family: monospace;
 }
 
