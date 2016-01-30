@@ -5,19 +5,20 @@ body {
 	position: fixed;
 	top: 0;
 	left: 0;
-	background: rgba(255, 255, 255, 1.0);
+	background: rgba(255, 255, 255, 0.9);
 	z-index: 5;
 	width: 100%;
 	height: 100%;
 }
 
-#win-screen h3 {
+#win-screen h3#win-message {
 	font-size: 5em;
 	font-family: 'Pacifico', cursive;
+	margin-bottom: 0.5em;
 }
 
 #win-screen .container {
-	margin-top: 25%;
+	margin-top: 20%;
 }
 
 #win-screen .icon {

@@ -26,15 +26,15 @@ var returnToMainMenu = function() {
 		return source;
 	};
 
+	var foundUnfinished = false;
 	for (var campaignKey in campaign) {
-		if (campaignKey == "debuggingLevels" && !debugMode) {
+		var quest = campaign[campaignKey];
+		if (quest.name == "Debugging levels" && !debugMode) {
 			continue;
 		}
-		var quest = campaign[campaignKey];
 		var heading = $('<h2 class="menu-heading"></h2>');
 		heading.text(quest.name);
 		$('#mainarea').append(heading);
-		var foundUnfinished = false;
 		for (var i = 0; i < quest.levels.length; i++) {
 			var levelId = quest.levels[i];
 			var source = makeLevelBox(levelId);
