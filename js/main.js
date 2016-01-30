@@ -1,6 +1,3 @@
-// constructor
-
-
 var level = null;
 
 var gameState = {
@@ -20,38 +17,28 @@ var gameState = {
 	threadState: null,
 
 	// global variables
+	// keyed by variable name
+	// value is {
+	//	'type': (typ),
+	//	'name': (jmeno),
+	//	'value': (value, JS primitive),
+	//	'lastLockedByThread': (ID of last thread that locked the
+	//		variable, or null),
+	//	'lockCount': (lock count, 0 if none)
+	// }
 	globalState: null
 };
 
-var updateProgramCounters = function() {
-	var threadCount = level.threads.length;
-	$('.instruction').each(function() {
-		$(this).removeClass('current-instruction');
-	});
-	// update program counters
-	for (var i = 0; i < threadCount; i++) {
-		var threadState = gameState.threadState[i];
-		var pc = threadState.programCounter;
 
-		if (pc < gameState.threadInstructions[i].length) {
-			$(gameState.threadInstructions[i][pc]).addClass('current-instruction');
-		}
-	}
-};
-
-var updateGlobalVariables = function() {
-	var area = $('.global-state');
-	var text = "";
-	for (var key in gameState.globalState) {
-		text += key + "=" + gameState.globalState[key] + "; ";
-	}
-	area.html(text);
-};
-
-var redraw = function() {
-	updateProgramCounters();
-	updateGlobalVariables();
-	undoButton.attr('disabled', undoHistory.length == 0);
+var assign = function(variable, type, value) {
+	// TODO: type checking?
+	gameState.globalState[variable] = {
+		type: type,
+		name: variable,
+		value: value,
+		lastLockedByThread: null,
+		lockCount: 0
+	};
 };
 
 var checkForVictoryConditions = function() {
@@ -105,12 +92,43 @@ var undo = function() {
 	redraw();
 };
 
+var resetLevel = function() {
+	startLevel(window.levelName);
+};
+
 var undoButton;
 
-var startLevel = function(level) {
+var startLevel = function(levelName) {
+	level = levels[levelName];
 	var mainArea = $('#mainarea');
 	mainArea.html("");
 	window.level = level;
+	window.levelName = levelName;
+
+	var title = $('<h1></h1>');
+	title.text(level.name);
+	mainArea.append(title);
+
+	var introduction = $('<p></p>');
+	introduction.html(level.intro);
+	mainArea.append(introduction);
+
+	var globalButtons = $('<div class="global-buttons"></div>');
+	mainArea.append(globalButtons);
+
+	undoButton = $('<button class="btn btn-default"><span class="glyphicon glyphicon-step-backward"></span>&nbsp;Undo</button>');
+	undoButton.click(undo);
+	undoButton.attr('disabled', true);
+	globalButtons.append(undoButton);
+
+	var resetButton = $('<button class="btn btn-default"><span class="glyphicon glyphicon-repeat"></span>&nbsp;Reset level</button>');
+	resetButton.click(function() {
+		if (confirm('Really reset the level?')) {
+			resetLevel();
+		}
+	});
+	globalButtons.append(resetButton);
+
 	var sourcesSection = $('<div class="sources"></div>');
 
 	var threadCount = level.threads.length;
@@ -119,13 +137,16 @@ var startLevel = function(level) {
 	for (var i = 0; i < threadCount; i++) {
 		var thread = level.threads[i];
 
-		var threadArea = $('<div class="thread">thread ' + i + '</div>');
-		var stepButton = $('<button>Step</button>');
+		var threadArea = $('<div class="thread"></div>');
+		var stepButton = $('<button class="btn btn-default"><span class="glyphicon glyphicon-play"></span>&nbsp;Step</button>');
 		stepButton.data('thread', i);
 		stepButton.click(function() {
 			stepThread($(this).data('thread'));
 		});
 		threadArea.append(stepButton);
+
+		// Possible extra actions go here.
+
 		var source = $('<div class="code"></div>');
 
 		var instructions = [];
@@ -144,15 +165,10 @@ var startLevel = function(level) {
 		sourcesSection.append(threadArea);
 	}
 
-	mainArea.append('<div class="global-state"></div>');
-
-	undoButton = $('<button>Undo</button>');
-	undoButton.click(undo);
-	undoButton.attr('disabled', true);
-	mainArea.append(undoButton);
-
-	mainArea.append('<div class="clearboth"></div>');
 	mainArea.append(sourcesSection);
+	mainArea.append('<div class="clearboth"></div>');
+
+	mainArea.append('<div class="global-state"></div>');
 
 	gameState.threadState = [];
 	for (var i = 0; i < threadCount; i++) {
@@ -171,8 +187,7 @@ var startLevel = function(level) {
 };
 
 var startSelectedLevel = function() {
-	level = levels[$('#levelSelect').val()];
-	startLevel(level);
+	startLevel($('#levelSelect').val());
 };
 
 var clearProgressAction = function () {

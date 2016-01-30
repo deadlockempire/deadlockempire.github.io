@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="css/main.css">
-		<script src="js/jquery.js"></script>
-
-
-
+		<script src="js/bootstrap.min.js"></script>
 		<script src="js/ui.js"></script>
+		<script src="js/jquery.js"></script>
 		<script src="js/instructions.js"></script>
 		<script src="js/level.js"></script>
 		<script src="js/thread.js">s</script>
@@ -15,25 +15,27 @@
 		<script src="js/menu.js"></script>
 	</head>
 	<body>
-		<div style="border: 1px solid black; width: 100%; margin: 2px; padding: 2px;">
-			This is the toolbar. | Select level:
-			<select id="levelSelect" >
-				<option value="test">Test</option>
-				<option value="tutorial">Tutorial 1</option>
-				<option value="tutorial2">Tutorial 2</option>
-			</select>
-			<button id="start">Start</button>
-			|
-			<button id="goToMain">Go To Main Menu</button>
-			|
-			<button id="clearProgress">Clear Saved Progress</button>
-		</div>
-		<div id="mainarea">
-		</div>
-		<div id="alert" style="display: none; border: 1px solid black;">
-			<button id="alertHide">[Hide]</button>
-			<span id="alertCaption" style="font-weight: bold;">Title</span><br>
-			<span id="alertText">This is the alert message.</span>
+		<div class="container">
+			<div style="border: 1px solid black; width: 100%; margin: 2px; padding: 2px;">
+				This is the toolbar. | Select level:
+				<select id="levelSelect" >
+					<option value="test">Test</option>
+					<option value="tutorial">Tutorial 1</option>
+					<option value="tutorial2">Tutorial 2</option>
+				</select>
+				<button class="btn btn-default" id="start">Start</button>
+				|
+				<button class="btn btn-default" id="goToMain">Go To Main Menu</button>
+				|
+				<button class="btn btn-default" id="clearProgress">Clear Saved Progress</button>
+			</div>
+			<div id="mainarea">
+			</div>
+			<div id="alert" style="display: none; border: 1px solid black;">
+				<button class="btn btn-default" id="alertHide">[Hide]</button>
+				<span id="alertCaption" style="font-weight: bold;">Title</span><br>
+				<span id="alertText">This is the alert message.</span>
+			</div>
 		</div>
 	</body>
 </html>

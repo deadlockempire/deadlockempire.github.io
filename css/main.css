@@ -14,6 +14,10 @@ div.clearboth {
 	clear: both;
 }
 
+.instruction {
+	white-space: pre;
+}
+
 .instruction.current-instruction {
 	font-weight: bold;
 }
@@ -31,4 +35,21 @@ div.clearboth {
 }
 .mainMenuSolvedLevel {
     background-color: green;
+}
+
+.global-state {
+	font-family: monospace;
+}
+
+.global-state .type {
+	font-style: italic;
+}
+
+.global-state .name {
+	margin-left: .5em;
+	margin-right: .5em;
+}
+
+.global-state .value {
+	margin-left: .5em;
 }
