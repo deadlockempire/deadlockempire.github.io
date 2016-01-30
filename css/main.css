@@ -69,11 +69,16 @@ div.clearboth {
 
 .global-state .name {
 	margin-left: .5em;
+}
+
+
+.global-state .equalSign {
+	margin-left: .5em;
 	margin-right: .5em;
 }
 
 .global-state .value {
-	margin-left: .5em;
+	/* margin-left: .5em; */
 }
 
 .expansion {
