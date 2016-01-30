@@ -29,21 +29,6 @@ var gameState = {
 	globalState: null
 };
 
-var updateProgramCounters = function() {
-	var threadCount = level.threads.length;
-	$('.instruction').each(function() {
-		$(this).removeClass('current-instruction');
-	});
-	// update program counters
-	for (var i = 0; i < threadCount; i++) {
-		var threadState = gameState.threadState[i];
-		var pc = threadState.programCounter;
-
-		if (pc < gameState.threadInstructions[i].length) {
-			$(gameState.threadInstructions[i][pc]).addClass('current-instruction');
-		}
-	}
-};
 
 var assign = function(variable, type, value) {
 	// TODO: type checking?
@@ -54,21 +39,6 @@ var assign = function(variable, type, value) {
 		lastLockedByThread: null,
 		lockCount: 0
 	};
-};
-
-var updateGlobalVariables = function() {
-	var area = $('.global-state');
-	var text = "";
-	for (var key in gameState.globalState) {
-		text += key + "=" + gameState.globalState[key] + "; ";
-	}
-	area.html(text);
-};
-
-var redraw = function() {
-	updateProgramCounters();
-	updateGlobalVariables();
-	undoButton.attr('disabled', undoHistory.length == 0);
 };
 
 var checkForVictoryConditions = function() {
