@@ -49,6 +49,9 @@ var updateGlobalVariables = function() {
 			if (variable.type == "String") {
 				valueRepr = '"' + variable.value + '"';
 			}
+			else if (variable.type.indexOf("Semaphore") != -1) {
+				valueRepr = 'SemaphoreSlim [count: ' + variable.value + ']';
+			}
 			else {
 				valueRepr = variable.value.toString();
 			}

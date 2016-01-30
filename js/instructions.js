@@ -148,6 +148,12 @@ var createIncrement = function(name) {
 	return v;
 };
 
+var EmptyStatement = function() {
+	this.code = ";";
+	this.execute = function(threadState, globalState) {
+		moveToNextInstruction(threadState);
+	};
+}
 
 var WhileInstruction = function(expression, name) {
 	this.code = "while (" + expression.code + ") {";

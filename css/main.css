@@ -16,6 +16,7 @@ div.clearboth {
 
 .instruction {
 	white-space: pre;
+	padding-left: 5px;
 }
 
 .instruction.current-instruction {
