@@ -54,6 +54,9 @@ var updateGlobalVariables = function() {
 		}
 
 		representation.append(";");
+		if (variable.lastLockedByThread != null) {
+			representation.append(" (locked by thread " + variable.lastLockedByThread + ")");
+		}
 		area.append(representation);
 	}
 };
