@@ -17,3 +17,15 @@ div.clearboth {
 .instruction.current-instruction {
 	font-weight: bold;
 }
+
+.mainMenuLevelCaption {
+    font-weight: bold;
+}
+.mainMenuLevelDescription {
+
+}
+.mainMenuLevel {
+   padding: 5px;
+   margin: 5px;
+   border: 1px solid black;
+}

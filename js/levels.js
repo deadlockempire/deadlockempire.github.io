@@ -25,7 +25,7 @@ var levels = {
 	"tutorial": new Level(
 		"Tutorial Level",
 		"We don't have enough instructions.",
-		"You have learnt no lesson here."
+		"You have learnt no lesson here.",
 		[
 			new Thread([
 				new Instruction("This is the single-thread tutorial.")
