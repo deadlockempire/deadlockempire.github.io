@@ -40,7 +40,15 @@ var level = new Level(
 
 var gameState = {
 	threadInstructions: null,
-	programCounters: null
+
+	// thread state:
+	// {
+	//	programCounter: (number of current instruction),
+	//	variables: {
+	//		'variableName': (value)
+	//	}
+	// }
+	threadState: null
 };
 
 var updateProgramCounters = function() {
@@ -50,18 +58,22 @@ var updateProgramCounters = function() {
 	});
 	// update program counters
 	for (var i = 0; i < threadCount; i++) {
-		var pc = gameState.programCounters[i];
-		$(gameState.threadInstructions[i][pc]).addClass('current-instruction');
+		var threadState = gameState.threadState[i];
+		var pc = threadState.programCounter;
+
+		if (pc < gameState.threadInstructions[i].length) {
+			$(gameState.threadInstructions[i][pc]).addClass('current-instruction');
+		}
 	}
 };
 
 var stepThread = function(thread) {
 	var maxInstructions = level.threads[thread].instructions.length;
-	var pc = gameState.programCounters[thread];
-	console.log(maxInstructions, gameState.programCounters);
-	if (pc + 1 < maxInstructions) {
+	var threadState = gameState.threadState[thread];
+	var pc = threadState.programCounter;
+	if (pc < maxInstructions) {
 		level.threads[thread].instructions[pc].execute();
-		gameState.programCounters[thread]++;
+		threadState.programCounter++;
 		updateProgramCounters();
 	} else {
 		alert("Thread " + thread + " already finished.");
@@ -106,11 +118,14 @@ var startLevel = function() {
 	mainArea.append('<div class="clearboth"></div>');
 	mainArea.append(sourcesSection);
 
-	var programCounters = [];
+	var threadStates = [];
 	for (var i = 0; i < threadCount; i++) {
-		programCounters[i] = 0;
+		threadStates[i] = {
+			programCounter: 0,
+			variables: {}
+		};
 	}
-	gameState.programCounters = programCounters;
+	gameState.threadState = threadStates;
 	gameState.threadInstructions = threadInstructions;
 
 	updateProgramCounters();
