@@ -71,6 +71,9 @@ var AssignInstruction = function(code, variable, type, value) {
 var IfInstruction = function(expression, name) {
 	this.code = "if (" + expression.code + ") {";
 	this.name = name;
+	this.isBlocking = function(threadState, globalState) {
+		return (expression.isBlocking && expression.isBlocking(threadState, globalState));
+	}
 	this.execute = function(threadState, globalState, threadProgram) {
 		if (expression.evaluate(threadState, globalState)) {
 			moveToNextInstruction(threadState);  // goto true branch
@@ -92,11 +95,62 @@ var IfInstruction = function(expression, name) {
 
 var EndIfInstruction = function(name) {
 	this.code = "}";
+	this.tooltip = "This is the end of a simple \"if\" statement.";
 	this.name = name;
 	this.execute = function(threadState) {
 		moveToNextInstruction(threadState);
 	};
 };
+
+var IfLongInstruction = function(expression, name) {
+	this.code = "if (" + expression.code + ") {";
+	this.name = name;
+	this.isBlocking = function(threadState, globalState) {
+		return (expression.isBlocking && expression.isBlocking(threadState, globalState));
+	}
+	this.execute = function(threadState, globalState, threadProgram) {
+		if (expression.evaluate(threadState, globalState)) {
+			moveToNextInstruction(threadState);  // goto true branch
+		} else {
+			// false -> find matching Else
+			var i;
+			for (i = 0; i < threadProgram.length; i++) {
+				var instruction = threadProgram[i];
+				console.log(instruction);
+				if ((instruction instanceof ElseInstruction) && instruction.name == name) {
+					break;
+				}
+			}
+			goToInstruction(threadState, i + 1);
+		}
+	};
+};
+var ElseInstruction = function(name) {
+	this.code = "} else {";
+	this.name = name;
+	this.execute = function(threadState, globalState, threadProgram) {
+
+			var i;
+			for (i = 0; i < threadProgram.length; i++) {
+				var instruction = threadProgram[i];
+				console.log(instruction);
+				if ((instruction instanceof EndIfLongInstruction) && instruction.name == name) {
+					break;
+				}
+			}
+			goToInstruction(threadState, i );
+
+	};
+};
+var EndIfLongInstruction = function(name) {
+	this.code = "}";
+	this.tooltip = "This is the end of a complex \"if\" statement.";
+	this.name = name;
+	this.execute = function(threadState) {
+		moveToNextInstruction(threadState);
+	};
+};
+
 
 var ExpandableInstruction = function(code, minorInstructions) {
 	this.code = code;
@@ -148,6 +202,7 @@ var createIncrement = function(name) {
 
 var EmptyStatement = function() {
 	this.code = ";";
+	this.tooltip = "This statement does nothing.";
 	this.execute = function(threadState, globalState) {
 		moveToNextInstruction(threadState);
 	};
@@ -156,6 +211,7 @@ var EmptyStatement = function() {
 var WhileInstruction = function(expression, name) {
 	this.code = "while (" + expression.code + ") {";
 	this.name = name;
+
 	this.execute = function(threadState, globalState, threadProgram) {
 		if (expression.evaluate(threadState, globalState)) {
 			moveToNextInstruction(threadState);

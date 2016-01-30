@@ -460,12 +460,36 @@ var levels = {
 		[
 			new Thread([
 				createOuterWhile(),
-
+				new IfLongInstruction(new MonitorTryEnterExpression("mutex"), "if"),
+				new MonitorEnterInstruction("mutex3"),
+				new MonitorEnterInstruction("mutex"),
+				new CriticalSectionInstruction(),
+				new MonitorExitInstruction("mutex"),
+				new MonitorEnterInstruction("mutex2"),
+				createAssignment("flag", new LiteralExpression(false)),
+				new MonitorExitInstruction("mutex2"),
+				new MonitorExitInstruction("mutex3"),
+				new ElseInstruction("if"),
+				new MonitorEnterInstruction("mutex2"),
+				createAssignment("flag", new LiteralExpression(true)),
+				new MonitorExitInstruction("mutex2"),
+				new EndIfLongInstruction("if"),
 				createOuterWhileEnd()
 			]),
 			new Thread([
 				createOuterWhile(),
-
+				new IfLongInstruction(new VariableExpression("flag"), "if"),
+				new MonitorEnterInstruction("mutex2"),
+				new MonitorEnterInstruction("mutex"),
+				createAssignment("flag", new LiteralExpression(false)),
+				new CriticalSectionInstruction(),
+				new MonitorExitInstruction("mutex"),
+				new MonitorEnterInstruction("mutex2"),
+				new ElseInstruction("if"),
+				new MonitorEnterInstruction("mutex"),
+				createAssignment("flag", new LiteralExpression(false)),
+				new MonitorExitInstruction("mutex"),
+				new EndIfLongInstruction("if"),
 				createOuterWhileEnd()
 			])
 		],
