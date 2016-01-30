@@ -342,7 +342,6 @@ $(function() {
 
 $(function() {
 	if (localStorage.getItem("lastLevel") && levels[localStorage.getItem("lastLevel")]) {
-
 		startLevel(localStorage.getItem("lastLevel"));
 	} else {
 		returnToMainMenu();

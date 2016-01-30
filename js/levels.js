@@ -292,6 +292,7 @@ var levels = {
 	 C1 = false
 	 }
 	 }*/
+		/*
 			new Thread(
 				new WhileInstruction(new LiteralExpression(true), "eternal"),
 				createAssignment("flag1", new LiteralExpression(true)),
@@ -312,6 +313,8 @@ var levels = {
 				createAssignment("flag1", new LiteralExpression(false)),
 				new EndWhileInstruction("eternal")
 			),
+			*/
+		/*
 
 			new Thread(
 				new WhileInstruction(new LiteralExpression(true), "eternal"),
@@ -354,6 +357,7 @@ var levels = {
 				createAssignment("flag3", new LiteralExpression(false)),
 				new EndWhileInstruction("eternal")
 			)
+			*/
 
 		],
 		{
