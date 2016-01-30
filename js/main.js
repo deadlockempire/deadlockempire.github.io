@@ -31,26 +31,7 @@ var Level = function(intro, threads) {
 	this.threads = threads;
 };
 
-var level = new Level(
-	"In this level, you want to finish the second thread.",
-	[
-		new Thread([
-			new Instruction("Hello World!"),
-		]),
-		new Thread([
-			new AssignInstruction("global hello = 'world'", 'hello'),
-			new Instruction("foo"),
-			new Instruction("bar"),
-			new Instruction("zoo"),
-			new WinningInstruction("[REACH THIS TO WIN]")
-		]),
-		new Thread([
-			new Instruction("bar"),
-			new WinningInstruction("[OR REACH THIS TO WIN]"),
-			new Instruction("bar"),
-		])
-	]
-);
+var level = null;
 
 var gameState = {
 	threadInstructions: null,
