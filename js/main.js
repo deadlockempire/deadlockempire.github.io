@@ -232,7 +232,26 @@ $(function() {
 	$.each(levels,function(key, value)
 	{
 		select.append('<option value=' + key + '>' + value.name + '</option>');
+		$.each(value.threads, function(key2, thread)
+		{
+			var indent = 0;
+			for (var instructionName in thread.instructions) {
+				var instruction = thread.instructions[instructionName];
+				if (instruction instanceof  ElseInstruction ||
+					instruction instanceof EndWhileInstruction) {
+					indent--;
+				}
+				for (var i = 0; i < indent; i++) {
+					instruction.code = "  " + instruction.code;
+				}
+				if (instruction instanceof IfInstruction ||
+					instruction instanceof WhileInstruction) {
+					indent++;
+				}
+			}
+		});
 	});
+
 
 });
 
