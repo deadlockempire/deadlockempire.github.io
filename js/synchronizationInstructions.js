@@ -34,7 +34,9 @@ var MonitorExitInstruction = function(monitorName) {
         if (monitor.lastLockedByThread == threadState.id)
         {
             monitor.lockCount--;
-
+            if (monitor.lockCount <= 0) {
+                monitor.lastLockedByThread = null;
+            }
         }
         else
         {

@@ -114,12 +114,27 @@ var levels = {
 		[
 			new Thread([
 				new MonitorEnterInstruction("mutex"),
-				new CriticalSectionInstruction()
-			])
+				new MonitorEnterInstruction("mutex2"),
+				new CriticalSectionInstruction(),
+				new MonitorExitInstruction("mutex"),
+				new MonitorExitInstruction("mutex2"),
+			]),
+			new Thread([
+				new MonitorEnterInstruction("mutex2"),
+				new MonitorEnterInstruction("mutex"),
+				new CriticalSectionInstruction(),
+				new MonitorExitInstruction("mutex2"),
+				new MonitorExitInstruction("mutex"),
+			]),
 		],
 		{
 			"mutex" : {
 				name: "mutex",
+				type: "System.Object",
+				value: "unimportant-value"
+			},
+			"mutex2" : {
+				name: "mutex2",
 				type: "System.Object",
 				value: "unimportant-value"
 			}
