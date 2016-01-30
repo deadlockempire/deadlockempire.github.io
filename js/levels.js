@@ -192,5 +192,46 @@ var levels = {
 				value : 0
 			}
 		}
-	)
+	),
+	"4-confusedCounter" : new Level(
+		"4-confusedCounter",
+		"Confused Counter",
+		"Could it be that some instructions are hidden from sight?",
+		"Most instructions are <i>not</i> atomic. That means that context may switch during the instruction's execution. For assignments, for example, it means that the expression may be read into registers of a thread, but then context may switch and when the thread receives priority again, it won't read the expression again, it will simply write the register into the left-hand variable.",
+		[
+			new Thread([
+				new FlavorInstruction("business_logic()"),
+				createIncrement("first"),
+				createIncrement("second"),
+				new IfInstruction(new AndExpression(
+					new EqualityExpression(new VariableExpression("second"), new LiteralExpression(2)),
+					new InequalityExpression(new VariableExpression("first"), new LiteralExpression(2))), "if"),
+				new FailureInstruction(),
+				new EndIfInstruction("if")
+			]),
+			new Thread([
+				new FlavorInstruction("business_logic()"),
+				createIncrement("first"),
+				createIncrement("second"),
+				new IfInstruction(new AndExpression(
+					new EqualityExpression(new VariableExpression("second"), new LiteralExpression(2)),
+					new InequalityExpression(new VariableExpression("first"), new LiteralExpression(2))), "if"),
+				new FailureInstruction(),
+				new EndIfInstruction("if")
+			])
+		],
+		{
+			"first": {
+				name: "first",
+				type: "System.Int32",
+				value : 0
+			},
+			"second": {
+				name: "second",
+				type: "System.Int32",
+				value : 0
+			}
+		}
+	),
+
 };

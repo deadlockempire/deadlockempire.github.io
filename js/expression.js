@@ -12,13 +12,20 @@ var AdditionExpression = function(left, right) {
     this.code = left.code + " + " + right.code;
 }
 var EqualityExpression =
- function (left, right) {
-   this.evaluate = function(threadState, globalState)  {
-       return left.evaluate(threadState, globalState) == right.evaluate(threadState, globalState);
-   };
-     this.code = left.code + " == " + right.code;
+    function (left, right) {
+        this.evaluate = function(threadState, globalState)  {
+            return left.evaluate(threadState, globalState) == right.evaluate(threadState, globalState);
+        };
+        this.code = left.code + " == " + right.code;
 
- };
+    };
+var AndExpression =
+    function (left, right) {
+        this.evaluate = function(threadState, globalState)  {
+            return left.evaluate(threadState, globalState) && right.evaluate(threadState, globalState);
+        };
+        this.code = left.code + " && " + right.code;
+    };
 var InequalityExpression =
     function (left, right) {
         this.evaluate = function(threadState, globalState)  {
