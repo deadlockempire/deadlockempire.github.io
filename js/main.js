@@ -1,12 +1,6 @@
 var level = null;
 
 var gameState = {
-	// Unchanging between states:
-	// [threadId][instructionId] divs of instructions
-	threadInstructions: null,
-
-	// Changing between states:
-
 	// thread state:
 	// {
 	//	programCounter: [(number of current instruction), (number of current subinstruction)],
@@ -86,6 +80,12 @@ var stepThread = function(thread) {
 	}
 };
 
+var expandThread = function(thread) {
+	saveForUndo();
+	gameState.threadState[thread].expanded = true;
+	redraw();
+};
+
 var getThreadCount = function() {
 	return level.threads.length;
 };
@@ -152,7 +152,6 @@ var startLevel = function(levelName) {
 
 	var threadCount = level.threads.length;
 	var width = 100.0 / threadCount;
-	var threadInstructions = [];
 
 	threadButtons = [];
 	threadContextualButtons = [];
@@ -188,16 +187,27 @@ var startLevel = function(levelName) {
 
 		var source = $('<div class="code"></div>');
 
-		var instructions = [];
 		for (var j = 0; j < thread.instructions.length; j++) {
 			var instruction = $('<div class="instruction">' + thread.instructions[j].code + '</div>');
+			instruction.attr('id', 'instruction-' + i + '-' + j);
 			if (thread.instructions[j].tooltip) {
 				instruction.attr("title", thread.instructions[j].code + ". \n" + thread.instructions[j].tooltip);
 			}
-			instructions[j] = instruction;
 			source.append(instruction);
+
+			if (thread.instructions[j] instanceof ExpandableInstruction) {
+				var expansion = $('<div class="expansion" id="instruction-' + i + '-' + j + '-expansion">EXPANSION</div>');
+
+				for (var k = 0; k < thread.instructions[j].minorInstructions.length; k++) {
+					var si = $('<div class="instruction">' + thread.instructions[j].minorInstructions[k].code + '</div>');
+					si.attr('id', 'instruction-' + i + '-' + j + '-sub' + k);
+					// TODO tooltip, refactor
+					expansion.append(si);
+				}
+
+				instruction.append(expansion);
+			}
 		}
-		threadInstructions[i] = instructions;
 
 		threadArea.append(source);
 		threadArea.css({width: width + "%"});
@@ -217,7 +227,6 @@ var startLevel = function(levelName) {
 			expanded: false
 		};
 	}
-	gameState.threadInstructions = threadInstructions;
 	gameState.globalState = {};
 	if (level.variables) {
 		gameState.globalState = level.variables;

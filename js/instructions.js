@@ -2,11 +2,14 @@ var moveToNextInstruction = function(threadState) {
 	if (threadState.expanded) {
 		threadState.programCounter[1]++;
 
+		// TODO
+		/*
 		if (threadState.programCounter[1] >= threadState.program[threadState.programCounter[0]].minorInstructions.length) {
 			threadState.expanded = false;
 			threadState.programCounter[0]++;
 			threadState.programCounter[1] = 0;
 		}
+		*/
 	} else {
 		threadState.expanded = false;
 		threadState.programCounter[0]++;

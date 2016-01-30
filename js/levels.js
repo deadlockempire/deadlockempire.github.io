@@ -7,6 +7,13 @@ var levels = {
 		[
 			new Thread([
 				new Instruction("Hello World!"),
+				new ExpandableInstruction("do something really complex", [
+					new Instruction("do"),
+					new Instruction("something"),
+					new Instruction("really"),
+					new Instruction("rather"),
+					new Instruction("complex"),
+				])
 			]),
 			new Thread([
 				new AssignInstruction("global hello = 'world'", 'hello', 'String', 'world'),

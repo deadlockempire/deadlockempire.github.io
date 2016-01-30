@@ -54,3 +54,15 @@ div.clearboth {
 .global-state .value {
 	margin-left: .5em;
 }
+
+.expansion {
+	font-size: .8em;
+	padding-left: 2em;
+}
+div.instruction.current-instruction div.expansion {
+	font-width: normal;
+}
+.expansion .instruction.current-instruction {
+	text-decoration: underline;
+	color: red;
+}
