@@ -12,7 +12,7 @@ var updateProgramCounters = function() {
 	// update program counters
 	for (var i = 0; i < threadCount; i++) {
 		var threadState = gameState.threadState[i];
-		var pc = threadState.programCounter;
+		var pc = threadState.programCounter[0];
 
 		if (pc < gameState.threadInstructions[i].length) {
 			$(gameState.threadInstructions[i][pc]).addClass('current-instruction');
@@ -46,6 +46,12 @@ var redraw = function() {
 	undoButton.attr('disabled', undoHistory.length == 0);
 
 	for (var i = 0; i < getThreadCount(); i++) {
-		threadStepButtons[i].attr('disabled', isThreadFinished(i));
+		threadButtons[i].step.attr('disabled', isThreadFinished(i));
+
+		var program = level.threads[i].instructions;
+		var threadState = gameState.threadState[i];
+		var currentInstruction = program[threadState.programCounter];
+		var isExpandable = (currentInstruction instanceof ExpandableInstruction);
+		threadButtons[i].step.attr('disabled', isExpandable && !threadState.expanded);
 	}
 };

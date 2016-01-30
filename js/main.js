@@ -9,10 +9,8 @@ var gameState = {
 
 	// thread state:
 	// {
-	//	programCounter: (number of current instruction),
-	//	variables: {
-	//		'variableName': (value)
-	//	}
+	//	programCounter: [(number of current instruction), (number of current subinstruction)],
+	//	expanded: (boolean: is current major instruction expanded)
 	// }
 	threadState: null,
 
@@ -51,7 +49,7 @@ var checkForVictoryConditions = function() {
         var instructions = thread.instructions;
         var threadState = gameState.threadState[threadId];
         var programCounter = threadState.programCounter;
-        var currentInstruction = instructions[programCounter];
+        var currentInstruction = instructions[programCounter[0]];
         if (currentInstruction.isCriticalSection) {
             howManyCriticalSections++;
         }
@@ -66,17 +64,21 @@ var isThreadFinished = function(thread) {
 	var program = level.threads[thread].instructions;
 	var maxInstructions = program.length;
         var threadState = gameState.threadState[thread];
-	var pc = threadState.programCounter;
+	var pc = threadState.programCounter[0];
 	return pc >= maxInstructions;
 };
 
 var stepThread = function(thread) {
 	var program = level.threads[thread].instructions;
 	var threadState = gameState.threadState[thread];
-	var pc = threadState.programCounter;
+	var pc = threadState.programCounter[0];
 	if (!isThreadFinished(thread)) {
 		saveForUndo();
-		program[pc].execute(threadState, gameState.globalState, program);
+		if (threadState.expanded) {
+			program[pc].minorInstructions[threadState.programCounter[1]].execute(threadState, gameState.globalState, program);
+		} else {
+			program[pc].execute(threadState, gameState.globalState, program);
+		}
 		checkForVictoryConditions();
 		redraw();
 	} else {
@@ -111,7 +113,8 @@ var resetLevel = function() {
 };
 
 var undoButton;
-var threadStepButtons;
+var threadButtons;
+var threadContextualButtons;
 
 var startLevel = function(levelName) {
 	level = levels[levelName];
@@ -151,7 +154,8 @@ var startLevel = function(levelName) {
 	var width = 100.0 / threadCount;
 	var threadInstructions = [];
 
-	threadStepButtons = [];
+	threadButtons = [];
+	threadContextualButtons = [];
 	for (var i = 0; i < threadCount; i++) {
 		var thread = level.threads[i];
 
@@ -162,8 +166,23 @@ var startLevel = function(levelName) {
 		stepButton.click(function() {
 			stepThread($(this).data('thread'));
 		});
-		threadStepButtons[i] = stepButton;
 		threadArea.append(stepButton);
+
+		var expandButton = $('<button class="btn btn-default"><span class="glyphicon glyphicon-search"></span>&nbsp;Expand</button>');
+		expandButton.data('thread', i);
+		expandButton.click(function() {
+			expandThread($(this).data('thread'));
+		});
+		threadArea.append(expandButton);
+
+		threadButtons[i] = {
+			step: stepButton,
+			expand: expandButton
+		};
+
+		var contextualButtons = $('<span class="contextual-buttons"></span>');
+		threadContextualButtons[i] = contextualButtons;
+		threadArea.append(contextualButtons);
 
 		// Possible extra actions go here.
 
@@ -193,8 +212,8 @@ var startLevel = function(levelName) {
 	gameState.threadState = [];
 	for (var i = 0; i < threadCount; i++) {
 		gameState.threadState[i] = {
-			programCounter: 0,
-			variables: {},
+			programCounter: [0, 0],
+			expanded: false
 		};
 	}
 	gameState.threadInstructions = threadInstructions;

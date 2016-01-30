@@ -1,11 +1,27 @@
-var moveToNextInstruction = function (threadState) {
-    threadState.programCounter++;
+var moveToNextInstruction = function(threadState) {
+	if (threadState.expanded) {
+		threadState.programCounter[1]++;
+
+		if (threadState.programCounter[1] >= threadState.program[threadState.programCounter[0]].minorInstructions.length) {
+			threadState.expanded = false;
+			threadState.programCounter[0]++;
+			threadState.programCounter[1] = 0;
+		}
+	} else {
+		threadState.expanded = false;
+		threadState.programCounter[0]++;
+		threadState.programCounter[1] = 0;
+	}
+};
+
+var goToInstruction = function(threadState, line) {
+	threadState.programCounter = [line, 0];
 };
 
 var Instruction = function(code) {
 	this.code = code;
 	this.execute = function(threadState, globalState) {
-		threadState.programCounter++;
+		moveToNextInstruction(threadState);
 	};
 };
 
@@ -71,7 +87,7 @@ var AssignInstruction = function(code, variable, type, value) {
 	this.variable = variable;
 	this.execute = function(threadState, globalState) {
 		assign(variable, type, value);
-		threadState.programCounter++;
+		moveToNextInstruction(threadState);
 	};
 };
 
@@ -80,7 +96,7 @@ var IfInstruction = function(code, test, name) {
 	this.name = name;
 	this.execute = function(threadState, globalState, threadProgram) {
 		if (test(threadState, globalState)) {
-			threadState.programCounter++;  // goto true branch
+			moveToNextInstruction(threadState);  // goto true branch
 		} else {
 			// false -> find matching Else
 			var i;
@@ -92,7 +108,7 @@ var IfInstruction = function(code, test, name) {
 				}
 			}
 			console.assert(i < threadProgram.length);
-			threadState.programCounter = i;
+			goToInstruction(threadState, i);
 		}
 	};
 };
@@ -100,10 +116,11 @@ var IfInstruction = function(code, test, name) {
 var ElseInstruction = function(code, name) {
 	this.code = code;
 	this.name = name;
-	this.execute = function(threadState) { threadState.programCounter++; };
+	this.execute = function(threadState) {
+		moveToNextInstruction(threadState);
+	};
 };
 
-/*
 var ExpandableInstruction = function(code, minorInstructions) {
 	this.code = code;
 	this.minorInstructions = minorInstructions;
@@ -113,7 +130,6 @@ var ExpandableInstruction = function(code, minorInstructions) {
 		}
 	};
 };
-*/
 
 var WhileInstruction = function(expressionString, test, name) {
 	this.code = "while (" + expressionString + ") {";
@@ -148,4 +164,3 @@ var EndWhileInstruction = function( name) {
 		threadState.programCounter = i;
 	};
 };
-
