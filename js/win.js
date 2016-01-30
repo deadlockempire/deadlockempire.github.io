@@ -1,22 +1,22 @@
 var winScreen;
 
-var win = function() {
+var win = function(reason) {
 	winScreen.fadeIn(400);
 
 	//$('#win-screen .icon').slideDown();
 
 	var messages = ["You win!", "Great job!", "Congratulations!"];
 	var randomMessage = messages[Math.floor(3 * Math.random())];
+
 	$('#win-congratulation').text(randomMessage);
 
 	// TODO: taky popsat, jak jsem to znicil
 
-	/*
-	showMessage('Level completed!', 'The congratulatory victory message is this: "' + window.level.victoryText + '"!"');
-	localStorage.setItem('level_' + window.level.id, "solved");
-	*/
-
-	$('#win-message').html(level.victoryText);
+	var text = level.victoryText;
+	if (reason) {
+		text += "<p>" + reason + "</p>";
+	}
+	$('#win-message').html(text);
 
 	if (findNextLevelInCampaign(window.levelName) == null) {
 		// game finished
