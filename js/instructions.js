@@ -104,6 +104,8 @@ var ExpandableInstruction = function(code, minorInstructions) {
 	this.code = code;
 	this.minorInstructions = minorInstructions;
 	this.execute = function(threadState, globalState, threadProgram) {
+		console.assert(!threadState.expanded);
+		threadState.expanded = true;
 		for (var i = 0; i < minorInstructions.length; i++) {
 			minorInstructions[i].execute(threadState, globalState, threadProgram);
 		}
