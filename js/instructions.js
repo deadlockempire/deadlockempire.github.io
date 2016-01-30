@@ -157,7 +157,7 @@ var WhileInstruction = function(expressionString, test, name) {
 var EndWhileInstruction = function( name) {
 	this.code = "}";
 	this.name = name;
-	this.execute = function(threadState) {
+	this.execute = function(threadState, globalState, threadProgram) {
 		for (i = 0; i < threadProgram.length; i++) {
 			var instruction = threadProgram[i];
 			if ((instruction instanceof WhileInstruction) && instruction.name == name) {
