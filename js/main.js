@@ -131,6 +131,9 @@ var startLevel = function(level) {
 		var instructions = [];
 		for (var j = 0; j < thread.instructions.length; j++) {
 			var instruction = $('<div class="instruction">' + thread.instructions[j].code + '</div>');
+			if (thread.instructions[j].tooltip) {
+				instruction.attr("title", thread.instructions[j].code + ". \n" + thread.instructions[j].tooltip);
+			}
 			instructions[j] = instruction;
 			source.append(instruction);
 		}
