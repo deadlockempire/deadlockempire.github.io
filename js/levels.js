@@ -25,12 +25,8 @@ var levels = {
 			new Thread([
 				new AssignInstruction("global hello = 'world'", 'hello', 'String', 'world'),
 				new Instruction("foo"),
-				new IfInstruction("if (hello == 'foo') {", function(threadState, globalState) {
-					return globalState['hello'] && globalState['hello'].value == 'foo';
-				}, 'if1'),
 				new Instruction("  bar"),
 				new Instruction("  zoo"),
-				new ElseInstruction("}", 'if1'),
 				new WinningInstruction("[REACH THIS TO WIN]")
 			]),
 			new Thread([
@@ -155,9 +151,9 @@ var levels = {
 				createAssignment("a",
 					new AdditionExpression(new VariableExpression("a"),
 					new LiteralExpression(2))),
-				new IfInstruction("FDSFSD", function() { return true; }, "if"),
+				new IfInstruction(new EqualityExpression(new VariableExpression("a"), new LiteralExpression(3)), "if"),
 				new FailureInstruction(),
-				new ElseInstruction("}", "if")
+				new EndIfInstruction("}", "if")
 			])
 		],
 		{
@@ -167,6 +163,75 @@ var levels = {
 				value : 0
 			}
 		}
+	),
+	"3-simpleCounter" : new Level(
+		"3-simpleCounter",
+		"Simple Counter",
+		"Here also you must make both threads enter the critical section. This should not be hard.",
+		"As you have seen, once you pass a test, such as an integer comparison, you don't care about what other threads do to the operands - you have already passed the test and may continue to the critical section. To make this work, you would need locks.",
+		[
+			new Thread([
+				new WhileInstruction(new LiteralExpression(true), "while"),						createIncrement("counter"),
+				new IfInstruction(new EqualityExpression(new VariableExpression("counter"), new LiteralExpression(5)), "if"),
+				new CriticalSectionInstruction(),
+				new EndIfInstruction("if"),
+				new EndWhileInstruction("while")
+			]),
+			new Thread([
+				new WhileInstruction(new LiteralExpression(true), "while"), 				createIncrement("counter"),
+				new IfInstruction(new EqualityExpression(new VariableExpression("counter"), new LiteralExpression(3)), "if"),
+				new CriticalSectionInstruction(),
+				new EndIfInstruction("if"),
+				new EndWhileInstruction("while")
+			])
+		],
+		{
+			"counter": {
+				name: "counter",
+				type: "System.Int32",
+				value : 0
+			}
+		}
+	),
+	"4-confusedCounter" : new Level(
+		"4-confusedCounter",
+		"Confused Counter",
+		"Could it be that some instructions are hidden from sight?",
+		"Most instructions are <i>not</i> atomic. That means that context may switch during the instruction's execution. For assignments, for example, it means that the expression may be read into registers of a thread, but then context may switch and when the thread receives priority again, it won't read the expression again, it will simply write the register into the left-hand variable.",
+		[
+			new Thread([
+				new FlavorInstruction("business_logic()"),
+				createIncrement("first"),
+				createIncrement("second"),
+				new IfInstruction(new AndExpression(
+					new EqualityExpression(new VariableExpression("second"), new LiteralExpression(2)),
+					new InequalityExpression(new VariableExpression("first"), new LiteralExpression(2))), "if"),
+				new FailureInstruction(),
+				new EndIfInstruction("if")
+			]),
+			new Thread([
+				new FlavorInstruction("business_logic()"),
+				createIncrement("first"),
+				createIncrement("second"),
+				new IfInstruction(new AndExpression(
+					new EqualityExpression(new VariableExpression("second"), new LiteralExpression(2)),
+					new InequalityExpression(new VariableExpression("first"), new LiteralExpression(2))), "if"),
+				new FailureInstruction(),
+				new EndIfInstruction("if")
+			])
+		],
+		{
+			"first": {
+				name: "first",
+				type: "System.Int32",
+				value : 0
+			},
+			"second": {
+				name: "second",
+				type: "System.Int32",
+				value : 0
+			}
+		}
+	),
 
-	)
 };

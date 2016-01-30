@@ -70,11 +70,11 @@ var AssignInstruction = function(code, variable, type, value) {
 	};
 };
 
-var IfInstruction = function(code, test, name) {
-	this.code = code;
+var IfInstruction = function(expression, name) {
+	this.code = "if (" + expression.code + ") {";
 	this.name = name;
 	this.execute = function(threadState, globalState, threadProgram) {
-		if (test(threadState, globalState)) {
+		if (expression.evaluate(threadState, globalState)) {
 			moveToNextInstruction(threadState);  // goto true branch
 		} else {
 			// false -> find matching Else
@@ -82,7 +82,7 @@ var IfInstruction = function(code, test, name) {
 			for (i = 0; i < threadProgram.length; i++) {
 				var instruction = threadProgram[i];
 				console.log(instruction);
-				if ((instruction instanceof ElseInstruction) && instruction.name == name) {
+				if ((instruction instanceof EndIfInstruction) && instruction.name == name) {
 					break;
 				}
 			}
@@ -92,8 +92,8 @@ var IfInstruction = function(code, test, name) {
 	};
 };
 
-var ElseInstruction = function(code, name) {
-	this.code = code;
+var EndIfInstruction = function(name) {
+	this.code = "}";
 	this.name = name;
 	this.execute = function(threadState) {
 		moveToNextInstruction(threadState);
@@ -138,16 +138,25 @@ var createAssignment = function(name, expression) {
 	v.tooltip = "[Expandable] Assigns the value of the right-side expression to the variable on the left. This operation is non-atomic.";
 	return v;
 };
+var createIncrement = function(name) {
+	var minorInstructions = [
+		new AtomicAssignmentToTemp(new AdditionExpression(new VariableExpression(name), new LiteralExpression(1))),
+		new AtomicAssignmentFromTemp(name)
+	];
+	var v = new ExpandableInstruction(name + "++;", minorInstructions);
+	v.tooltip = "[Expandable] Increments the value of the variable by one. This operation is non-atomic. However, the function Interlocked.Increment is atomic.";
+	return v;
+};
 
 
-var WhileInstruction = function(expressionString, test, name) {
-	this.code = "while (" + expressionString + ") {";
+var WhileInstruction = function(expression, name) {
+	this.code = "while (" + expression.code + ") {";
 	this.name = name;
 	this.execute = function(threadState, globalState, threadProgram) {
-		if (test(threadState, globalState)) {
-			threadState.programCounter++;  // goto true branch
+		if (expression.evaluate(threadState, globalState)) {
+			moveToNextInstruction(threadState);
 		} else {
-			// false -> find matching Else
+			// false -> find matching EndWhile
 			var i;
 			for (i = 0; i < threadProgram.length; i++) {
 				var instruction = threadProgram[i];
@@ -155,7 +164,7 @@ var WhileInstruction = function(expressionString, test, name) {
 					break;
 				}
 			}
-			threadState.programCounter = i + 1;
+			threadState.programCounter = [ i + 1 , 0 ];
 		}
 	};
 };
@@ -164,12 +173,13 @@ var EndWhileInstruction = function( name) {
 	this.code = "}";
 	this.name = name;
 	this.execute = function(threadState, globalState, threadProgram) {
+		var i = 0;
 		for (i = 0; i < threadProgram.length; i++) {
 			var instruction = threadProgram[i];
 			if ((instruction instanceof WhileInstruction) && instruction.name == name) {
 				break;
 			}
 		}
-		threadState.programCounter = i;
+		threadState.programCounter = [i, 0];
 	};
 };
