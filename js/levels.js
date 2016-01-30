@@ -1,6 +1,8 @@
 var levels = {
 	"test": new Level(
+	    "Test Level",
 		"In this level, you slay monsters.",
+		"You have won.",
 		[
 			new Thread([
 				new Instruction("Hello World!"),
@@ -21,7 +23,9 @@ var levels = {
 			])
 		]),
 	"tutorial": new Level(
-		"This is the tutorial level.",
+		"Tutorial Level",
+		"We don't have enough instructions.",
+		"You have learnt no lesson here."
 		[
 			new Thread([
 				new Instruction("This is the single-thread tutorial.")

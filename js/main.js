@@ -83,12 +83,10 @@ var stepThread = function(thread) {
 	}
 };
 
-var startLevel = function() {
+var startLevel = function(level) {
 	var mainArea = $('#mainarea');
 	mainArea.html("");
-	level = levels[$('#levelSelect').val()];
-	console.log($('#levelSelect').val());
-
+    window.level = level;
 	var sourcesSection = $('<div class="sources"></div>');
 	var threadCount = level.threads.length;
 	var width = 100.0 / threadCount;
@@ -135,6 +133,11 @@ var startLevel = function() {
 
 	updateProgramCounters();
 	updateGlobalVariables();
+}
+
+var startSelectedLevel = function() {
+	level = levels[$('#levelSelect').val()];
+	startLevel(level);
 };
 
 var clearProgressAction = function () {
@@ -142,7 +145,7 @@ var clearProgressAction = function () {
 };
 
 $(function() {
-	$('button#start').click(startLevel);
+	$('button#start').click(startSelectedLevel);
     $('button#goToMain').click(returnToMainMenu);
     $('#clearProgress').click(clearProgressAction);
 });
