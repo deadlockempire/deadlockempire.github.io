@@ -118,6 +118,14 @@ var startLevel = function(levelName) {
 	window.level = level;
 	window.levelName = levelName;
 
+	var title = $('<h1></h1>');
+	title.text(level.name);
+	mainArea.append(title);
+
+	var introduction = $('<p></p>');
+	introduction.html(level.intro);
+	mainArea.append(introduction);
+
 	var globalButtons = $('<div class="global-buttons"></div>');
 	mainArea.append(globalButtons);
 
