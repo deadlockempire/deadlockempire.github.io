@@ -1,0 +1,19 @@
+#mainarea, .sources, .thread {
+/*	border: 1px solid black;*/
+}
+
+.thread {
+	float: left;
+}
+
+.thread .code {
+	font-family: monospace;
+}
+
+div.clearboth {
+	clear: both;
+}
+
+.instruction.current-instruction {
+	font-weight: bold;
+}
