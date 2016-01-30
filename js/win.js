@@ -4,6 +4,8 @@ var win = function(reason) {
 	winScreen.fadeIn(400);
 
 	//$('#win-screen .icon').slideDown();
+	//
+	localStorage.setItem("level_" + window.levelName, true);
 
 	var messages = ["You win!", "Great job!", "Congratulations!"];
 	var randomMessage = messages[Math.floor(3 * Math.random())];
