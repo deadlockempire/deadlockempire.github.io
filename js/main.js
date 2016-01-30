@@ -177,18 +177,22 @@ var startLevel = function(levelName) {
 
 	var resetButton = $('<button class="btn btn-warning" style="border-top-left-radius: 0; border-bottom-left-radius: 0;"><span class="glyphicon glyphicon-repeat"></span>&nbsp;Reset level</button>');
 	resetButton.click(function() {
-		if (confirm('Really reset the level?')) {
-			resetLevel();
-		}
+		bootbox.confirm('Really reset the level?', function(confirmed) {
+			if (confirmed) {
+				resetLevel();
+			}
+		});
 	});
 	globalButtons.append(resetButton);
 
 	globalButtons.append("&nbsp;&nbsp;");
 	var mainMenuButton = $('<button class="btn btn-danger"><span class="glyphicon glyphicon-menu-hamburger"></span>&nbsp;Return to main menu</button>');
 	mainMenuButton.click(function() {
-		if (confirm('Really give up?')) {
-			returnToMainMenu();
-		}
+		bootbox.confirm('Really give up?', function(confirmed) {
+			if (confirmed) {
+				returnToMainMenu();
+			}
+		});
 	});
 	globalButtons.append(mainMenuButton);
 
@@ -284,10 +288,12 @@ var startSelectedLevel = function() {
 };
 
 var clearProgressAction = function () {
-	localStorage.clear();
-	if (confirm("Progress has been cleared. Do you want to return to the main menu and refresh?")) {
-		returnToMainMenu();
-	}
+	bootbox.confirm("Are you sure you want to clear all your progress?"), function(confirmed) {
+		if (confirmed) {
+			localStorage.clear();
+			returnToMainMenu();
+		}
+	});
 };
 
 $(function() {
