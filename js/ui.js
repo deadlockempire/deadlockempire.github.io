@@ -43,7 +43,7 @@ var updateGlobalVariables = function() {
 
 		}
 		else {
-			representation.append("=");
+			representation.append($('<span class="equalSign"></span>').text('='));
 
 			var valueRepr;
 			if (variable.type == "String") {
