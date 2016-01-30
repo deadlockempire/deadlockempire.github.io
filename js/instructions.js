@@ -175,6 +175,13 @@ var WhileInstruction = function(expression, name) {
 	};
 };
 
+var createOuterWhile = function() {
+	return new WhileInstruction(new LiteralExpression(true), "__outerWhile");
+}
+var createOuterWhileEnd = function() {
+	return new EndWhileInstruction("__outerWhile");
+}
+
 var EndWhileInstruction = function( name) {
 	this.code = "}";
 	this.name = name;

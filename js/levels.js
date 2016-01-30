@@ -37,6 +37,7 @@ var levels = {
 				new Instruction("bar"),
 			])
 		]),
+
 	"tutorial": new Level(
 	    "tutorial",
 		"Tutorial Level",
@@ -140,7 +141,8 @@ var levels = {
 	),
 	"1-simpletest": new Level(
 		"1-simpletest",
-		"(No Synchronization) Simple Test",
+		"Simple Test",
+		"Tutorial. Learn to step through a program in The Deadlock Empire.",
 		"Learn to step through a program in the Thread Safety Breaker in this tutorial level. Simply keep stepping forwards until you reach the failure statement to win.",
 		"The failure statement is like an 'assert false' statement. It represents a point in the program that should never be reached or the program was incorrectly programmed. In this game, reaching a failure statement always results in immediate victory.",
 		[
@@ -164,7 +166,8 @@ var levels = {
 	),
 	"2-flags": new Level(
 		"2-flags",
-		"(No Synchronization) Boolean Flags Are Enough For Everyone",
+		"Boolean Flags Are Enough For Everyone",
+		"Who needs locks when you can get by with using just variables? ...or can you?",
 		"Who needs locks when you can get by with using just variables? ...or can you?",
 		"To break synchronization, stop at unexpected times - here, for example, you had to stop immediately after the end of the loop. The most difficult parallelism bugs come from situations that rarely really happen because they require some strange timing, as in here.",
 		[
@@ -209,7 +212,8 @@ var levels = {
 	),
 	"3-simpleCounter" : new Level(
 		"3-simpleCounter",
-		"(No Synchronization) Simple Counter",
+		"Simple Counter",
+		"Let's test your skills with a simple problem.",
 		"Here also you must make both threads enter the critical section. This should not be hard.",
 		"As you have seen previously, once you pass a test, such as an integer comparison, you don't care about what other threads do to the operands - you have already passed the test and may continue to the critical section. To make this work, you would need locks.",
 		[
@@ -239,6 +243,7 @@ var levels = {
 	"4-confusedCounter" : new Level(
 		"4-confusedCounter",
 		"(No Synchronization) Confused Counter",
+		"Could it be that some instructions are hidden from sight?",
 		"Could it be that some instructions are hidden from sight?",
 		"Most instructions are <i>not</i> atomic. That means that context may switch during the instruction's execution. For assignments, for example, it means that the expression may be read into registers of a thread, but then context may switch and when the thread receives priority again, it won't read the expression again, it will simply write the register into the left-hand variable.",
 		[
@@ -278,20 +283,11 @@ var levels = {
 	),
 	"5-peterson": new Level(
 		"5-peterson",
-		"(No Synchronization) Three-way Peterson Algorithm",
+		"Three-way Peterson Algorithm",
+		"This riddle is rather fiendish.",
 		"The Peterson Algorithm is the best known way for 2 threads to synchronize without the use of any synchronization primitives except for atomic value read and atomic value write. However, does a straightforward generalization for multiple threads work?",
 		"As you saw, it does not. However, there is still a way to do mutual exclusion for three threads with only atomic value read and atomic value write. This method is also called Peterson's Algorithm, but it is not used in practice because solutions using more advanced atomic operations are faster and even methods using locks are more efficient.",
-		[/* Thread1{
-	 while (true){
-	 C1 = true
-	 turn = 2
-	 while ((C2 == true or C3 == true) and (turn == 2 or turn == 3)){
-	 //spin lock
-	 }
-	 //critical section
-	 C1 = false
-	 }
-	 }*/
+		[
 			new Thread([
 				new WhileInstruction(new LiteralExpression(true), "eternal"),
 				createAssignment("flag1", new LiteralExpression(true)),
@@ -378,51 +374,47 @@ var levels = {
 				value : 2
 			}
 		}
-
-
+	),
+	"L1-lock": new Level(
+		"L1-lock",
+		"Insufficient Lock",
+		"Locks don't solve everything.",
+		"These threads have total mutual exclusion - one cannot run while the other is active. But still the program can fail. Can you make it so?",
+		"Congratulations on this effort!",
+		[
+			new Thread([
+				createOuterWhile(),
+				new MonitorEnterInstruction("mutex"),
+				createAssignment("i", new AdditionExpression(new VariableExpression("i"), new LiteralExpression(2))),
+				new CriticalSectionInstruction(),
+				new IfInstruction(new EqualityExpression(new VariableExpression("i"), new LiteralExpression(5)), "if"),
+				new FailureInstruction(),
+				new EndIfInstruction("if"),
+				new MonitorExitInstruction("mutex"),
+				createOuterWhileEnd()
+			]), new Thread([
+				createOuterWhile(),
+				new MonitorEnterInstruction("mutex"),
+				createAssignment("i", new SubtractionExpression(new VariableExpression("i"), new LiteralExpression(1))),
+				new CriticalSectionInstruction(),
+				new MonitorExitInstruction("mutex"),
+				createOuterWhileEnd()
+		])
+		],
+		{
+			"mutex": {
+				name : "mutex",
+				type : "System.Object",
+				value : "unimportant"
+			},
+			"i": {
+				name : "i",
+				type : "System.Int32",
+				value : 0
+			}
+		}
 	)
 
-		/*
-		 C1 = false
-		 C2 = false
-		 C3 = false
-		 turn = 2
 
-		 Thread1{
-		 while (true){
-		 C1 = true
-		 turn = 2
-		 while ((C2 == true or C3 == true) and (turn == 2 or turn == 3)){
-		 //spin lock
-		 }
-		 //critical section
-		 C1 = false
-		 }
-		 }
-
-		 Thread2{
-		 while (true){
-		 C2 = true
-		 turn = 3
-		 while ((C1 == true or C3 == true) and (turn == 1 or turn == 3)){
-		 //spin lock
-		 }
-		 //critical section
-		 C2 = false
-		 }
-		 }
-
-		 Thread3{
-		 while (true){
-		 C3 = true
-		 turn = 1
-		 while ((C1 == true or C2 == true) and (turn == 1 or turn == 2)){
-		 //spin lock
-		 }
-		 //critical section
-		 C3 = false
-		 }
-		 }
-		 */
 
 };
