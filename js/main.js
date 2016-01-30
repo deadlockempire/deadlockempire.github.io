@@ -151,7 +151,7 @@ var startLevel = function(level) {
 		var thread = level.threads[i];
 
 		var threadArea = $('<div class="thread">thread ' + i + '</div>');
-		var stepButton = $('<button>Step</button>');
+		var stepButton = $('<button class="btn btn-default">Step</button>');
 		stepButton.data('thread', i);
 		stepButton.click(function() {
 			stepThread($(this).data('thread'));
@@ -174,7 +174,7 @@ var startLevel = function(level) {
 
 	mainArea.append('<div class="global-state"></div>');
 
-	undoButton = $('<button>Undo</button>');
+	undoButton = $('<button class="btn btn-default">Undo</button>');
 	undoButton.click(undo);
 	undoButton.attr('disabled', true);
 	mainArea.append(undoButton);
