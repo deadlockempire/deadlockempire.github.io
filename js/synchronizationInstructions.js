@@ -1,6 +1,15 @@
 var MonitorEnterInstruction = function(monitorName) {
     this.code = "Monitor.Enter(" + monitorName + ");";
     this.tooltip = "Atomic. Acquires a lock. If this thread already owns this lock, the lock counter is incremented. If another thread currently owns this lock, this call blocks until the lock is released.";
+    this.isBlocking = function(threadState, globalState) {
+        var monitor = globalState[monitorName];
+        if (monitor.lastLockedByThread == null &&
+            monitor.lastLockedByThread != threadState.id) {
+            return true;
+        } else {
+            return false;
+        }
+    };
     this.execute = function(threadState, globalState) {
         var monitor = globalState[monitorName];
         if (monitor.lastLockedByThread == null &&
@@ -48,6 +57,13 @@ var MonitorExitInstruction = function(monitorName) {
 var SemaphoreWaitInstruction = function(semaphoreName) {
     this.code = semaphoreName + ".Wait();";
     this.tooltip = "Atomic. Attempts to decrease the semaphore counter by one. If the semaphore is already at 0, this call blocks until another thread increases the counter by calling Release().";
+    this.isBlocking = function (threadState, globalState) {
+        if (globalState[semaphoreName].value > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    };
     this.execute = function(threadState, globalState) {
         if (globalState[semaphoreName].value > 0) {
             globalState[semaphoreName].value --;
