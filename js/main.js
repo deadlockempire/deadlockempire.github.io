@@ -1,6 +1,3 @@
-// constructor
-
-
 var level = null;
 
 var gameState = {
@@ -20,6 +17,15 @@ var gameState = {
 	threadState: null,
 
 	// global variables
+	// keyed by variable name
+	// value is {
+	//	'type': (typ),
+	//	'name': (jmeno),
+	//	'value': (value, JS primitive),
+	//	'lastLockedByThread': (ID of last thread that locked the
+	//		variable, or null),
+	//	'lockCount': (lock count, 0 if none)
+	// }
 	globalState: null
 };
 
@@ -37,6 +43,17 @@ var updateProgramCounters = function() {
 			$(gameState.threadInstructions[i][pc]).addClass('current-instruction');
 		}
 	}
+};
+
+var assign = function(variable, type, value) {
+	// TODO: type checking?
+	gameState.globalState[variable] = {
+		type: type,
+		name: variable,
+		value: value,
+		lastLockedByThread: null,
+		lockCount: 0
+	};
 };
 
 var updateGlobalVariables = function() {

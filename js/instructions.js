@@ -37,11 +37,11 @@ var WinningInstruction = function(code) {
 	};
 };
 
-var AssignInstruction = function(code, variable, value) {
+var AssignInstruction = function(code, variable, type, value) {
 	this.code = code;
 	this.variable = variable;
 	this.execute = function(threadState, globalState) {
-		globalState[variable] = value;
+		assign(variable, type, value);
 		threadState.programCounter++;
 	};
 };

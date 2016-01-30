@@ -9,10 +9,10 @@ var levels = {
 				new Instruction("Hello World!"),
 			]),
 			new Thread([
-				new AssignInstruction("global hello = 'world'", 'hello', 'world'),
+				new AssignInstruction("global hello = 'world'", 'hello', 'String', 'world'),
 				new Instruction("foo"),
 				new IfInstruction("if (hello == 'foo') {", function(threadState, globalState) {
-					return globalState['hello'] == 'foo';
+					return globalState['hello'] && globalState['hello'].value == 'foo';
 				}, 'if1'),
 				new Instruction("  bar"),
 				new Instruction("  zoo"),
@@ -21,7 +21,7 @@ var levels = {
 			]),
 			new Thread([
 				new Instruction("bar"),
-				new AssignInstruction("global hello = 'foo'", 'hello', 'foo'),
+				new AssignInstruction("global hello = 'foo'", 'hello', 'String', 'foo'),
 				new WinningInstruction("[OR REACH THIS TO WIN]"),
 				new Instruction("foo"),
 				new Instruction("bar"),
