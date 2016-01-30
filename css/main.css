@@ -20,6 +20,7 @@ div.clearboth {
 
 .instruction.current-instruction {
 	font-weight: bold;
+	background-color: #f3ff74;
 }
 
 .mainMenuLevelCaption {
@@ -34,7 +35,7 @@ div.clearboth {
    border: 1px solid black;
 }
 .mainMenuSolvedLevel {
-    background-color: green;
+    background-color: #95ff5a;
 }
 
 .global-state {

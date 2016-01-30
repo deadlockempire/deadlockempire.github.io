@@ -78,5 +78,18 @@ var levels = {
 				"value" : 0
 			}
 		}
-		)
+		),
+	"infiniteLevel": new Level(
+		"infiniteLevel",
+		"Infinite Level",
+		"DESC",
+		"VICTORY",
+		[
+			new Thread([
+				new WhileInstruction("true", function() { return true; }, "eternal"),
+				new FlavorInstruction("business_logic()"),
+				new EndWhileInstruction("eternal")
+			])
+		]
+	)
 };
