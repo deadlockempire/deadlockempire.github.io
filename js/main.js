@@ -9,14 +9,7 @@ var WinningInstruction = function(code) {
 	this.execute = function() { alert("you win"); };
 };
 
-var Level = function(intro, threads) {
-	this.intro = intro;
-	this.threads = threads;
-};
 
-var Thread = function(instructions) {
-	this.instructions = instructions;
-};
 
 var level = new Level(
 	"In this level, you want to finish the second thread.",
