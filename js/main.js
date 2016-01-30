@@ -356,6 +356,8 @@ $(function() {
 			for (var instructionName in thread.instructions) {
 				var instruction = thread.instructions[instructionName];
 				if (instruction instanceof  EndIfInstruction ||
+					instruction instanceof  EndIfLongInstruction ||
+					instruction instanceof  ElseInstruction ||
 					instruction instanceof EndWhileInstruction) {
 					indent--;
 				}
@@ -363,6 +365,8 @@ $(function() {
 					instruction.code = "  " + instruction.code;
 				}
 				if (instruction instanceof IfInstruction ||
+					instruction instanceof  IfLongInstruction ||
+					instruction instanceof  ElseInstruction ||
 					instruction instanceof WhileInstruction) {
 					indent++;
 				}

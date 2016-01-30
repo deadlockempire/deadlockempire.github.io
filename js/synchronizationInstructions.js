@@ -27,19 +27,29 @@ var MonitorEnterInstruction = function(monitorName) {
             }
             moveToNextInstruction(threadState);
         }
-
-        // global variables
-        // keyed by variable name
-        // value is {
-        //	'type': (typ),
-        //	'name': (jmeno),
-        //	'value': (value, JS primitive),
-        //	'lastLockedByThread': (ID of last thread that locked the
-        //		variable, or null),
-        //	'lockCount': (lock count, 0 if none)
-        // }
     }
 };
+var MonitorTryEnterExpression = function (monitorName) {
+    this.code = "Monitor.TryEnter(" + monitorName + ")";
+    this.evaluate = function(threadState, globalState) {
+        var monitor = globalState[monitorName];
+        if (monitor.lastLockedByThread != null &&
+            monitor.lastLockedByThread != threadState.id)
+        {
+            return false;
+        }
+        else {
+            monitor.lastLockedByThread = threadState.id;
+            if (monitor.lockCount >= 0) {
+                monitor.lockCount++;
+            }
+            else {
+                monitor.lockCount = 1;
+            }
+            return true;
+        }
+    }
+}
 var MonitorExitInstruction = function(monitorName) {
     this.code = "Monitor.Exit(" + monitorName + ");";
     this.tooltip = "Atomic. Releases a lock. If this thread had this locked multiple times, decrements the timer only. If this thread does not own this lock, an exception is thrown (and you win the level).";
