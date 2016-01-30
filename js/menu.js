@@ -20,21 +20,21 @@ var returnToMainMenu = function() {
 			source.append('<span class="menu-completion-icon glyphicon glyphicon-ok"></span>');
 		}
 		source.append("<div class='mainMenuLevelCaption'>" + level.name + "</div>");
-		source.append("<div class='mainMenuLevelDescription'>" + level.intro + "</div>");
+		source.append("<div class='mainMenuLevelDescription'>" + level.shortDescription + "</div>");
 		source.css({cursor: 'pointer'});
 		source.click(startLevelCreator(levelId));
 		return source;
 	};
 
+	var foundUnfinished = false;
 	for (var campaignKey in campaign) {
-		if (campaignKey == "debuggingLevels" && !debugMode) {
+		var quest = campaign[campaignKey];
+		if (quest.name == "Debugging levels" && !debugMode) {
 			continue;
 		}
-		var quest = campaign[campaignKey];
 		var heading = $('<h2 class="menu-heading"></h2>');
 		heading.text(quest.name);
 		$('#mainarea').append(heading);
-		var foundUnfinished = false;
 		for (var i = 0; i < quest.levels.length; i++) {
 			var levelId = quest.levels[i];
 			var source = makeLevelBox(levelId);

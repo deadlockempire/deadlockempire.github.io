@@ -15,7 +15,13 @@ var win = function() {
 	showMessage('Level completed!', 'The congratulatory victory message is this: "' + window.level.victoryText + '"!"');
 	localStorage.setItem('level_' + window.level.id, "solved");
 	*/
+
 	$('#win-message').html(level.victoryText);
+
+	if (findNextLevelInCampaign(window.levelName) == null) {
+		// game finished
+		$('#win-message').append("<br><br>You mastered all the lessons of Deadlock Empire. Thank you for playing!");
+	}
 };
 
 $(function() {
@@ -23,11 +29,15 @@ $(function() {
 	winScreen.css({display: 'none'});
 
 	$('#dismiss-win').click(function() {
-		$('#win-screen').fadeOut(300);
+		winScreen.fadeOut(300);
 		// TODO: disallow more interaction with the code
 	});
 
+	// TODO: what if we win the last level?
 	$('#win-next-level').click(function() {
+		var next = findNextLevelInCampaign(window.levelName);
+		startLevel(next);
+		winScreen.fadeOut(300);
 		// TODO: go to next level
 	});
 });

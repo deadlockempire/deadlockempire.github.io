@@ -1,5 +1,5 @@
-var campaign = {
-    "debuggingLevels" : {
+var campaign = [
+    {
         name : "Debugging Levels",
         levels : [
             "test",
@@ -10,7 +10,7 @@ var campaign = {
             "deadlock"
         ]
     },
-    "unsynchronized" : {
+    {
         name : "Unsynchronized Code",
         levels : [
             "1-simpletest",
@@ -20,4 +20,4 @@ var campaign = {
             "5-peterson"
         ]
     }
-};
+];
