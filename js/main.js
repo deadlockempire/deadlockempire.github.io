@@ -25,22 +25,20 @@ var AssignInstruction = function(code, variable, value) {
 var IfInstruction = function(code, test, name) {
 	this.code = code;
 	this.name = name;
-	this.execute = function(threadState, globalState) {
+	this.execute = function(threadState, globalState, threadProgram) {
 		if (test(threadState, globalState)) {
 			threadState.programCounter++;  // goto true branch
 		} else {
 			// false -> find matching Else
 			var i;
-			console.log(threadState);
-			console.log(threadState.instructions);
-			for (i = 0; i < threadState.instructions.length; i++) {
-				var instruction = threadState.instructions[i];
+			for (i = 0; i < threadProgram.length; i++) {
+				var instruction = threadProgram[i];
 				console.log(instruction);
 				if ((instruction instanceof ElseInstruction) && instruction.name == name) {
 					break;
 				}
 			}
-			console.assert(i < threadState.instructions.length);
+			console.assert(i < threadProgram.length);
 			threadState.programCounter = i;
 		}
 	};
@@ -55,15 +53,18 @@ var ElseInstruction = function(code, name) {
 var level = null;
 
 var gameState = {
+	// Unchanging between states:
+	// [threadId][instructionId] divs of instructions
 	threadInstructions: null,
+
+	// Changing between states:
 
 	// thread state:
 	// {
 	//	programCounter: (number of current instruction),
 	//	variables: {
 	//		'variableName': (value)
-	//	},
-	//	program: (instructions)
+	//	}
 	// }
 	threadState: null,
 
@@ -96,24 +97,52 @@ var updateGlobalVariables = function() {
 	area.html(text);
 };
 
+var redraw = function() {
+	updateProgramCounters();
+	updateGlobalVariables();
+	undoButton.attr('disabled', undoHistory.length == 0);
+};
+
 var stepThread = function(thread) {
-	var maxInstructions = level.threads[thread].instructions.length;
+	var program = level.threads[thread].instructions;
+	var maxInstructions = program.length;
 	var threadState = gameState.threadState[thread];
 	var pc = threadState.programCounter;
 	if (pc < maxInstructions) {
-		level.threads[thread].instructions[pc].execute(threadState, gameState.globalState);
-		updateProgramCounters();
-		updateGlobalVariables();
+		saveForUndo();
+		program[pc].execute(threadState, gameState.globalState, program);
+		redraw();
 	} else {
 		alert("Thread " + thread + " already finished.");
 	}
 };
+
+var undoHistory = [];
+
+var saveForUndo = function() {
+	var state = {
+		threadState: gameState.threadState,
+		globalState: gameState.globalState
+	};
+	undoHistory.push(JSON.stringify(state));
+};
+
+var undo = function() {
+	var last = JSON.parse(undoHistory.pop());
+	console.log(last);
+	gameState.threadState = last.threadState;
+	gameState.globalState = last.globalState;
+	redraw();
+};
+
+var undoButton;
 
 var startLevel = function(level) {
 	var mainArea = $('#mainarea');
 	mainArea.html("");
 	window.level = level;
 	var sourcesSection = $('<div class="sources"></div>');
+
 	var threadCount = level.threads.length;
 	var width = 100.0 / threadCount;
 	var threadInstructions = [];
@@ -143,24 +172,27 @@ var startLevel = function(level) {
 	}
 
 	mainArea.append('<div class="global-state"></div>');
+
+	undoButton = $('<button>Undo</button>');
+	undoButton.click(undo);
+	undoButton.attr('disabled', true);
+	mainArea.append(undoButton);
+
 	mainArea.append('<div class="clearboth"></div>');
 	mainArea.append(sourcesSection);
 
-	var threadStates = [];
+	gameState.threadState = [];
 	for (var i = 0; i < threadCount; i++) {
-		threadStates[i] = {
+		gameState.threadState[i] = {
 			programCounter: 0,
 			variables: {},
-			instructions: level.threads[i].instructions
 		};
 	}
-	gameState.threadState = threadStates;
 	gameState.threadInstructions = threadInstructions;
 	gameState.globalState = {};
 
-	updateProgramCounters();
-	updateGlobalVariables();
-}
+	redraw();
+};
 
 var startSelectedLevel = function() {
 	level = levels[$('#levelSelect').val()];
@@ -168,15 +200,15 @@ var startSelectedLevel = function() {
 };
 
 var clearProgressAction = function () {
-    localStorage.clear();
+	localStorage.clear();
 };
 
 $(function() {
 	$('button#start').click(startSelectedLevel);
-    $('button#goToMain').click(returnToMainMenu);
-    $('#clearProgress').click(clearProgressAction);
+	$('button#goToMain').click(returnToMainMenu);
+	$('#clearProgress').click(clearProgressAction);
 });
 
 $(function() {
-    returnToMainMenu();
+	returnToMainMenu();
 });
