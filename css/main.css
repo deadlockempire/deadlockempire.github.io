@@ -158,3 +158,9 @@ h1#game {
 	font-size: 3.5em;
 	font-family: 'Amatic SC', cursive;
 }
+footer {
+	border-top: 1px dotted #eee;
+	margin-top: 1em;
+	padding-top: 1em;
+	color: #999;
+}
