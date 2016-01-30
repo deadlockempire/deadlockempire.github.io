@@ -163,25 +163,34 @@ var startLevel = function(levelName) {
 	title.text(level.name);
 	mainArea.append(title);
 
+	var globalButtons = $('<div class="global-buttons"></div>');
+	mainArea.append(globalButtons);
+
 	var introduction = $('<p></p>');
 	introduction.html(level.intro);
 	mainArea.append(introduction);
 
-	var globalButtons = $('<div class="global-buttons"></div>');
-	mainArea.append(globalButtons);
-
-	undoButton = $('<button class="btn btn-default"><span class="glyphicon glyphicon-step-backward"></span>&nbsp;Undo</button>');
+	undoButton = $('<button class="btn btn-info" style="border-top-right-radius: 0; border-bottom-right-radius: 0;"><span class="glyphicon glyphicon-step-backward"></span>&nbsp;Undo</button>');
 	undoButton.click(undo);
 	undoButton.attr('disabled', true);
 	globalButtons.append(undoButton);
 
-	var resetButton = $('<button class="btn btn-default"><span class="glyphicon glyphicon-repeat"></span>&nbsp;Reset level</button>');
+	var resetButton = $('<button class="btn btn-warning" style="border-top-left-radius: 0; border-bottom-left-radius: 0;"><span class="glyphicon glyphicon-repeat"></span>&nbsp;Reset level</button>');
 	resetButton.click(function() {
 		if (confirm('Really reset the level?')) {
 			resetLevel();
 		}
 	});
 	globalButtons.append(resetButton);
+
+	globalButtons.append("&nbsp;&nbsp;");
+	var mainMenuButton = $('<button class="btn btn-danger"><span class="glyphicon glyphicon-menu-hamburger"></span>&nbsp;Return to main menu</button>');
+	mainMenuButton.click(function() {
+		if (confirm('Really give up?')) {
+			returnToMainMenu();
+		}
+	});
+	globalButtons.append(mainMenuButton);
 
 	var sourcesSection = $('<div class="sources"></div>');
 

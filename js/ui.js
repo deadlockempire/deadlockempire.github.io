@@ -67,7 +67,12 @@ var updateGlobalVariables = function() {
 var redraw = function() {
 	updateProgramCounters();
 	updateGlobalVariables();
-	undoButton.attr('disabled', undoHistory.length == 0);
+
+	var undoEnabled = (undoHistory.length > 0);
+	undoButton.attr('disabled', !undoEnabled);
+	undoButton.removeClass('btn-info');
+	undoButton.removeClass('btn-default');
+	undoButton.addClass(undoEnabled ? 'btn-info' : 'btn-default');
 
 	for (var i = 0; i < getThreadCount(); i++) {
 		var program = level.threads[i].instructions;
