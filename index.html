@@ -5,18 +5,27 @@
 		<script src="js/jquery.js"></script>
 		<script src="js/main.js"></script>
 		<script src="js/levels.js"></script>
+		<script src="js/menu.js"></script>
 	</head>
 	<body>
 		<div style="border: 1px solid black; width: 100%; margin: 2px; padding: 2px;">
-			Select level:
+			This is the toolbar. | Select level:
 			<select id="levelSelect" >
 				<option value="test">Test</option>
 				<option value="tutorial">Tutorial 1</option>
 				<option value="tutorial2">Tutorial 2</option>
 			</select>
 			<button id="start">Start</button>
+			|
+			<button id="goToMain">Go To Main Menu</button>
+			|
+			<button id="clearProgress">Clear Saved Progress</button>
 		</div>
-
+		<div id="alert" style="display: none; border: 1px solid black;">
+			<button id="hidealert">[Hide]</button>
+			<span id="alertCaption" style="font-weight: bold;">Title</span><br>
+			<span id="alertMessage">This is the alert message.</span>
+		</div>
 		<div id="mainarea">
 		</div>
 	</body>

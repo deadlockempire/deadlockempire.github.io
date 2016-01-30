@@ -160,6 +160,16 @@ var startLevel = function() {
 	updateGlobalVariables();
 };
 
+var clearProgressAction = function () {
+    localStorage.clear();
+};
+
 $(function() {
 	$('button#start').click(startLevel);
+    $('button#goToMain').click(returnToMainMenu);
+    $('#clearProgress').click(clearProgressAction);
+});
+
+$(function() {
+    returnToMainMenu();
 });
