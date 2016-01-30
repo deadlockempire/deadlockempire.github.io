@@ -39,6 +39,9 @@ var win = function() {
 };
 
 var isThreadBlocked = function(threadId) {
+	if (isThreadFinished(threadId)) {
+		return false;
+	}
 	var program = level.threads[threadId].instructions;
 	var threadState = gameState.threadState[threadId];
 	var currentInstruction = program[threadState.programCounter[0]];
@@ -277,7 +280,8 @@ var startLevel = function(levelName) {
 	}
 	gameState.globalState = {};
 	if (level.variables) {
-		gameState.globalState = level.variables;
+		// HAX
+		gameState.globalState = JSON.parse(JSON.stringify(level.variables));
 	}
 
 	redraw();
@@ -288,7 +292,7 @@ var startSelectedLevel = function() {
 };
 
 var clearProgressAction = function () {
-	bootbox.confirm("Are you sure you want to clear all your progress?"), function(confirmed) {
+	bootbox.confirm("Are you sure you want to clear all your progress?", function(confirmed) {
 		if (confirmed) {
 			localStorage.clear();
 			returnToMainMenu();

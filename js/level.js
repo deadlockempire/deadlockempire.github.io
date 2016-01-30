@@ -1,5 +1,5 @@
 var Level = function(id, name, intro, victoryText, threads, variables) {
-    this.id = id;
+	this.id = id;
 	this.intro = intro;
 	this.name = name;
 	this.victoryText = victoryText;
