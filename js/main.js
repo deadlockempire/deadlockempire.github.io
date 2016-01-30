@@ -44,6 +44,9 @@ var assign = function(variable, type, value) {
 var checkForVictoryConditions = function() {
     var howManyCriticalSections = 0;
     for (var threadId in level.threads) {
+	    if (isThreadFinished(threadId)) {
+		    continue;
+	    }
         var thread = level.threads[threadId];
         var instructions = thread.instructions;
         var threadState = gameState.threadState[threadId];
@@ -59,12 +62,19 @@ var checkForVictoryConditions = function() {
     }
 };
 
-var stepThread = function(thread) {
+var isThreadFinished = function(thread) {
 	var program = level.threads[thread].instructions;
 	var maxInstructions = program.length;
+        var threadState = gameState.threadState[thread];
+	var pc = threadState.programCounter;
+	return pc >= maxInstructions;
+};
+
+var stepThread = function(thread) {
+	var program = level.threads[thread].instructions;
 	var threadState = gameState.threadState[thread];
 	var pc = threadState.programCounter;
-	if (pc < maxInstructions) {
+	if (!isThreadFinished(thread)) {
 		saveForUndo();
 		program[pc].execute(threadState, gameState.globalState, program);
 		checkForVictoryConditions();
@@ -72,6 +82,10 @@ var stepThread = function(thread) {
 	} else {
 		alert("Thread " + thread + " already finished.");
 	}
+};
+
+var getThreadCount = function() {
+	return level.threads.length;
 };
 
 var undoHistory = [];
@@ -97,6 +111,7 @@ var resetLevel = function() {
 };
 
 var undoButton;
+var threadStepButtons;
 
 var startLevel = function(levelName) {
 	level = levels[levelName];
@@ -135,15 +150,19 @@ var startLevel = function(levelName) {
 	var threadCount = level.threads.length;
 	var width = 100.0 / threadCount;
 	var threadInstructions = [];
+
+	threadStepButtons = [];
 	for (var i = 0; i < threadCount; i++) {
 		var thread = level.threads[i];
 
 		var threadArea = $('<div class="thread"></div>');
+
 		var stepButton = $('<button class="btn btn-default"><span class="glyphicon glyphicon-play"></span>&nbsp;Step</button>');
 		stepButton.data('thread', i);
 		stepButton.click(function() {
 			stepThread($(this).data('thread'));
 		});
+		threadStepButtons[i] = stepButton;
 		threadArea.append(stepButton);
 
 		// Possible extra actions go here.
