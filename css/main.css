@@ -40,6 +40,8 @@ div.clearboth {
 
 .global-state {
 	font-family: monospace;
+	margin-top: 1em;
+	margin-bottom: 1em;
 }
 
 .global-state .type {

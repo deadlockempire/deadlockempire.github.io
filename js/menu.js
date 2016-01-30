@@ -6,6 +6,7 @@ function startLevelCreator(level) {
 
 var returnToMainMenu = function() {
     $("#mainarea").html("");
+	$("#alert").hide();
     for (var levelId in levels) {
 	    // TODO: 'clear saved progress' button
 	    var level = levels[levelId];
