@@ -91,5 +91,24 @@ var levels = {
 				new EndWhileInstruction("eternal")
 			])
 		]
+	),
+	"deadlock": new Level(
+		"deadlock",
+		"Simple Deadlock",
+		"You must cause a deadlock.",
+		"Yay. A deadlock!",
+		[
+			new Thread([
+				new MonitorEnterInstruction("mutex"),
+				new CriticalSectionInstruction()
+			])
+		],
+		{
+			"mutex" : {
+				name: "mutex",
+				type: "System.Object",
+				value: "unimportant-value"
+			}
+		}
 	)
 };

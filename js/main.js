@@ -213,6 +213,7 @@ var startLevel = function(levelName) {
 	for (var i = 0; i < threadCount; i++) {
 		gameState.threadState[i] = {
 			programCounter: [0, 0],
+			id: i,
 			expanded: false
 		};
 	}

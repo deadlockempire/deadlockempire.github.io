@@ -25,28 +25,6 @@ var Instruction = function(code) {
 	};
 };
 
-var SemaphoreWaitInstruction = function(semaphoreName) {
-	this.code = semaphoreName + ".Wait();";
-	this.tooltip = "Atomic. Attempts to decrease the semaphore counter by one. If the semaphore is already at 0, this call blocks until another thread increases the counter by calling Release().";
-	this.execute = function(threadState, globalState) {
-		if (globalState[semaphoreName].value > 0) {
-			globalState[semaphoreName].value --;
-			moveToNextInstruction(threadState);
-		}
-		else {
-			showMessage("Blocked", "This thread is blocked. The semaphore counter is zero.");
-		}
-	}
-};
-
-var SemaphoreReleaseInstruction = function(semaphoreName) {
-	this.code = semaphoreName + ".Release();";
-	this.tooltip = "Atomic. Increments the semaphore counter by one.";
-	this.execute = function(threadState, globalState) {
-		globalState[semaphoreName].value ++;
-		moveToNextInstruction(threadState);
-	}
-};
 
 var FlavorInstruction = function(flavorText) {
 	this.code = "<i>" + flavorText + "</i>;";
