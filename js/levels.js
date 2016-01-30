@@ -150,16 +150,23 @@ var levels = {
 		"Learn to step through a program in the Thread Safety Breaker in this tutorial level. Simply keep stepping forwards until you reach the failure statement to win.",
 		"The failure statement is like an 'assert false' statement. It represents a point in the program that should never be reached or the program was incorrectly programmed. In this game, reaching a failure statement always results in immediate victory.",
 		[
-			new Thread(
-				new AssignmentInstruction("a", new LiteralExpression(1)),
-				new AssignmentInstruction("a",
+			new Thread([
+				createAssignment("a", new LiteralExpression(1)),
+				createAssignment("a",
 					new AdditionExpression(new VariableExpression("a"),
 					new LiteralExpression(2))),
 				new IfInstruction("FDSFSD", function() { return true; }, "if"),
 				new FailureInstruction(),
 				new ElseInstruction("}", "if")
-			)
-		]
+			])
+		],
+		{
+			"a" : {
+				name : "a",
+				type : "System.Int32",
+				value : 0
+			}
+		}
 
 	)
 };
