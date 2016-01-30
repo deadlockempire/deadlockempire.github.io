@@ -39,14 +39,21 @@ var updateGlobalVariables = function() {
 		var representation = $('<div class="variable"></div>');
 		representation.append($('<span class="type"></span>').text(variable.type));
 		representation.append($('<span class="name"></span>').text(variable.name));
-		representation.append("=");
+		if (variable.value == "unimportant") {
 
-		var valueRepr;
-		if (variable.type == "String") {
-			valueRepr = '"' + variable.value + '"';
+		}
+		else {
+			representation.append("=");
+
+			var valueRepr;
+			if (variable.type == "String") {
+				valueRepr = '"' + variable.value + '"';
+			}
+
+			representation.append($('<span class="value"></span>').text(valueRepr));
 		}
 
-		representation.append($('<span class="value"></span>').text(valueRepr));
+		representation.append(";");
 		area.append(representation);
 	}
 };

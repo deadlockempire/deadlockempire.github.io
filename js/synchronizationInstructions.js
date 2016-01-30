@@ -3,7 +3,7 @@ var MonitorEnterInstruction = function(monitorName) {
     this.tooltip = "Atomic. Acquires a lock. If this thread already owns this lock, the lock counter is incremented. If another thread currently owns this lock, this call blocks until the lock is released.";
     this.isBlocking = function(threadState, globalState) {
         var monitor = globalState[monitorName];
-        if (monitor.lastLockedByThread == null &&
+        if (monitor.lastLockedByThread != null &&
             monitor.lastLockedByThread != threadState.id) {
             return true;
         } else {
@@ -12,7 +12,7 @@ var MonitorEnterInstruction = function(monitorName) {
     };
     this.execute = function(threadState, globalState) {
         var monitor = globalState[monitorName];
-        if (monitor.lastLockedByThread == null &&
+        if (monitor.lastLockedByThread != null &&
             monitor.lastLockedByThread != threadState.id)
         {
             showMessage("Blocked", "This thread is blocked. Another thread owns the lock.");
@@ -20,8 +20,8 @@ var MonitorEnterInstruction = function(monitorName) {
         else {
             monitor.lastLockedByThread = threadState.id;
             monitor.lockCount++;
+            moveToNextInstruction(threadState);
         }
-        moveToNextInstruction(threadState);
 
         // global variables
         // keyed by variable name

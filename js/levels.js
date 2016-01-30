@@ -131,12 +131,16 @@ var levels = {
 			"mutex" : {
 				name: "mutex",
 				type: "System.Object",
-				value: "unimportant-value"
+				value: "unimportant",
+				"lockCount": 0,
+				"lastLockedByThread": null,
 			},
 			"mutex2" : {
 				name: "mutex2",
 				type: "System.Object",
-				value: "unimportant-value"
+				value: "unimportant",
+				"lastLockedByThread": null,
+				"lockCount": 0
 			}
 		}
 	)
