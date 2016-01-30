@@ -6,6 +6,7 @@ var levels = {
 				new Instruction("Hello World!"),
 			]),
 			new Thread([
+				new AssignInstruction("global hello = 'world'", 'hello', 'world'),
 				new Instruction("foo"),
 				new Instruction("bar"),
 				new Instruction("zoo"),
@@ -13,6 +14,7 @@ var levels = {
 			]),
 			new Thread([
 				new Instruction("bar"),
+				new AssignInstruction("global hello = 'foo'", 'hello', 'foo'),
 				new WinningInstruction("[OR REACH THIS TO WIN]"),
 				new Instruction("foo"),
 				new Instruction("bar"),

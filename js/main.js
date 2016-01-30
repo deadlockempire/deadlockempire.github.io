@@ -1,35 +1,33 @@
 // constructor
 var Instruction = function(code) {
 	this.code = code;
-	this.execute = function() {};
+	this.execute = function(threadState, globalState) {
+		threadState.programCounter++;
+	};
 };
 
 var WinningInstruction = function(code) {
 	this.code = code;
-	this.execute = function() { alert("you win"); };
+	this.execute = function(threadState, globalState) {
+		alert("you win");
+	};
+};
+
+var AssignInstruction = function(code, variable, value) {
+	this.code = code;
+	this.variable = variable;
+	this.execute = function(threadState, globalState) {
+		globalState[variable] = value;
+		threadState.programCounter++;
+	};
+};
+
+var Thread = function(instructions) {
+	this.instructions = instructions;
 };
 
 
-
-var level = new Level(
-	"In this level, you want to finish the second thread.",
-	[
-		new Thread([
-			new Instruction("Hello World!"),
-		]),
-		new Thread([
-			new Instruction("foo"),
-			new Instruction("bar"),
-			new Instruction("zoo"),
-			new WinningInstruction("[REACH THIS TO WIN]")
-		]),
-		new Thread([
-			new Instruction("bar"),
-			new WinningInstruction("[OR REACH THIS TO WIN]"),
-			new Instruction("bar"),
-		])
-	]
-);
+var level = null;
 
 var gameState = {
 	threadInstructions: null,
@@ -41,7 +39,10 @@ var gameState = {
 	//		'variableName': (value)
 	//	}
 	// }
-	threadState: null
+	threadState: null,
+
+	// global variables
+	globalState: null
 };
 
 var updateProgramCounters = function() {
@@ -60,14 +61,23 @@ var updateProgramCounters = function() {
 	}
 };
 
+var updateGlobalVariables = function() {
+	var area = $('.global-state');
+	var text = "";
+	for (var key in gameState.globalState) {
+		text += key + "=" + gameState.globalState[key] + "; ";
+	}
+	area.html(text);
+};
+
 var stepThread = function(thread) {
 	var maxInstructions = level.threads[thread].instructions.length;
 	var threadState = gameState.threadState[thread];
 	var pc = threadState.programCounter;
 	if (pc < maxInstructions) {
-		level.threads[thread].instructions[pc].execute();
-		threadState.programCounter++;
+		level.threads[thread].instructions[pc].execute(threadState, gameState.globalState);
 		updateProgramCounters();
+		updateGlobalVariables();
 	} else {
 		alert("Thread " + thread + " already finished.");
 	}
@@ -108,6 +118,7 @@ var startLevel = function() {
 		sourcesSection.append(threadArea);
 	}
 
+	mainArea.append('<div class="global-state"></div>');
 	mainArea.append('<div class="clearboth"></div>');
 	mainArea.append(sourcesSection);
 
@@ -120,8 +131,10 @@ var startLevel = function() {
 	}
 	gameState.threadState = threadStates;
 	gameState.threadInstructions = threadInstructions;
+	gameState.globalState = {};
 
 	updateProgramCounters();
+	updateGlobalVariables();
 };
 
 var clearProgressAction = function () {
