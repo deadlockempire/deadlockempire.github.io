@@ -1,3 +1,30 @@
+body {
+}
+
+#win-screen {
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: rgba(255, 255, 255, 1.0);
+	z-index: 5;
+	width: 100%;
+	height: 100%;
+}
+
+#win-screen h3 {
+	font-size: 5em;
+}
+
+#win-screen .container {
+	margin-top: 25%;
+}
+
+#win-screen .icon {
+	font-size: 1.3em;
+	color: #0c0;
+	margin-right: 2em;
+}
+
 #mainarea, .sources, .thread {
 /*	border: 1px solid black;*/
 }
