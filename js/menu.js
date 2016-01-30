@@ -9,8 +9,16 @@ var wasLevelCompleted = function(levelId) {
 }
 
 var returnToMainMenu = function() {
-	$("#mainarea").html("");
+	var mainArea = $('#mainarea');
+	mainArea.html("");
 	$("#alert").hide();
+
+	var logo = $("<img src='img/logo.png' id='logo'>");
+	var heading = $("<h1 id='game'>The Deadlock Empire</h1>");
+
+	mainArea.append(logo);
+	mainArea.append(heading);
+	mainArea.append($('<div class="clearboth"></div>'));
 
 	var makeLevelBox = function(levelId) {
 		var level = levels[levelId];
@@ -38,7 +46,7 @@ var returnToMainMenu = function() {
 		}
 		var heading = $('<h2 class="menu-heading"></h2>');
 		heading.text(quest.name);
-		$('#mainarea').append(heading);
+		mainArea.append(heading);
 		for (var i = 0; i < quest.levels.length; i++) {
 			var levelId = quest.levels[i];
 			var source = makeLevelBox(levelId);
@@ -47,7 +55,7 @@ var returnToMainMenu = function() {
 				foundUnfinished = true;
 				source.prepend('<span class="menu-next-to-play-icon glyphicon glyphicon-tower"></span>');
 			}
-			$("#mainarea").append(source);
+			mainArea.append(source);
 		}
 	}
 
