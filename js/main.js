@@ -33,27 +33,60 @@ var assign = function(variable, type, value) {
 	};
 };
 
+var win = function() {
+	showMessage('Level completed!', 'The congratulatory victory message is this: "' + window.level.victoryText + '"!"');
+	localStorage.setItem('level_' + window.level.id, "solved");
+};
+
+var isThreadBlocked = function(threadId) {
+	var program = level.threads[threadId].instructions;
+	var threadState = gameState.threadState[threadId];
+	var currentInstruction = program[threadState.programCounter[0]];
+	if (currentInstruction.isBlocking && currentInstruction.isBlocking(threadState, gameState.globalState)) {
+		return true;
+	}
+	if (threadState.expanded) {
+		var currentMinor = currentInstruction.minorInstructions[threadState.programCounter[1]];
+		if (currentMinor.isBlocking && currentMinor.isBlocking(threadState, gameState.globalState)) {
+			return true;
+		}
+	}
+	return false;
+};
+
+var areAllThreadsBlocked = function() {
+	for (var threadId in level.threads) {
+		if (!isThreadBlocked(threadId)) {
+			return false;
+		}
+	}
+	return true;
+};
+
 var checkForVictoryConditions = function() {
-    var howManyCriticalSections = 0;
-    for (var threadId in level.threads) {
-	    if (isThreadFinished(threadId)) {
-		    continue;
-	    }
-        var thread = level.threads[threadId];
-        var instructions = thread.instructions;
-        var threadState = gameState.threadState[threadId];
-        var programCounter = threadState.programCounter;
-        var currentInstruction = instructions[programCounter[0]];
-        if (currentInstruction.isCriticalSection) {
-            howManyCriticalSections++;
-        }
-    }
-    if (howManyCriticalSections >= 2) {
-        showMessage('Level completed!', 'The congratulatory victory message is this: "' + window.level.victoryText + '"!"');
-		localStorage.setItem('level_' + window.level.id, "solved");
-    }
+	var howManyCriticalSections = 0;
+	for (var threadId in level.threads) {
+		if (isThreadFinished(threadId)) {
+			continue;
+		}
+		var thread = level.threads[threadId];
+		var instructions = thread.instructions;
+		var threadState = gameState.threadState[threadId];
+		var programCounter = threadState.programCounter;
+		var currentInstruction = instructions[programCounter[0]];
+		if (currentInstruction.isCriticalSection) {
+			howManyCriticalSections++;
+		}
+	}
+	if (howManyCriticalSections >= 2) {
+		win();
+		return;
+	}
 
-
+	if (areAllThreadsBlocked()) {
+		win();
+		return;
+	}
 };
 
 var isThreadFinished = function(thread) {
