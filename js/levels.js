@@ -52,5 +52,31 @@ var levels = {
 			new CriticalSectionInstruction()
 			])
 
-		])
+		]),
+	"semaphoreTest": new Level(
+		"semaphoreTest",
+		"Semaphore Test",
+		"DESC",
+		"VCIT",
+		[
+			new Thread([
+				new SemaphoreReleaseInstruction("ss"),
+				new SemaphoreReleaseInstruction("ss"),
+				new SemaphoreWaitInstruction("ss"),
+				new CriticalSectionInstruction(),
+				new SemaphoreReleaseInstruction("ss")
+			]), new Thread([
+				new SemaphoreWaitInstruction("ss"),
+				new CriticalSectionInstruction(),
+				new SemaphoreReleaseInstruction("ss")
+			])
+		],
+		{
+			"ss": {
+				"name" : "ss",
+				"type" : "System.Threading.SemaphoreSlim",
+				"value" : 0
+			}
+		}
+		)
 };
