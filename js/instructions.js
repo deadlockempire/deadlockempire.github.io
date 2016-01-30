@@ -117,6 +117,7 @@ var AtomicAssignmentToTemp = function (expression) {
 	this.execute = function(threadState, globalState) {
 		var value = expression.evaluate(threadState, globalState);
 		threadState.temporaryVariableValue = value;
+		moveToNextInstruction(threadState);
 	};
 };
 var AtomicAssignmentFromTemp = function (name) {
@@ -124,6 +125,7 @@ var AtomicAssignmentFromTemp = function (name) {
 	this.tooltip = "Moves the value from the thread-local temporary variable into the specified global variable.";
 	this.execute = function(threadState, globalState) {
 		globalState[name].value = threadState.temporaryVariableValue;
+		moveToNextInstruction(threadState);
 	};
 };
 
