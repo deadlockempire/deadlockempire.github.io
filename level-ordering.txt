@@ -1,0 +1,29 @@
+IMPLEMENTED:
+
+Debugging Levels (not meant for players)
+ test
+ tutorial
+ criticalSectionTest
+ semaphoreTest
+ infiniteLevel
+ deadlock
+Unsynchronized Code
+ 1-simpletest
+ 2-flags
+ 3-simpleCounter
+ 4-confusedCounter
+ 5-peterson
+
+NOT IMPLEMENTED:
+
+Semaphores
+ S1-simple
+ S2-producerConsumer
+
+Locks
+ L1-lock
+ L2-deadlock
+ L3-complexerDeadlock
+ L4-complexerDeadlock2
+
+Thread-Safe Containers
