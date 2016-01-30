@@ -70,8 +70,6 @@ var levels = {
 		"VCIT",
 		[
 			new Thread([
-				new SemaphoreReleaseInstruction("ss"),
-				new SemaphoreReleaseInstruction("ss"),
 				new SemaphoreWaitInstruction("ss"),
 				new CriticalSectionInstruction(),
 				new SemaphoreReleaseInstruction("ss")
@@ -142,7 +140,7 @@ var levels = {
 	),
 	"1-simpletest": new Level(
 		"1-simpletest",
-		"Simple Test",
+		"(No Synchronization) Simple Test",
 		"Learn to step through a program in the Thread Safety Breaker in this tutorial level. Simply keep stepping forwards until you reach the failure statement to win.",
 		"The failure statement is like an 'assert false' statement. It represents a point in the program that should never be reached or the program was incorrectly programmed. In this game, reaching a failure statement always results in immediate victory.",
 		[
@@ -164,11 +162,56 @@ var levels = {
 			}
 		}
 	),
+	"2-flags": new Level(
+		"2-flags",
+		"(No Synchronization) Boolean Flags Are Enough For Everyone",
+		"Who needs locks when you can get by with using just variables? ...or can you?",
+		"To break synchronization, stop at unexpected times - here, for example, you had to stop immediately after the end of the loop. The most difficult parallelism bugs come from situations that rarely really happen because they require some strange timing, as in here.",
+		[
+			new Thread([
+				new WhileInstruction(new LiteralExpression(true), "eternal"),
+
+				new WhileInstruction(new InequalityExpression(new VariableExpression("flag"), new LiteralExpression(false)), "while"),
+				new EmptyStatement(),
+				new EndWhileInstruction("while"),
+
+				createAssignment("flag", new LiteralExpression(true)),
+
+				new CriticalSectionInstruction(),
+
+				createAssignment("flag", new LiteralExpression(false)),
+
+				new EndWhileInstruction("eternal")
+			]),
+			new Thread([
+				new WhileInstruction(new LiteralExpression(true), "eternal"),
+
+				new WhileInstruction(new InequalityExpression(new VariableExpression("flag"), new LiteralExpression(false)), "while"),
+				new EmptyStatement(),
+				new EndWhileInstruction("while"),
+
+				createAssignment("flag", new LiteralExpression(true)),
+
+				new CriticalSectionInstruction(),
+
+				createAssignment("flag", new LiteralExpression(false)),
+
+				new EndWhileInstruction("eternal")
+			])
+		],
+		{
+			"flag" : {
+				name : "flag",
+				type : "System.Boolean",
+				value : false
+			}
+		}
+	),
 	"3-simpleCounter" : new Level(
 		"3-simpleCounter",
-		"Simple Counter",
+		"(No Synchronization) Simple Counter",
 		"Here also you must make both threads enter the critical section. This should not be hard.",
-		"As you have seen, once you pass a test, such as an integer comparison, you don't care about what other threads do to the operands - you have already passed the test and may continue to the critical section. To make this work, you would need locks.",
+		"As you have seen previously, once you pass a test, such as an integer comparison, you don't care about what other threads do to the operands - you have already passed the test and may continue to the critical section. To make this work, you would need locks.",
 		[
 			new Thread([
 				new WhileInstruction(new LiteralExpression(true), "while"),						createIncrement("counter"),
@@ -195,7 +238,7 @@ var levels = {
 	),
 	"4-confusedCounter" : new Level(
 		"4-confusedCounter",
-		"Confused Counter",
+		"(No Synchronization) Confused Counter",
 		"Could it be that some instructions are hidden from sight?",
 		"Most instructions are <i>not</i> atomic. That means that context may switch during the instruction's execution. For assignments, for example, it means that the expression may be read into registers of a thread, but then context may switch and when the thread receives priority again, it won't read the expression again, it will simply write the register into the left-hand variable.",
 		[
@@ -233,5 +276,153 @@ var levels = {
 			}
 		}
 	),
+	"5-peterson": new Level(
+		"5-peterson",
+		"(No Synchronization) Three-way Peterson Algorithm",
+		"The Peterson Algorithm is the best known way for 2 threads to synchronize without the use of any synchronization primitives except for atomic value read and atomic value write. However, does a straightforward generalization for multiple threads work?",
+		"As you saw, it does not. However, there is still a way to do mutual exclusion for three threads with only atomic value read and atomic value write. This method is also called Peterson's Algorithm, but it is not used in practice because solutions using more advanced atomic operations are faster and even methods using locks are more efficient.",
+		[/* Thread1{
+	 while (true){
+	 C1 = true
+	 turn = 2
+	 while ((C2 == true or C3 == true) and (turn == 2 or turn == 3)){
+	 //spin lock
+	 }
+	 //critical section
+	 C1 = false
+	 }
+	 }*/
+			new Thread(
+				new WhileInstruction(new LiteralExpression(true), "eternal"),
+				createAssignment("flag1", new LiteralExpression(true)),
+				createAssignment("turn", new LiteralExpression(2)),
+				new WhileInstruction(new AndExpression(
+					new OrExpression(
+						new VariableExpression("flag2"),
+						new VariableExpression("flag3")
+					),
+					new OrExpression(
+						new EqualityExpression(new VariableExpression("turn"), new LiteralExpression(2)),
+						new EqualityExpression(new VariableExpression("turn"), new LiteralExpression(3))
+					)
+				), "wait"),
+				new EmptyStatement(),
+				new EndWhileInstruction("wait"),
+				new CriticalSectionInstruction(),
+				createAssignment("flag1", new LiteralExpression(false)),
+				new EndWhileInstruction("eternal")
+			),
+
+			new Thread(
+				new WhileInstruction(new LiteralExpression(true), "eternal"),
+				createAssignment("flag2", new LiteralExpression(true)),
+				createAssignment("turn", new LiteralExpression(3)),
+				new WhileInstruction(new AndExpression(
+					new OrExpression(
+						new VariableExpression("flag1"),
+						new VariableExpression("flag3")
+					),
+					new OrExpression(
+						new EqualityExpression(new VariableExpression("turn"), new LiteralExpression(1)),
+						new EqualityExpression(new VariableExpression("turn"), new LiteralExpression(3))
+					)
+				), "wait"),
+				new EmptyStatement(),
+				new EndWhileInstruction("wait"),
+				new CriticalSectionInstruction(),
+				createAssignment("flag2", new LiteralExpression(false)),
+				new EndWhileInstruction("eternal")
+			),
+
+			new Thread(
+				new WhileInstruction(new LiteralExpression(true), "eternal"),
+				createAssignment("flag3", new LiteralExpression(true)),
+				createAssignment("turn", new LiteralExpression(1)),
+				new WhileInstruction(new AndExpression(
+					new OrExpression(
+						new VariableExpression("flag2"),
+						new VariableExpression("flag1")
+					),
+					new OrExpression(
+						new EqualityExpression(new VariableExpression("turn"), new LiteralExpression(2)),
+						new EqualityExpression(new VariableExpression("turn"), new LiteralExpression(1))
+					)
+				), "wait"),
+				new EmptyStatement(),
+				new EndWhileInstruction("wait"),
+				new CriticalSectionInstruction(),
+				createAssignment("flag3", new LiteralExpression(false)),
+				new EndWhileInstruction("eternal")
+			)
+
+		],
+		{
+			"flag1" : {
+				name : "flag1",
+				type : "System.Boolean",
+				value : false
+			},
+			"flag2" : {
+				name : "flag2",
+				type : "System.Boolean",
+				value : false
+			},
+			"flag3" : {
+				name : "flag3",
+				type : "System.Boolean",
+				value : false
+			},
+			turn : {
+				name : "turn",
+				type : "System.Int32",
+				value : 2
+			}
+		}
+
+
+	)
+
+		/*
+		 C1 = false
+		 C2 = false
+		 C3 = false
+		 turn = 2
+
+		 Thread1{
+		 while (true){
+		 C1 = true
+		 turn = 2
+		 while ((C2 == true or C3 == true) and (turn == 2 or turn == 3)){
+		 //spin lock
+		 }
+		 //critical section
+		 C1 = false
+		 }
+		 }
+
+		 Thread2{
+		 while (true){
+		 C2 = true
+		 turn = 3
+		 while ((C1 == true or C3 == true) and (turn == 1 or turn == 3)){
+		 //spin lock
+		 }
+		 //critical section
+		 C2 = false
+		 }
+		 }
+
+		 Thread3{
+		 while (true){
+		 C3 = true
+		 turn = 1
+		 while ((C1 == true or C2 == true) and (turn == 1 or turn == 2)){
+		 //spin lock
+		 }
+		 //critical section
+		 C3 = false
+		 }
+		 }
+		 */
 
 };
