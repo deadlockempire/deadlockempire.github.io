@@ -20,7 +20,7 @@ var returnToMainMenu = function() {
 			source.append('<span class="menu-completion-icon glyphicon glyphicon-ok"></span>');
 		}
 		source.append("<div class='mainMenuLevelCaption'>" + level.name + "</div>");
-		source.append("<div class='mainMenuLevelDescription'>" + level.intro + "</div>");
+		source.append("<div class='mainMenuLevelDescription'>" + level.shortDescription + "</div>");
 		source.css({cursor: 'pointer'});
 		source.click(startLevelCreator(levelId));
 		return source;

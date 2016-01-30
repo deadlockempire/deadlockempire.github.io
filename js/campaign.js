@@ -24,7 +24,8 @@ var campaign = {
         name : "Locks",
         levels : [
             "L1-lock",
-            "L2-deadlock"
+            "L2-deadlock",
+            "L3-complexer"
         ]
     },
     "story": {

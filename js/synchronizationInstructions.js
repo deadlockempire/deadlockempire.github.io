@@ -19,7 +19,12 @@ var MonitorEnterInstruction = function(monitorName) {
         }
         else {
             monitor.lastLockedByThread = threadState.id;
-            monitor.lockCount++;
+            if (monitor.lockCount >= 0) {
+                monitor.lockCount++;
+            }
+            else {
+                monitor.lockCount = 1;
+            }
             moveToNextInstruction(threadState);
         }
 
@@ -43,6 +48,7 @@ var MonitorExitInstruction = function(monitorName) {
         if (monitor.lastLockedByThread == threadState.id)
         {
             monitor.lockCount--;
+            console.log("released to " + monitor.lockCount);
             if (monitor.lockCount <= 0) {
                 monitor.lastLockedByThread = null;
             }

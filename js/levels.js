@@ -27,12 +27,11 @@ var levels = {
 				new Instruction("foo"),
 				new Instruction("  bar"),
 				new Instruction("  zoo"),
-				new WinningInstruction("[REACH THIS TO WIN]")
 			]),
 			new Thread([
 				new Instruction("bar"),
 				new AssignInstruction("global hello = 'foo'", 'hello', 'String', 'foo'),
-				new WinningInstruction("[OR REACH THIS TO WIN]"),
+
 				new Instruction("foo"),
 				new Instruction("bar"),
 			])
@@ -242,7 +241,7 @@ var levels = {
 	),
 	"4-confusedCounter" : new Level(
 		"4-confusedCounter",
-		"(No Synchronization) Confused Counter",
+		"Confused Counter",
 		"Could it be that some instructions are hidden from sight?",
 		"Could it be that some instructions are hidden from sight?",
 		"Most instructions are <i>not</i> atomic. That means that context may switch during the instruction's execution. For assignments, for example, it means that the expression may be read into registers of a thread, but then context may switch and when the thread receives priority again, it won't read the expression again, it will simply write the register into the left-hand variable.",
@@ -413,7 +412,86 @@ var levels = {
 				value : 0
 			}
 		}
+	),
+	"L2-deadlock": new Level(
+		"L2-deadlock",
+		"Deadlock",
+		"Stop this code in its tracks!",
+		"A 'deadlock' is a scenario where all threads in the program wait for each other to release some resource (usually locks). None of them is willing to concede a resource before the other ones and thus the program is stuck - forever waiting for locks which will never be released.",
+		"This was the most simple deadlock scenario - two threads mutually waiting for each other, because each was stuck on a different lock. Congratulations all the same for solving it!",
+		[
+			new Thread([
+				new MonitorEnterInstruction("mutex"),
+				new MonitorEnterInstruction("mutex2"),
+				new CriticalSectionInstruction(),
+				new MonitorExitInstruction("mutex"),
+				new MonitorExitInstruction("mutex2"),
+			]),
+			new Thread([
+				new MonitorEnterInstruction("mutex2"),
+				new MonitorEnterInstruction("mutex"),
+				new CriticalSectionInstruction(),
+				new MonitorExitInstruction("mutex2"),
+				new MonitorExitInstruction("mutex"),
+			]),
+		],
+		{
+			"mutex" : {
+				name : "mutex",
+				type : "System.Object",
+				value : "unimportant"
+			},
+			"mutex2" : {
+				name : "mutex2",
+				type : "System.Object",
+				value : "unimportant"
+			}
+
+		}
+	),
+	"L3-complexer": new Level(
+		"L3-complexer",
+		"A More Complex Thread",
+		"Three locks, two threads, one flag.",
+		"Solving this problem isn't actually <i>that</i> difficult. Try to understand the program, to split it into parts and then you will find the solution is actually quite easy.",
+		"...yes, the 'critical section' was just there to confuse you. However, this kind of error happens in real-life programs, as well. It is not only important to ensure single access to the critical section, but to also prevent deadlocks.",
+		[
+			new Thread([
+				createOuterWhile(),
+
+				createOuterWhileEnd()
+			]),
+			new Thread([
+				createOuterWhile(),
+
+				createOuterWhileEnd()
+			])
+		],
+		{
+			"mutex" : {
+				name : "mutex",
+				type : "System.Object",
+				value : "unimportant"
+			},
+			"mutex2" : {
+				name : "mutex2",
+				type : "System.Object",
+				value : "unimportant"
+			},
+			"mutex3" : {
+				name : "mutex2",
+				type : "System.Object",
+				value : "unimportant"
+			},
+			"flag": {
+				name : "flag",
+				type : "System.Boolean",
+				value : false
+			}
+		}
 	)
+
+
 
 
 

@@ -39,8 +39,7 @@ var FailureInstruction = function() {
     this.code = "<i>failure-statement</i>;";
     this.tooltip = "If you execute this statement, you will win this level.";
     this.execute = function(threadState, globalState) {
-        showMessage('Level completed!', 'The congratulatory victory message is this: "' + window.level.victoryText + '"!"');
-		localStorage.setItem('level_' + window.level.id, "solved");
+        declareVictory("You have executed the failure instruction!");
     };
 };
 
@@ -51,14 +50,6 @@ var CriticalSectionInstruction = function() {
     this.execute = function (threadState, globalState) {
         moveToNextInstruction(threadState);
     };
-};
-
-var WinningInstruction = function(code) {
-	this.code = code;
-	this.execute = function(threadState, globalState) {
-        showMessage('Level completed!', 'The congratulatory victory message is this: "' + window.level.victoryText + '"!"');
-		localStorage.setItem('level_' + window.level.id, "solved");
-	};
 };
 
 var AssignInstruction = function(code, variable, type, value) {

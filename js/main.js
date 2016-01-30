@@ -192,7 +192,7 @@ var startLevel = function(levelName) {
 	mainArea.append(globalButtons);
 
 	var introduction = $('<p></p>');
-	introduction.html(level.intro);
+	introduction.html(level.longDescription);
 	mainArea.append(introduction);
 
 	undoButton = $('<button class="btn btn-info" style="border-top-right-radius: 0; border-bottom-right-radius: 0;"><span class="glyphicon glyphicon-step-backward"></span>&nbsp;Undo</button>');
