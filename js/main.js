@@ -198,6 +198,9 @@ var startLevel = function(levelName) {
 	}
 	gameState.threadInstructions = threadInstructions;
 	gameState.globalState = {};
+	if (level.variables) {
+		gameState.globalState = level.variables;
+	}
 
 	redraw();
 };
