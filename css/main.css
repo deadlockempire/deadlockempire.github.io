@@ -66,3 +66,12 @@ div.instruction.current-instruction div.expansion {
 .critical-section {
 	font-style: italic;
 }
+
+.global-buttons {
+	float: right;
+	margin-bottom: 1em;
+}
+
+.sources {
+	clear: both;
+}
