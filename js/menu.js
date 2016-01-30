@@ -7,8 +7,8 @@ function startLevelCreator(level) {
 var returnToMainMenu = function() {
 	$("#mainarea").html("");
 	$("#alert").hide();
-	for (var levelId in levels) {
-		// TODO: 'clear saved progress' button
+
+	var makeLevelBox = function(levelId) {
 		var level = levels[levelId];
 		var source = $('<div class="mainMenuLevel"></div>');
 		var isCompleted = localStorage.getItem('level_' + level.id);
@@ -18,17 +18,28 @@ var returnToMainMenu = function() {
 		}
 		source.append("<div class='mainMenuLevelCaption'>" + level.name + "</div>");
 		source.append("<div class='mainMenuLevelDescription'>" + level.intro + "</div>");
-		/*
-		var button = $('<button class="btn btn-default">Play</button>');
-		button.click(startLevelCreator(levelId));
-		if (isCompleted) {
-			button.html("Replay");
-			source.addClass('mainMenuSolvedLevel');
-		}
-		source.append(button);
-		*/
 		source.css({cursor: 'pointer'});
 		source.click(startLevelCreator(levelId));
+		return source;
+	};
+
+	for (var campaignKey in campaign) {
+		var quest = campaign[campaignKey];
+		var heading = $('<h2></h2>');
+		heading.text(quest.name);
+		$('#mainarea').append(heading);
+		for (var i = 0; i < quest.levels.length; i++) {
+			var levelId = quest.levels[i];
+			var source = makeLevelBox(levelId);
+			$("#mainarea").append(source);
+		}
+	}
+
+	/*
+	for (var levelId in levels) {
+		// TODO: 'clear saved progress' button
+		var source = makeLevelBox(levelId);
 		$("#mainarea").append(source);
 	}
+	*/
 }
