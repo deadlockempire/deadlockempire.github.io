@@ -51,6 +51,9 @@ var stepThread = function(thread) {
 
 var startLevel = function() {
 	var mainArea = $('#mainarea');
+	mainArea.html("");
+	level = levels[$('#levelSelect').val()];
+	console.log($('#levelSelect').val());
 
 	var sourcesSection = $('<div class="sources"></div>');
 	var threadCount = level.threads.length;
