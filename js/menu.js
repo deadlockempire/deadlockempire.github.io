@@ -15,7 +15,7 @@ var returnToMainMenu = function() {
 		source.append("<br>");
 		var button = $('<button>Play</button>');
 		button.click(startLevelCreator(level));
-		if (localStorage.getItem['level_' + levelId]) {
+		if (localStorage.getItem('level_' + level.id)) {
 		    button.html("Replay");
 		    source.append("This level has been completed.<br>");
 		    source.addClass('mainMenuSolvedLevel');

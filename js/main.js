@@ -10,6 +10,7 @@ var WinningInstruction = function(code) {
 	this.code = code;
 	this.execute = function(threadState, globalState) {
 		alert("you win");
+		localStorage.setItem('level_' + window.level.id, "solved");
 	};
 };
 
@@ -142,6 +143,9 @@ var startSelectedLevel = function() {
 
 var clearProgressAction = function () {
     localStorage.clear();
+    if (confirm("Progress has been cleared. Do you want to return to the main menu and refresh?")) {
+        returnToMainMenu();
+    }
 };
 
 $(function() {

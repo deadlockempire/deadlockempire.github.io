@@ -1,5 +1,6 @@
 var levels = {
 	"test": new Level(
+	    "test",
 	    "Test Level",
 		"In this level, you slay monsters.",
 		"You have won.",
@@ -23,6 +24,7 @@ var levels = {
 			])
 		]),
 	"tutorial": new Level(
+	    "tutorial",
 		"Tutorial Level",
 		"We don't have enough instructions.",
 		"You have learnt no lesson here.",
