@@ -36,5 +36,21 @@ var levels = {
 			new Thread([
 				new Instruction("This is the single-thread tutorial.")
 			])
+		]),
+	"criticalSectionTest": new Level(
+		"criticalSectionTest",
+		"Critical Section Test",
+		"This is short description.",
+		"This is victory lesson.",
+		[
+			new Thread([
+				new Instruction("This does nothing."),
+				new CriticalSectionInstruction()
+			]),
+			new Thread([
+			new Instruction("This does nothing."),
+			new CriticalSectionInstruction()
+			])
+
 		])
 };

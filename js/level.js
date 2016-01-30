@@ -5,7 +5,3 @@ var Level = function(id, name, intro, victoryText, threads) {
 	this.victoryText = victoryText;
 	this.threads = threads;
 };
-
-var Thread = function(instructions) {
-	this.instructions = instructions;
-};

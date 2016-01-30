@@ -1,55 +1,5 @@
 // constructor
-var Instruction = function(code) {
-	this.code = code;
-	this.execute = function(threadState, globalState) {
-		threadState.programCounter++;
-	};
-};
 
-var WinningInstruction = function(code) {
-	this.code = code;
-	this.execute = function(threadState, globalState) {
-        showMessage('Level completed!', 'The congratulatory victory message is this: "' + window.level.victoryText + '"!"');
-		localStorage.setItem('level_' + window.level.id, "solved");
-	};
-};
-
-var AssignInstruction = function(code, variable, value) {
-	this.code = code;
-	this.variable = variable;
-	this.execute = function(threadState, globalState) {
-		globalState[variable] = value;
-		threadState.programCounter++;
-	};
-};
-
-var IfInstruction = function(code, test, name) {
-	this.code = code;
-	this.name = name;
-	this.execute = function(threadState, globalState, threadProgram) {
-		if (test(threadState, globalState)) {
-			threadState.programCounter++;  // goto true branch
-		} else {
-			// false -> find matching Else
-			var i;
-			for (i = 0; i < threadProgram.length; i++) {
-				var instruction = threadProgram[i];
-				console.log(instruction);
-				if ((instruction instanceof ElseInstruction) && instruction.name == name) {
-					break;
-				}
-			}
-			console.assert(i < threadProgram.length);
-			threadState.programCounter = i;
-		}
-	};
-};
-
-var ElseInstruction = function(code, name) {
-	this.code = code;
-	this.name = name;
-	this.execute = function(threadState) { threadState.programCounter++; };
-};
 
 var level = null;
 
@@ -104,6 +54,24 @@ var redraw = function() {
 	undoButton.attr('disabled', undoHistory.length == 0);
 };
 
+var checkForVictoryConditions = function() {
+    var howManyCriticalSections = 0;
+    for (var threadId in level.threads) {
+        var thread = level.threads[threadId];
+        var instructions = thread.instructions;
+        var threadState = gameState.threadState[threadId];
+        var programCounter = threadState.programCounter;
+        var currentInstruction = instructions[programCounter];
+        if (currentInstruction.isCriticalSection) {
+            howManyCriticalSections++;
+        }
+    }
+    if (howManyCriticalSections >= 2) {
+        showMessage('Level completed!', 'The congratulatory victory message is this: "' + window.level.victoryText + '"!"');
+		localStorage.setItem('level_' + window.level.id, "solved");
+    }
+};
+
 var stepThread = function(thread) {
 	var program = level.threads[thread].instructions;
 	var maxInstructions = program.length;
@@ -112,6 +80,7 @@ var stepThread = function(thread) {
 	if (pc < maxInstructions) {
 		saveForUndo();
 		program[pc].execute(threadState, gameState.globalState, program);
+		checkForVictoryConditions();
 		redraw();
 	} else {
 		alert("Thread " + thread + " already finished.");
@@ -188,6 +157,9 @@ var startLevel = function(levelName) {
 		var instructions = [];
 		for (var j = 0; j < thread.instructions.length; j++) {
 			var instruction = $('<div class="instruction">' + thread.instructions[j].code + '</div>');
+			if (thread.instructions[j].tooltip) {
+				instruction.attr("title", thread.instructions[j].code + ". \n" + thread.instructions[j].tooltip);
+			}
 			instructions[j] = instruction;
 			source.append(instruction);
 		}
