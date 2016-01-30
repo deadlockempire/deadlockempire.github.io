@@ -111,6 +111,34 @@ var ExpandableInstruction = function(code, minorInstructions) {
 		}
 	};
 };
+var AtomicAssignmentToTemp = function (expression) {
+	this.code = "temp = " + expression.code + ";";
+	this.tooltip = "Evaluates the expression to the right and assigns it to the thread-local temporary variable on the left.";
+	this.execute = function(threadState, globalState) {
+		var value = expression.evaluate(threadState, globalState);
+		threadState.temporaryVariableValue = value;
+		moveToNextInstruction(threadState);
+	};
+};
+var AtomicAssignmentFromTemp = function (name) {
+	this.code = name + " = temp;";
+	this.tooltip = "Moves the value from the thread-local temporary variable into the specified global variable.";
+	this.execute = function(threadState, globalState) {
+		globalState[name].value = threadState.temporaryVariableValue;
+		moveToNextInstruction(threadState);
+	};
+};
+
+var createAssignment = function(name, expression) {
+	var minorInstructions = [
+		new AtomicAssignmentToTemp(expression),
+		new AtomicAssignmentFromTemp(name)
+	];
+	var v = new ExpandableInstruction(name + " = " + expression.code + ";", minorInstructions);
+	v.tooltip = "[Expandable] Assigns the value of the right-side expression to the variable on the left. This operation is non-atomic.";
+	return v;
+};
+
 
 var WhileInstruction = function(expressionString, test, name) {
 	this.code = "while (" + expressionString + ") {";

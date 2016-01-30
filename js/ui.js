@@ -49,6 +49,9 @@ var updateGlobalVariables = function() {
 			if (variable.type == "String") {
 				valueRepr = '"' + variable.value + '"';
 			}
+			else {
+				valueRepr = variable.value.toString();
+			}
 
 			representation.append($('<span class="value"></span>').text(valueRepr));
 		}
