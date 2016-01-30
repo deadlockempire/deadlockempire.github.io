@@ -9,7 +9,7 @@ var Instruction = function(code) {
 var WinningInstruction = function(code) {
 	this.code = code;
 	this.execute = function(threadState, globalState) {
-		alert("you win");
+        showMessage('Level completed!', 'The congratulatory victory message is this: "' + window.level.victoryText + '"!"');
 		localStorage.setItem('level_' + window.level.id, "solved");
 	};
 };
@@ -178,6 +178,10 @@ var clearProgressAction = function () {
 $(function() {
 	$('button#start').click(startSelectedLevel);
     $('button#goToMain').click(returnToMainMenu);
+    $('#alertHide').click(function () {
+        console.log("hiding");
+        $('#alert').hide();
+    });
     $('#clearProgress').click(clearProgressAction);
 });
 
