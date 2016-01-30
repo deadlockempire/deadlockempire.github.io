@@ -13,7 +13,14 @@ var levels = {
 					new Instruction("really"),
 					new Instruction("rather"),
 					new Instruction("complex"),
-				])
+				]),
+				new Instruction("and now"),
+				new Instruction("something simple"),
+				new ExpandableInstruction("and something complex", [
+					new Instruction("and"),
+					new Instruction("something"),
+					new Instruction("complex"),
+				]),
 			]),
 			new Thread([
 				new AssignInstruction("global hello = 'world'", 'hello', 'String', 'world'),

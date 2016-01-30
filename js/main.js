@@ -196,7 +196,7 @@ var startLevel = function(levelName) {
 			source.append(instruction);
 
 			if (thread.instructions[j] instanceof ExpandableInstruction) {
-				var expansion = $('<div class="expansion" id="instruction-' + i + '-' + j + '-expansion">EXPANSION</div>');
+				var expansion = $('<div class="expansion" id="instruction-' + i + '-' + j + '-expansion"></div>');
 
 				for (var k = 0; k < thread.instructions[j].minorInstructions.length; k++) {
 					var si = $('<div class="instruction">' + thread.instructions[j].minorInstructions[k].code + '</div>');
