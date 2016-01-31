@@ -1,6 +1,6 @@
 function startLevelCreator(level) {
 	return function() {
-		startLevel(level);
+		navigateToLevel(level);
 	}
 }
 
