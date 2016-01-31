@@ -112,27 +112,40 @@ var SemaphoreReleaseInstruction = function(semaphoreName) {
     }
 };
 
-var MinorWaitIntro = function() {
+var MinorWaitIntro = function(mutex) {
 
-    this.execute = function(threadState) { moveToNextInstruction(threadState); };
+    this.execute = function(threadState) {
+        if (mutex.lockCount == 0 || mutex.lastLockedByThread != threadState.id) {
+            win("A SynchronizationLockException was raised because the program called Wait while not having the lock.");
+        }
+        threadState.asleep = true;
+        if (!mutex.waiting) mutex.waiting = [];
+        mutex.waiting.push(threadState.id);
+        mutex.lockCount--;
+        if (mutex.lockCount <= 0) {
+            mutex.lastLockedByThread = null;
+        }
+        moveToNextInstruction(threadState);
+    };
     this.code = "release the lock, then sleep";
+
 };
 
 var MinorAwaitWakeUp = function() {
-    this.code = "F";
+    this.code = "wait until woken up";
     this.execute = function(threadState) { moveToNextInstruction(threadState); };
     this.isBlocking = function() { return true; };
 };
-var MinorInternalMonitorEnter = function() {
+var MinorInternalMonitorEnter = function(mutex) {
 
     this.execute = function(threadState) { moveToNextInstruction(threadState); };
-    this.code = "C";
+    this.code = "Monitor.Enter(" + mutex + ");";
 };
 var createMonitorWait = function(mutex) {
     var minorInstructions = [
-        new MinorWaitIntro(),
+        new MinorWaitIntro(mutex),
         new MinorAwaitWakeUp(),
-        new MinorInternalMonitorEnter()
+        new MinorInternalMonitorEnter(mutex)
     ];
     var v = new ExpandableInstruction("<span class='static'>Monitor</span>.Wait(" + mutex + ");", minorInstructions);
     v.tooltip = "[Expandable] Releases the lock and puts the thread to sleep until it is woken up by a pulse.";
