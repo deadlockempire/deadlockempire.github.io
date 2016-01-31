@@ -599,6 +599,55 @@ var levels = {
 				value : 0
 			}
 		}
+	),
+	"CV1-simple": new Level(
+		"CV1-simple",
+		"Condition Variables",
+		"Don't worry. It's not <i>that</i> hard.",
+		"Condition variables are, unfortunately, a difficult topic. But - we have hope that you will manage.",
+		"Your skill is unmatched, Master Scheduler! Truly no program is safe before you.",
+		[
+			new Thread([
+				createOuterWhile(),
+				new MonitorEnterInstruction("mutex"),
+				new IfInstruction(new QueueIsEmptyExpression("queue"), "if"),
+				createMonitorWait("mutex"),
+				new EndIfInstruction("if"),
+				createDequeueUnsafe("queue"),
+				new MonitorExitInstruction("mutex"),
+				createOuterWhileEnd()
+			]),
+			new Thread([
+				createOuterWhile(),
+				new MonitorEnterInstruction("mutex"),
+				new IfInstruction(new QueueIsEmptyExpression("queue"), "if"),
+				createMonitorWait("mutex"),
+				new EndIfInstruction("if"),
+				createDequeueUnsafe("queue"),
+				new MonitorExitInstruction("mutex"),
+				createOuterWhileEnd()
+			]),
+			new Thread([
+				createOuterWhile(),
+				new MonitorEnterInstruction("mutex"),
+				createEnqueueUnsafe("queue", 42),
+				new MonitorPulseAll("mutex"),
+				new MonitorExitInstruction("mutex"),
+				createOuterWhileEnd()
+			])
+		],
+		{
+			"mutex" : {
+				name : "mutex",
+				type : "System.Object",
+				value : "unimportant"
+			},
+			"queue" : {
+				name : "queue",
+				type : "System.Collections.Generic.Queue<int>",
+				value : 0
+			}
+		}
 	)
 
 

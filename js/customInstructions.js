@@ -42,6 +42,16 @@ var QueueNotEmptyExpression = function(queue) {
       }
     };
 };
+var QueueIsEmptyExpression = function(queue) {
+    this.code = queue + ".Count == 0";
+    this.evaluate = function (threadState, globalState) {
+        if (globalState[queue].value == 0) {
+            return true;
+        }  else {
+            return false;
+        }
+    };
+};
 var MinorBecomesConsistent = function(queue) {
     this.code = queue + " returns to a consistent state.";
     this.tooltip = "The queue's invariants start to apply again. Calling further Enqueue and Dequeue methods after this instruction does not break safety.";

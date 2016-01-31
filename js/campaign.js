@@ -40,6 +40,12 @@ var campaign = [
         ]
     },
     {
+        name : "Condition Variables",
+        levels : [
+            "CV1-simple"
+        ]
+    },
+    {
         name : "The Deadlock Empire",
         levels : [
             "D1-Dragonfire",

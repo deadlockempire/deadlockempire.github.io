@@ -118,6 +118,7 @@ var MinorWaitIntro = function(mutexName) {
         var mutex = globalState[mutexName];
         if (mutex.lockCount == 0 || mutex.lastLockedByThread != threadState.id) {
             win("A SynchronizationLockException was raised because the program called Wait while not having the lock.");
+            return;
         }
         threadState.asleep = true;
         if (!mutex.waiting) mutex.waiting = [];
@@ -129,6 +130,7 @@ var MinorWaitIntro = function(mutexName) {
         moveToNextInstruction(threadState);
     };
     this.code = "release the lock, then sleep";
+    this.tooltip = "Atomic. The lock is released, the thread is put into the waiting queue of the mutex and then goes to the Asleep mode.";
 
 };
 
@@ -136,6 +138,7 @@ var MinorAwaitWakeUp = function() {
     this.code = "wait until woken up";
     this.execute = function(threadState) { moveToNextInstruction(threadState); };
     this.isBlocking = function(threadState) { return threadState.asleep; };
+    this.tooltip = "This thread won't receive priority until it is woken up by a pulse. When the pulse arrives, you may step forwards as normal.";
 };
 var MinorInternalMonitorEnter = function(mutex) {
     this.isBlocking = function(threadState, globalState) {
@@ -147,8 +150,14 @@ var MinorInternalMonitorEnter = function(mutex) {
             return false;
         }
     };
-    this.execute = function(threadState) { moveToNextInstruction(threadState); };
+    this.execute = function(threadState, globalState) {
+        var monitor = globalState[mutex];
+        monitor.lastLockedByThread = threadState.id;
+        monitor.lockCount = 1;
+        moveToNextInstruction(threadState);
+    };
     this.code = "Monitor.Enter(" + mutex + ");";
+    this.tooltip = "This thread won't receive priority until it can reacquire the lock.";
 };
 var createMonitorWait = function(mutex) {
     var minorInstructions = [
@@ -159,5 +168,47 @@ var createMonitorWait = function(mutex) {
     var v = new ExpandableInstruction("<span class='static'>Monitor</span>.Wait(" + mutex + ");", minorInstructions);
     v.tooltip = "[Expandable] Releases the lock and puts the thread to sleep until it is woken up by a pulse.";
     return v;
-}
+};
+var MonitorPulse = function(mutex) {
+    this.code = "<span class='static'>Monitor</span>.Pulse(" + mutex + ");";
+    this.tooltip = "Sends a wake-up signal to a random thread waiting on the specified mutex, if any.";
+    this.execute = function (threadState, globalState) {
+        var monitor = globalState[mutex];
+        if (monitor.lockCount == 0 || monitor.lastLockedByThread != threadState.id) {
+            win("A SynchronizationLockException was raised because the program called Pulse while not having the lock.");
+            return;
+        }
+        if (!mutex.waiting) {
+            mutex.waiting = [];
+        }
+        if (mutex.waiting.length == 0) {
+            // Do nothing.
+        } else {
+            var sleeperId = mutex.waiting.shift();
+            var sleeper = gameState.threadState[sleeperId];
+            sleeper.asleep = false;
+        }
+        moveToNextInstruction(threadState);
+    };
+};
+var MonitorPulseAll = function(mutex) {
+    this.code = "<span class='static'>Monitor</span>.PulseAll(" + mutex + ");";
+    this.tooltip = "Sends a wake-up signal to all threads waiting on the specified mutex, if any.";
+    this.execute = function (threadState, globalState) {
+        var monitor = globalState[mutex];
+        if (monitor.lockCount == 0 || monitor.lastLockedByThread != threadState.id) {
+            win("A SynchronizationLockException was raised because the program called PulseAll while not having the lock.");
+            return;
+        }
+        if (!monitor.waiting) {
+            monitor.waiting = [];
+        }
+        while (monitor.waiting.length > 0) {
+            var sleeperId = monitor.waiting.shift();
+            var sleeper = gameState.threadState[sleeperId];
+            sleeper.asleep = false;
+        }
+        moveToNextInstruction(threadState);
+    };
+};
 
