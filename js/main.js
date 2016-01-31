@@ -93,12 +93,12 @@ var checkForVictoryConditions = function() {
 		}
 	}
 	if (howManyCriticalSections >= 2) {
-		win();
+		win("Two threads were in a critical section at the same time.");
 		return;
 	}
 
 	if (areAllThreadsBlocked()) {
-		win();
+		win("A deadlock occurred - all threads were blocked simultaneously.");
 		return;
 	}
 };

@@ -4,6 +4,7 @@ var win = function(reason) {
 	if (levelWasCleared) {
 		return;
 	}
+	localStorage.setItem('level_' + window.level.id, "solved");
 	winScreen.fadeIn(400);
 	levelWasCleared = true;
 
@@ -26,7 +27,7 @@ var win = function(reason) {
 
 	if (!areThereMoreLevels()) {
 		// game finished
-		$('#win-message').append("<br><br>You mastered all the lessons of Deadlock Empire. Thank you for playing!");
+		$('#win-message').append("<br><br>You mastered all the lessons of The Deadlock Empire. Thank you for playing!");
 		$('#win-next-level').hide();
 	} else {
 		$('#win-next-level').show();
@@ -48,4 +49,9 @@ $(function() {
 
 	// TODO: what if we win the last level?
 	$('#win-next-level').click(goToNextLevel);
+
+	$('#win-go-to-menu').click(function() {
+		returnToMainMenu();
+		winScreen.fadeOut(300);
+	});
 });

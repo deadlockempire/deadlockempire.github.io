@@ -39,7 +39,7 @@ var FailureInstruction = function() {
     this.code = "<i>failure-statement</i>;";
     this.tooltip = "If you execute this statement, you will win this level.";
     this.execute = function(threadState, globalState) {
-	    win();
+	    win("You executed a failure instruction.");
     };
 };
 
@@ -55,7 +55,7 @@ var CriticalSectionInstruction = function() {
 var WinningInstruction = function(code) {
 	this.code = code;
 	this.execute = function(threadState, globalState) {
-		win();
+		win("You have executed the Winning Instruction.");
 	};
 };
 
