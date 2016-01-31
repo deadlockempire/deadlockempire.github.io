@@ -168,8 +168,18 @@ var resetLevel = function() {
 var undoButton;
 var threadButtons;
 var threadContextualButtons;
+var nextChallengeButton;
+
+var levelWasCleared = false;
+
+var goToNextLevel = function() {
+	var next = findNextLevelInCampaign(window.levelName);
+	startLevel(next);
+	winScreen.fadeOut(300);
+};
 
 var startLevel = function(levelName) {
+	levelWasCleared = false;
 	undoHistory = [];
 	level = levels[levelName];
 	if (!level) {
@@ -195,6 +205,9 @@ var startLevel = function(levelName) {
 	introduction.html(level.longDescription);
 	mainArea.append(introduction);
 
+	wonBanner = $('<div id="won-banner"><span class="glyphicon glyphicon-ok"></span>&nbsp;Congratulations, you completed this challenge!</div>');
+	mainArea.append(wonBanner);
+
 	undoButton = $('<button class="btn btn-info" style="border-top-right-radius: 0; border-bottom-right-radius: 0;"><span class="glyphicon glyphicon-step-backward"></span>&nbsp;Undo</button>');
 	undoButton.click(undo);
 	undoButton.attr('disabled', true);
@@ -218,19 +231,29 @@ var startLevel = function(levelName) {
 	globalButtons.append(resetButton);
 
 	globalButtons.append("&nbsp;&nbsp;");
+
+	nextChallengeButton = $('<button class="btn btn-primary"><span class="glyphicon glyphicon-chevron-right"></span>&nbsp;Next challenge</button>');
+	nextChallengeButton.click(goToNextLevel);
+	globalButtons.append(nextChallengeButton);
+
 	var mainMenuButton = $('<button class="btn btn-danger"><span class="glyphicon glyphicon-menu-hamburger"></span>&nbsp;Return to main menu</button>');
 	mainMenuButton.click(function() {
+		var needConfirmation = true;
+
 		// Don't ask for confirmation if the level is pristine.
-		if (isLevelPristine()) {
-			returnToMainMenu();
-			return;
+		if (isLevelPristine() || levelWasCleared) {
+			needConfirmation = false;
 		}
 
-		bootbox.confirm('Really give up?', function(confirmed) {
-			if (confirmed) {
-				returnToMainMenu();
-			}
-		});
+		if (needConfirmation) {
+			bootbox.confirm('Really give up?', function(confirmed) {
+				if (confirmed) {
+					returnToMainMenu();
+				}
+			});
+		} else {
+			returnToMainMenu();
+		}
 	});
 	globalButtons.append(mainMenuButton);
 

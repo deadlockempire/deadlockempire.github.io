@@ -164,3 +164,11 @@ footer {
 	padding-top: 1em;
 	color: #999;
 }
+
+#won-banner {
+	font-size: 1.5em;
+}
+#won-banner span.glyphicon {
+	font-size: 1.2em;
+	color: #0c0;
+}
