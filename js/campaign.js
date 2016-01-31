@@ -1,8 +1,9 @@
 var campaign = [
-        /*
+
     {
         name : "Debugging Levels",
         levels : [
+            "monitortest",
             "test",
             "tutorial",
             "criticalSectionTest",
@@ -11,7 +12,7 @@ var campaign = [
             "deadlock"
         ]
     },
-        */
+
     {
         name : "Unsynchronized Code",
         levels : [

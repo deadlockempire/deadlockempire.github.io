@@ -1,5 +1,20 @@
 var levels = {
-
+	"monitortest" : new Level("monitortest",
+	"A","B","C","D",
+	[
+		new Thread([
+			createMonitorWait("mutex")
+		])
+	],
+		{
+			"mutex" : {
+				name: "mutex",
+				type: "System.Object",
+				value: "unimportant",
+				"lockCount": 0,
+				"lastLockedByThread": null,
+			}
+		}),
 
 	"tutorial": new Level(
 	    "tutorial",
