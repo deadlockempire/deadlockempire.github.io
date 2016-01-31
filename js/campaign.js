@@ -15,7 +15,8 @@ var campaign = [
     {
         name : "Tutorial",
         levels : [
-            "T1-Interface"
+            "T1-Interface",
+            "T2-Expansion"
         ]
     }
     ,
@@ -26,7 +27,6 @@ var campaign = [
             "2-flags",
             "3-simpleCounter",
             "4-confusedCounter",
-            "5-peterson"
         ]
     },
     {
@@ -57,6 +57,12 @@ var campaign = [
             "D1-Dragonfire",
             "D2-Sorcerer",
             "D4-Boss"
+        ]
+    },
+    {
+        name : "Unsolvable Levels",
+        levels : [
+            "5-peterson"
         ]
     }
 ];

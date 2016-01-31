@@ -270,7 +270,7 @@ var levels = {
 		"5-peterson",
 		"Three-way Peterson Algorithm",
 		"This riddle is rather fiendish.",
-		"The Peterson Algorithm is the best known way for 2 threads to synchronize without the use of any synchronization primitives except for atomic value read and atomic value write. However, does a straightforward generalization for multiple threads work?",
+		"The Peterson Algorithm is the best known way for 2 threads to synchronize without the use of any synchronization primitives except for atomic value read and atomic value write. However, does a straightforward generalization for multiple threads work?<br><br>(Hint: It doesn't. You won't be able to break this algorithm. However, note that the threads are forced to cycle. If one thread stops cooperating and does not want to enter the critical section anymore, the remaining two threads will be stuck in infinite loops, waiting.)",
 		"As you saw, it does not. However, there is still a way to do mutual exclusion for three threads with only atomic value read and atomic value write. This method is also called Peterson's Algorithm, but it is not used in practice because solutions using more advanced atomic operations are faster and even methods using locks are more efficient.",
 		[
 			new Thread([

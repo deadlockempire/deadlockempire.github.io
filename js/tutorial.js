@@ -40,4 +40,36 @@ var loadTutorial1 = function() {
         console.log('hint closed', stepId);
     });
     intro.start();
-}
+};
+levels["T2-Expansion"] = new Level("T1-Expansion",
+    "Tutorial 2: Non-Atomic Instructions",
+    "In the second tutorial, you will learn to expand statements.",
+    "Many statements are not atomic and are actually composed of several \"minor\" statements. Whenever such a statement is the active instruction, you can \"expand\" it to be able to step through with more precision. Follow the path outlined below, watch changes in the global state and learn how this works.<br><br>" +
+    "First, click 'Expand' in the first thread to reveal what an assignment consists of.<br>" +
+    "Then, click 'Step' in the first thread to evaluate the expression, but not twice! We will still need the old value of 'a' (zero) in the second thread!<br>" +
+    "Then, click 'Step' in the second thread to move to the assignment statement and expand it. Again, click 'Step' to read the expression into a thread-local variable.<br>" +
+    "The order of steps does not matter after this. You should be able to get into the critical section with both threads.",
+    "Congratulations! You have completed the tutorial! You may now either proceed with the first non-tutorial level (very easy) or choose a level from the main menu yourself. We hope you will have fun playing this game!",
+    [
+        new Thread([
+           createAssignment("a", new AdditionExpression(new VariableExpression("a"), new LiteralExpression(1))),
+            new IfInstruction(new EqualityExpression(new VariableExpression("a"), new LiteralExpression(1)), "if"),
+            new CriticalSectionInstruction(),
+            new EndIfInstruction("if")
+        ]),
+        new Thread([
+            new CommentInstruction("Expand the following instruction:"),
+            createAssignment("a", new AdditionExpression(new VariableExpression("a"), new LiteralExpression(1))),
+            new IfInstruction(new EqualityExpression(new VariableExpression("a"), new LiteralExpression(1)), "if"),
+            new CriticalSectionInstruction(),
+            new EndIfInstruction("if")
+        ])
+    ],
+    {
+        "a" : {
+            name : "a",
+            type : "System.Int32",
+            value : 0
+        }
+    }
+);
