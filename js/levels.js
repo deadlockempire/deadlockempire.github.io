@@ -515,6 +515,21 @@ var levels = {
 				value : false
 			}
 		}
+	),
+	"S2-producerConsumer"  : new Level(
+		"S2-producerConsumer",
+		"Producer-Consumer",
+		"",
+		"",
+		"",
+		[
+
+		]
+		,
+		{
+
+		}
+
 	)
 
 
