@@ -26,7 +26,7 @@ var findNextLevelInCampaign = function(levelId) {
 			if (j == levels.length - 1) {
 				//console.log('next campaign');
 				if (i < campaign.length - 1) {
-					return campaign[i + 1][0];
+					return campaign[i + 1].levels[0];
 				} else {
 					// TODO: game over, finished
 					return null;
