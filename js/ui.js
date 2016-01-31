@@ -77,6 +77,14 @@ var redraw = function() {
 	undoButton.removeClass('btn-default');
 	undoButton.addClass(undoEnabled ? 'btn-info' : 'btn-default');
 
+	if (levelWasCleared && areThereMoreLevels()) {
+		nextChallengeButton.show();
+		wonBanner.show();
+	} else {
+		nextChallengeButton.hide();
+		wonBanner.hide();
+	}
+
 	for (var i = 0; i < getThreadCount(); i++) {
 		var program = level.threads[i].instructions;
 		var threadState = gameState.threadState[i];
