@@ -122,3 +122,16 @@ levels["D2-Sorcerer"] = new Level(
         }
     }
 );
+levels["D3-Gate"] = new Level(
+    "D3-Gate",
+    "The Parallel Gate",
+    "Are you strong enough to enter the Parallel Wizard's domain?",
+    "INTRO STORY",
+    "END STORY",
+    [
+
+    ],
+    {
+
+    }
+);
