@@ -188,7 +188,6 @@ var startLevel = function(levelName) {
 	}
 	console.log(level);
 
-	localStorage.setItem("lastLevel", levelName);
 	var mainArea = $('#mainarea');
 	mainArea.html("");
 	window.level = level;
@@ -248,13 +247,11 @@ var startLevel = function(levelName) {
 		if (needConfirmation) {
 			bootbox.confirm('Really give up?', function(confirmed) {
 				if (confirmed) {
-					localStorage.removeItem("lastLevel");
-					returnToMainMenu();
+					navigateToMainMenu();
 				}
 			});
 		} else {
-			localStorage.removeItem("lastLevel");
-			returnToMainMenu();
+			navigateToMainMenu();
 		}
 	});
 	globalButtons.append(mainMenuButton);
@@ -370,7 +367,7 @@ var clearProgressAction = function () {
 	bootbox.confirm("Are you sure you want to clear all your progress?", function(confirmed) {
 		if (confirmed) {
 			localStorage.clear();
-			returnToMainMenu();
+			navigateToMainMenu();
 		}
 	});
 };
@@ -378,8 +375,7 @@ var clearProgressAction = function () {
 $(function() {
 	$('button#start').click(startSelectedLevel);
 	$('button#goToMain').click(function() {
-		localStorage.removeItem("lastLevel");
-		returnToMainMenu();
+		navigateToMainMenu();
 	});
 	$('#clearProgress').click(clearProgressAction);
 	$('#alertHide').click(function () {
@@ -417,11 +413,33 @@ $(function() {
 
 });
 
-$(function() {
-	if (localStorage.getItem("lastLevel") && levels[localStorage.getItem("lastLevel")]) {
-		startLevel(localStorage.getItem("lastLevel"));
-	} else {
+var route = function() {
+	if (location.hash == '#menu' || !location.hash) {
 		returnToMainMenu();
+	} else {
+		var level = location.hash.replace('#', '');
+		if (level in levels) {
+			startLevel(level);
+		}
 	}
+};
+
+var navigateToLevel = function(level) {
+	history.pushState({level: level}, level, "#" + level);
+	route();
+};
+
+var navigateToMainMenu = function() {
+	history.pushState({menu: true}, "menu", "#menu");
+	route();
+};
+
+$(window).bind('popstate', function(event) {
+	console.log('popstate', event, location);
+	console.log(location.hash);
+	route();
 });
 
+$(function() {
+	route();
+});
