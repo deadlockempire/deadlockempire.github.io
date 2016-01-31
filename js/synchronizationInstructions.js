@@ -114,16 +114,18 @@ var SemaphoreReleaseInstruction = function(semaphoreName) {
 
 var MinorWaitIntro = function() {
 
-    this.code = "A";
+    this.execute = function(threadState) { moveToNextInstruction(threadState); };
+    this.code = "release the lock, then sleep";
 };
 
 var MinorAwaitWakeUp = function() {
     this.code = "F";
-    this.execute = function() { };
+    this.execute = function(threadState) { moveToNextInstruction(threadState); };
     this.isBlocking = function() { return true; };
 };
 var MinorInternalMonitorEnter = function() {
 
+    this.execute = function(threadState) { moveToNextInstruction(threadState); };
     this.code = "C";
 };
 var createMonitorWait = function(mutex) {

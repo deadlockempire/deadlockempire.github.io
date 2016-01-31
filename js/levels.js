@@ -4,6 +4,9 @@ var levels = {
 	[
 		new Thread([
 			createMonitorWait("mutex")
+		]),
+		new Thread([
+			createMonitorWait("mutex")
 		])
 	],
 		{
