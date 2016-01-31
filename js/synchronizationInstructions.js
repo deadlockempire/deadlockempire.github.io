@@ -112,3 +112,28 @@ var SemaphoreReleaseInstruction = function(semaphoreName) {
     }
 };
 
+var MinorWaitIntro = function() {
+
+    this.code = "A";
+};
+
+var MinorAwaitWakeUp = function() {
+    this.code = "F";
+    this.execute = function() { };
+    this.isBlocking = function() { return true; };
+};
+var MinorInternalMonitorEnter = function() {
+
+    this.code = "C";
+};
+var createMonitorWait = function(mutex) {
+    var minorInstructions = [
+        new MinorWaitIntro(),
+        new MinorAwaitWakeUp(),
+        new MinorInternalMonitorEnter()
+    ];
+    var v = new ExpandableInstruction("<span class='static'>Monitor</span>.Wait(" + mutex + ");", minorInstructions);
+    v.tooltip = "[Expandable] Releases the lock and puts the thread to sleep until it is woken up by a pulse.";
+    return v;
+}
+

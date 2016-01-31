@@ -1,5 +1,6 @@
 var MinorBecomesInconsistent = function(queue) {
     this.code = queue + " enters an inconsistent state.";
+    this.tooltip = "The queue's invariants cease to apply. Any call (in another thread) to an Enqueue or Dequeue method on this queue will break the program.";
     this.execute = function (threadState, globalState) {
         if (globalState[queue].inconsistent) {
             win("Two threads entered a non-thread-safe function at the same time.");
@@ -12,6 +13,7 @@ var MinorBecomesInconsistent = function(queue) {
 };
 var MinorEnqueue = function(queue) {
     this.code = queue + " gains a new element.";
+    this.tooltip = "Increments the number of elements in the queue.";
     this.execute = function (threadState, globalState) {
         globalState[queue].value++;
         moveToNextInstruction(threadState);
@@ -19,6 +21,7 @@ var MinorEnqueue = function(queue) {
 };
 var MinorDequeue = function(queue) {
     this.code = queue + " loses an element.";
+    this.tooltip = "Decrements the number of elements in the queue. If it falls below zero, an exception is thrown.";
     this.execute = function (threadState, globalState) {
         if (globalState[queue].value <= 0) {
             win("An InvalidOperationException was raised when trying to read from an empty queue.")
@@ -41,6 +44,7 @@ var QueueNotEmptyExpression = function(queue) {
 };
 var MinorBecomesConsistent = function(queue) {
     this.code = queue + " returns to a consistent state.";
+    this.tooltip = "The queue's invariants start to apply again. Calling further Enqueue and Dequeue methods after this instruction does not break safety.";
     this.execute = function (threadState, globalState) {
         globalState[queue].inconsistent = false;
         moveToNextInstruction(threadState);
