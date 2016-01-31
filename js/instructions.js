@@ -153,6 +153,10 @@ var ExpandableInstruction = function(code, minorInstructions) {
 		console.assert(!threadState.expanded);
 		threadState.expanded = true;
 		for (var i = 0; i < minorInstructions.length; i++) {
+			if (minorInstructions[i].isBlocking && minorInstructions[i].isBlocking(threadState, globalState)) {
+				// Cannot execute this subinstruction. Break.
+				break;
+			}
 			minorInstructions[i].execute(threadState, globalState, threadProgram);
 		}
 	};
