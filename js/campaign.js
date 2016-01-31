@@ -12,7 +12,13 @@ var campaign = [
             "deadlock"
         ]
     },
-
+    {
+        name : "Tutorial",
+        levels : [
+            "T1-Interface"
+        ]
+    }
+    ,
     {
         name : "Unsynchronized Code",
         levels : [

@@ -201,14 +201,14 @@ var startLevel = function(levelName) {
 	var globalButtons = $('<div class="global-buttons"></div>');
 	mainArea.append(globalButtons);
 
-	var introduction = $('<p></p>');
+	var introduction = $('<p id="storyIntro"></p>');
 	introduction.html(level.longDescription);
 	mainArea.append(introduction);
 
 	wonBanner = $('<div id="won-banner"><span class="glyphicon glyphicon-ok"></span>&nbsp;Congratulations, you completed this challenge!</div>');
 	mainArea.append(wonBanner);
 
-	undoButton = $('<button class="btn btn-info" style="border-top-right-radius: 0; border-bottom-right-radius: 0;"><span class="glyphicon glyphicon-step-backward"></span>&nbsp;Undo</button>');
+	undoButton = $('<button class="undobutton btn btn-info" style="border-top-right-radius: 0; border-bottom-right-radius: 0;"><span class="glyphicon glyphicon-step-backward"></span>&nbsp;Undo</button>');
 	undoButton.click(undo);
 	undoButton.attr('disabled', true);
 	globalButtons.append(undoButton);
@@ -271,7 +271,7 @@ var startLevel = function(levelName) {
 
 		var threadArea = $('<div class="thread"></div>');
 
-		var stepButton = $('<button class="btn btn-default"><span class="glyphicon glyphicon-play"></span>&nbsp;Step</button>');
+		var stepButton = $('<button class="stepforwards btn btn-default"><span class="glyphicon glyphicon-play"></span>&nbsp;Step</button>');
 		stepButton.data('thread', i);
 		stepButton.click(function() {
 			stepThread($(this).data('thread'));
@@ -360,6 +360,9 @@ var startLevel = function(levelName) {
 	}
 
 	redraw();
+	if (level.id == "T1-Interface") {
+		loadTutorial1();
+	}
 };
 
 var startSelectedLevel = function() {
