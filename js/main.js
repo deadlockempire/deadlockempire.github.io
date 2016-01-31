@@ -297,11 +297,20 @@ var startLevel = function(levelName) {
 		var source = $('<div class="code"></div>');
 
 		for (var j = 0; j < thread.instructions.length; j++) {
-			var instruction = $('<div class="instruction">' + thread.instructions[j].code + '</div>');
+			var instruction = $('<div class="instruction"></div>');
 			instruction.attr('id', 'instruction-' + i + '-' + j);
+
+			var span = $('<span></span>');
+			span.html(thread.instructions[j].code);
 			if (thread.instructions[j].tooltip) {
-				instruction.attr("title", thread.instructions[j].code + ". \n" + thread.instructions[j].tooltip);
+				span.attr("title", "<div style='text-align: left;'>" + thread.instructions[j].code + ". <br>" + thread.instructions[j].tooltip + "</div>");
 			}
+			var placement = 'left';
+			if (i == 0) {
+				placement = 'right';
+			}
+			span.tooltip({'placement': placement, 'html': true});
+			instruction.append(span);
 			source.append(instruction);
 
 			if (thread.instructions[j] instanceof ExpandableInstruction) {

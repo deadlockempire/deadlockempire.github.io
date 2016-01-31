@@ -302,7 +302,7 @@ var levels = {
 						new EqualityExpression(new VariableExpression("turn"), new LiteralExpression(2)),
 						new EqualityExpression(new VariableExpression("turn"), new LiteralExpression(3))
 					)
-				), "wait"),
+				), "wait", "while ((flag2 || flag3) &&\n         (turn == 2 || turn == 3)) {"),
 				new EmptyStatement(),
 				new EndWhileInstruction("wait"),
 				new CriticalSectionInstruction(),
@@ -323,7 +323,7 @@ var levels = {
 						new EqualityExpression(new VariableExpression("turn"), new LiteralExpression(1)),
 						new EqualityExpression(new VariableExpression("turn"), new LiteralExpression(3))
 					)
-				), "wait"),
+				), "wait", "while ((flag1 || flag3) &&\n         (turn == 1 || turn == 3)) {"),
 				new EmptyStatement(),
 				new EndWhileInstruction("wait"),
 				new CriticalSectionInstruction(),
@@ -344,7 +344,7 @@ var levels = {
 						new EqualityExpression(new VariableExpression("turn"), new LiteralExpression(2)),
 						new EqualityExpression(new VariableExpression("turn"), new LiteralExpression(1))
 					)
-				), "wait"),
+				), "wait", "while ((flag2 || flag1) &&\n         (turn == 2 || turn == 1)) {"),
 				new EmptyStatement(),
 				new EndWhileInstruction("wait"),
 				new CriticalSectionInstruction(),

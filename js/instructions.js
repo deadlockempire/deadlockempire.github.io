@@ -215,8 +215,8 @@ var CommentInstruction = function(comment) {
 	};
 };
 
-var WhileInstruction = function(expression, name) {
-	this.code = "while (" + expression.code + ") {";
+var WhileInstruction = function(expression, name, code) {
+	this.code = code ? code : ("while (" + expression.code + ") {");
 	this.name = name;
 
 	this.execute = function(threadState, globalState, threadProgram) {
