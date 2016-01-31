@@ -22,7 +22,7 @@ var win = function(reason) {
 
 	if (findNextLevelInCampaign(window.levelName) == null) {
 		// game finished
-		$('#win-message').append("<br><br>You mastered all the lessons of Deadlock Empire. Thank you for playing!");
+		$('#win-message').append("<br><br>You mastered all the lessons of The Deadlock Empire. Thank you for playing!");
 	}
 };
 
@@ -41,5 +41,10 @@ $(function() {
 		startLevel(next);
 		winScreen.fadeOut(300);
 		// TODO: go to next level
+	});
+
+	$('#win-go-to-menu').click(function() {
+		returnToMainMenu();
+		winScreen.fadeOut(300);
 	});
 });
