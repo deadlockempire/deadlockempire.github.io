@@ -3,9 +3,12 @@ var levels = {
 	"A","B","C","D",
 	[
 		new Thread([
+			new MonitorEnterInstruction("mutex"),
 			createMonitorWait("mutex")
+
 		]),
 		new Thread([
+			new MonitorEnterInstruction("mutex"),
 			createMonitorWait("mutex")
 		])
 	],

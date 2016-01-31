@@ -112,9 +112,10 @@ var SemaphoreReleaseInstruction = function(semaphoreName) {
     }
 };
 
-var MinorWaitIntro = function(mutex) {
+var MinorWaitIntro = function(mutexName) {
 
-    this.execute = function(threadState) {
+    this.execute = function(threadState, globalState) {
+        var mutex = globalState[mutexName];
         if (mutex.lockCount == 0 || mutex.lastLockedByThread != threadState.id) {
             win("A SynchronizationLockException was raised because the program called Wait while not having the lock.");
         }
@@ -134,10 +135,18 @@ var MinorWaitIntro = function(mutex) {
 var MinorAwaitWakeUp = function() {
     this.code = "wait until woken up";
     this.execute = function(threadState) { moveToNextInstruction(threadState); };
-    this.isBlocking = function() { return true; };
+    this.isBlocking = function(threadState) { return threadState.asleep; };
 };
 var MinorInternalMonitorEnter = function(mutex) {
-
+    this.isBlocking = function(threadState, globalState) {
+        var monitor = globalState[mutex];
+        if (monitor.lastLockedByThread != null &&
+            monitor.lastLockedByThread != threadState.id) {
+            return true;
+        } else {
+            return false;
+        }
+    };
     this.execute = function(threadState) { moveToNextInstruction(threadState); };
     this.code = "Monitor.Enter(" + mutex + ");";
 };
