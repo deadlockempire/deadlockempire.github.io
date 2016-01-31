@@ -93,12 +93,15 @@ var redraw = function() {
 		if (isThreadFinished(i)) {
 			threadButtons[i].step.attr('disabled', true);
 			threadButtons[i].step.attr('title', 'This thread is finished.');
+			threadButtons[i].step.tooltip();
 		} else if (currentInstruction.isBlocking && currentInstruction.isBlocking(threadState, gameState.globalState)) {
 			threadButtons[i].step.attr('disabled', true);
 			threadButtons[i].step.attr('title', 'This thread is blocked.');
+			threadButtons[i].step.tooltip();
 		} else {
 			threadButtons[i].step.attr('disabled', false);
 			threadButtons[i].step.attr('title', '');
+			threadButtons[i].step.tooltip('destroy');
 		}
 
 		var isExpandable = (currentInstruction instanceof ExpandableInstruction);
