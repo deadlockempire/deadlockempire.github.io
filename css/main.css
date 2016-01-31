@@ -193,6 +193,7 @@ hr {
 .tooltip_code {
 	font-family: monospace;
 	font-weight: bold;
+	font-size: 1.2em;
 }
 .keyword {
 	color: #0000ff
