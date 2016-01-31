@@ -11,7 +11,7 @@ body {
 	height: 100%;
 }
 
-#win-screen h3#win-message {
+#win-screen h3 {
 	font-size: 5em;
 	font-family: 'Pacifico', cursive;
 	margin-bottom: 0.5em;
