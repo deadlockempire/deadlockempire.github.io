@@ -11,7 +11,7 @@ body {
 	height: 100%;
 }
 
-#win-screen h3#win-message {
+#win-screen h3 {
 	font-size: 5em;
 	font-family: 'Pacifico', cursive;
 	margin-bottom: 0.5em;
@@ -37,7 +37,7 @@ body {
 
 .thread .code {
 	margin-top: 5px;
-	font-family: monospace;
+	font-family: Consolas, monospace;
 }
 
 div.clearboth {
@@ -193,6 +193,7 @@ hr {
 .tooltip_code {
 	font-family: monospace;
 	font-weight: bold;
+	font-size: 1.2em;
 }
 .keyword {
 	color: #0000ff

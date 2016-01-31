@@ -298,28 +298,34 @@ var startLevel = function(levelName) {
 
 		var source = $('<div class="code"></div>');
 
-		for (var j = 0; j < thread.instructions.length; j++) {
+		var makeInstruction = function(i, goLeft) {
 			var instruction = $('<div class="instruction"></div>');
-			instruction.attr('id', 'instruction-' + i + '-' + j);
 
 			var span = $('<span></span>');
-			span.html(thread.instructions[j].code);
-			if (thread.instructions[j].tooltip) {
-				span.attr("title", "<div style='text-align: left;'><span class='tooltip_code'>" + thread.instructions[j].code + "</span><br>" + thread.instructions[j].tooltip + "</div>");
+			span.html(i.code);
+			if (i.tooltip) {
+				span.attr("title", "<div style='text-align: left;'><span class='tooltip_code'>" + i.code + "</span><br>" + i.tooltip + "</div>");
 			}
 			var placement = 'left';
-			if (i == 0) {
+			if (goLeft) {
 				placement = 'right';
 			}
 			span.tooltip({'placement': placement, 'html': true});
 			instruction.append(span);
+			return instruction;
+		};
+
+		for (var j = 0; j < thread.instructions.length; j++) {
+			var instruction = makeInstruction(thread.instructions[j], i == 0);
+			instruction.attr('id', 'instruction-' + i + '-' + j);
+
 			source.append(instruction);
 
 			if (thread.instructions[j] instanceof ExpandableInstruction) {
 				var expansion = $('<div class="expansion" id="instruction-' + i + '-' + j + '-expansion"></div>');
 
 				for (var k = 0; k < thread.instructions[j].minorInstructions.length; k++) {
-					var si = $('<div class="instruction">' + thread.instructions[j].minorInstructions[k].code + '</div>');
+					var si = makeInstruction(thread.instructions[j].minorInstructions[k], i == 0);
 					si.attr('id', 'instruction-' + i + '-' + j + '-sub' + k);
 					// TODO tooltip, refactor
 					expansion.append(si);
