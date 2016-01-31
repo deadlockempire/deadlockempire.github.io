@@ -49,7 +49,8 @@ var campaign = [
         name : "The Deadlock Empire",
         levels : [
             "D1-Dragonfire",
-            "D2-Sorcerer"
+            "D2-Sorcerer",
+            "D4-Boss"
         ]
     }
 ];

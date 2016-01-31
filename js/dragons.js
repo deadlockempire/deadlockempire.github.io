@@ -123,6 +123,96 @@ levels["D2-Sorcerer"] = new Level(
         }
     }
 );
+levels["D4-Boss"] = new Level(
+    'D4-Boss',
+    "Boss Fight",
+    "This is it. The final duel between the Master Scheduler and the Parallel Wizard.",
+    "You defeated the Parallel Wizard's armies in battle and now you finally stand in front of the doors of his massive fortress. The time has come to end this war.<br><br>" +
+    "The Parallel Wizard is clever in his defenses, however, and keeps his only weakness in his inner sanctum inside the fortress. To reach inside, you will need to adopt some of his underhanded tactics. It is a pity that a Sequentialist commander must resort to concurrent tricks to defeat this foe but such is reality.<br><br>" +
+    "You reluctantly cast the spell that splits your spirit in two. And then you both enter the fortress...",
+    "In the end... victory!<br><br>" +
+    "The Parallel Wizard is destroyed and his fortress crumbles at your feet. You have won. Never again will programmers over the world have to endure the difficulty of correct multithreaded programming because in defeating the Parallel Wizard, you have banished concurrency.<br><br>" +
+    "'Although,' you wonder, 'the tricks I used were somewhat useful... and I did feel quite a bit faster when parallelized. Perhaps there is something to this whole parallelism thing.'<br><br>" +
+    "Indeed, perhaps there is, commander. Perhaps parallelism is useful, after all, Master Scheduler. After all, with the skills you gained fighting The Deadlock Empire, do you doubt that you have become... an even greater Parallel Wizard?",
+    [
+        new Thread([
+            createOuterWhile(),
+            createIncrement("darkness"),
+            createIncrement("evil"),
+            new IfInstruction(new AndExpression(
+                new InequalityExpression(
+                    new VariableExpression("darkness"),
+                    new LiteralExpression(2)
+                ),
+                new InequalityExpression(
+                    new VariableExpression("evil"),
+                    new LiteralExpression(2)
+                )
+                ), "outerif"),
+            new IfInstruction(new SemaphoreTryWaitExpression("fortress"), "if"),
+            new SemaphoreWaitInstruction("fortress"),
+            new MonitorEnterInstruction("sanctum"),
+            createMonitorWait("sanctum"),
+            new CriticalSectionInstruction(),
+            new MonitorExitInstruction("sanctum"),
+            new EndIfInstruction("if"),
+            new EndIfInstruction("outerif"),
+            createOuterWhileEnd()
+        ]),
+        new Thread([
+            createOuterWhile(),
+            createIncrement("darkness"),
+            createIncrement("evil"),
+            new IfInstruction(new AndExpression(
+                new InequalityExpression(
+                    new VariableExpression("darkness"),
+                    new LiteralExpression(2)
+                ),
+                new EqualityExpression(
+                    new VariableExpression("evil"),
+                    new LiteralExpression(2)
+                )
+            ), "outerif"),
+            new MonitorEnterInstruction("sanctum"),
+            new MonitorPulse("sanctum"),
+            new MonitorExitInstruction("sanctum"),
+            new CriticalSectionInstruction(),
+            new EndIfInstruction("outerif"),
+            new SemaphoreReleaseInstruction("fortress"),
+            createAssignment("darkness", new LiteralExpression(0)),
+            createAssignment("evil", new LiteralExpression(0)),
+            createOuterWhileEnd()
+        ])
+    ],
+    {
+        "darkness" : {
+            name : "darkness",
+            type : "System.Int32",
+            value : 0
+         },
+        "evil" : {
+            name : "evil",
+            type : "System.Int32",
+            value : 0
+        },
+        "fortress" : {
+            name : "fortress",
+            type : "System.Threading.SemaphoreSlim",
+            value : 0
+        },
+        "sanctum" : {
+            name : "sanctum",
+            type : "System.Object",
+            value : "unimportant"
+        }
+    }
+
+
+
+
+
+);
+
 levels["D3-Gate"] = new Level(
     "D3-Gate",
     "The Parallel Gate",

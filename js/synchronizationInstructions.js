@@ -178,13 +178,13 @@ var MonitorPulse = function(mutex) {
             win("A SynchronizationLockException was raised because the program called Pulse while not having the lock.");
             return;
         }
-        if (!mutex.waiting) {
-            mutex.waiting = [];
+        if (!monitor.waiting) {
+            monitor.waiting = [];
         }
-        if (mutex.waiting.length == 0) {
+        if (monitor.waiting.length == 0) {
             // Do nothing.
         } else {
-            var sleeperId = mutex.waiting.shift();
+            var sleeperId = monitor.waiting.shift();
             var sleeper = gameState.threadState[sleeperId];
             sleeper.asleep = false;
         }
