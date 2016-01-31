@@ -52,6 +52,9 @@ var updateGlobalVariables = function() {
 			else if (variable.type.indexOf("Semaphore") != -1) {
 				valueRepr = 'SemaphoreSlim [count: ' + variable.value + ']';
 			}
+			if (variable.type.indexOf("Queue") != -1) {
+				valueRepr = 'Queue [element count: ' + variable.value + ']';
+			}
 			else {
 				valueRepr = variable.value.toString();
 			}

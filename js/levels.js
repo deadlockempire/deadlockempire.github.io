@@ -516,20 +516,75 @@ var levels = {
 			}
 		}
 	),
-	"S2-producerConsumer"  : new Level(
+	"S1-simple" : new Level(
+		"S1-simple",
+		"Semaphores",
+		"Semaphore is a simple synchronization primitive.",
+		"This is an introductory level and should not take too much effort.",
+		"Yay! You know how to use semaphores maybe! Let's now proceed to harder levels.",
+		[
+			new Thread([
+				createOuterWhile(),
+				new SemaphoreWaitInstruction("ss"),
+				new CriticalSectionInstruction(),
+				new SemaphoreReleaseInstruction("ss"),
+				createOuterWhileEnd()
+			]),
+			new Thread([
+				createOuterWhile(),
+				new IfLongInstruction(new SemaphoreTryWaitExpression("ss"), "if"),
+				new CriticalSectionInstruction(),
+				new SemaphoreReleaseInstruction("ss"),
+				new ElseInstruction("if"),
+				new SemaphoreReleaseInstruction("ss"),
+				new EndIfLongInstruction("if"),
+				createOuterWhileEnd()
+			])
+		],
+		{
+			"ss" : {
+				name : "ss",
+				type : "System.Threading.SemaphoreSlim",
+				value : 0
+			}
+		}
+	),
+	"S2-producerConsumer" : new Level(
 		"S2-producerConsumer",
 		"Producer-Consumer",
-		"",
-		"",
-		"",
+		"A new victory condition awaits you!",
+		"In this challenge, your goal is cause an exception to be raised.",
+		"VICTORY TODO",
 		[
-
+			new Thread([
+				createOuterWhile(),
+				new IfLongInstruction(new SemaphoreTryWaitExpression("ss"), "if"),
+				// dequeue
+				new ElseInstruction("if"),
+				new CommentInstruction("Nothing in the queue."),
+				new EndIfLongInstruction("if"),
+				createOuterWhileEnd()
+			]),
+			new Thread([
+				createOuterWhile(),
+				new SemaphoreReleaseInstruction("ss"),
+				createEnqueueUnsafe("queue", 42),
+				createOuterWhileEnd()
+			])
 		]
 		,
 		{
-
+			"ss" : {
+				name : "ss",
+				type : "System.Threading.SemaphoreSlim",
+				value : 0
+			},
+			"queue" : {
+				name : "queue",
+				type : "System.Queue<int>",
+				value : 0
+			}
 		}
-
 	)
 
 

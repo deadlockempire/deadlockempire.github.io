@@ -70,6 +70,18 @@ var MonitorExitInstruction = function(monitorName) {
         moveToNextInstruction(threadState);
     }
 };
+var SemaphoreTryWaitExpression = function(semaphoreName) {
+    this.code = semaphoreName + ".TryWait(500)";
+    this.evaluate = function(threadState, globalState) {
+        if (globalState[semaphoreName].value > 0) {
+            globalState[semaphoreName].value --;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+};
 var SemaphoreWaitInstruction = function(semaphoreName) {
     this.code = semaphoreName + ".Wait();";
     this.tooltip = "Atomic. Attempts to decrease the semaphore counter by one. If the semaphore is already at 0, this call blocks until another thread increases the counter by calling Release().";

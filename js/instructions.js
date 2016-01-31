@@ -206,7 +206,14 @@ var EmptyStatement = function() {
 	this.execute = function(threadState, globalState) {
 		moveToNextInstruction(threadState);
 	};
-}
+};
+var CommentInstruction = function(comment) {
+	this.code = "<font color='Gray'>// " + comment + "</font>";
+	this.tooltip = "This is a comment. It does nothing.";
+	this.execute = function(threadState, globalState) {
+		moveToNextInstruction(threadState);
+	};
+};
 
 var WhileInstruction = function(expression, name) {
 	this.code = "while (" + expression.code + ") {";

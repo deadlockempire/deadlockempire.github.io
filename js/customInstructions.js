@@ -7,18 +7,21 @@ var MinorBecomesInconsistent = function(queue) {
 
         }
         globalState[queue].inconsistent = true;
+        moveToNextInstruction(threadState);
     };
 };
 var MinorEnqueue = function(queue) {
     this.code = queue + " gains a new element.";
     this.execute = function (threadState, globalState) {
         globalState[queue].value++;
+        moveToNextInstruction(threadState);
     };
 };
 var MinorBecomesConsistent = function(queue) {
     this.code = queue + " returns to a consistent state.";
     this.execute = function (threadState, globalState) {
         globalState[queue].inconsistent = false;
+        moveToNextInstruction(threadState);
     };
 };
 var createEnqueueUnsafe = function(queue, number) {
@@ -27,7 +30,7 @@ var createEnqueueUnsafe = function(queue, number) {
         new MinorEnqueue(queue),
         new MinorBecomesConsistent(queue)
     ];
-    var v = new ExpandableInstruction(queue + ".Enqueue(" + number + ")");
+    var v = new ExpandableInstruction(queue + ".Enqueue(" + number + ")", minorInstructions);
     v.tooltip = "[Expandable] Adds an object to the end of the queue. This operation is not atomic nor thread-safe.";
     return v;
 };

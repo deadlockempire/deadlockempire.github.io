@@ -21,6 +21,13 @@ var campaign = [
         ]
     },
     {
+        name : "Semaphores",
+        levels : [
+            "S1-simple",
+            "S2-producerConsumer"
+        ]
+    },
+    {
         name : "Locks",
         levels : [
             "L1-lock",
