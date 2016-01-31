@@ -248,10 +248,12 @@ var startLevel = function(levelName) {
 		if (needConfirmation) {
 			bootbox.confirm('Really give up?', function(confirmed) {
 				if (confirmed) {
+					localStorage.removeItem("lastLevel");
 					returnToMainMenu();
 				}
 			});
 		} else {
+			localStorage.removeItem("lastLevel");
 			returnToMainMenu();
 		}
 	});
@@ -303,7 +305,7 @@ var startLevel = function(levelName) {
 			var span = $('<span></span>');
 			span.html(thread.instructions[j].code);
 			if (thread.instructions[j].tooltip) {
-				span.attr("title", "<div style='text-align: left;'>" + thread.instructions[j].code + ". <br>" + thread.instructions[j].tooltip + "</div>");
+				span.attr("title", "<div style='text-align: left;'><span class='tooltip_code'>" + thread.instructions[j].code + "</span><br>" + thread.instructions[j].tooltip + "</div>");
 			}
 			var placement = 'left';
 			if (i == 0) {

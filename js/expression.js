@@ -1,6 +1,6 @@
 var LiteralExpression = function(value) {
     this.evaluate = function() { return value; };
-    this.code = value.toString();
+    this.code = (value === false) || (value === true) ? "<span class='keyword'>" + value.toString() + "</span>" : value.toString();
 };
 var VariableExpression = function(name) {
     this.evaluate = function(threadState, globalState) { return globalState[name].value; };
@@ -22,6 +22,14 @@ var EqualityExpression =
             return left.evaluate(threadState, globalState) == right.evaluate(threadState, globalState);
         };
         this.code = left.code + " == " + right.code;
+
+    };
+var LessThanExpression =
+    function (left, right) {
+        this.evaluate = function(threadState, globalState)  {
+            return left.evaluate(threadState, globalState) < right.evaluate(threadState, globalState);
+        };
+        this.code = left.code + " < " + right.code;
 
     };
 var AndExpression =

@@ -1,42 +1,5 @@
 var levels = {
-	"test": new Level(
-	    "test",
-	    "Test Level",
-		"In this level, you slay monsters.",
-		"You have won.",
-		"victorytext",
-		[
-			new Thread([
-				new Instruction("Hello World!"),
-				new ExpandableInstruction("do something really complex", [
-					new Instruction("do"),
-					new Instruction("something"),
-					new Instruction("really"),
-					new Instruction("rather"),
-					new Instruction("complex"),
-				]),
-				new Instruction("and now"),
-				new Instruction("something simple"),
-				new ExpandableInstruction("and something complex", [
-					new Instruction("and"),
-					new Instruction("something"),
-					new Instruction("complex"),
-				]),
-			]),
-			new Thread([
-				new AssignInstruction("global hello = 'world'", 'hello', 'String', 'world'),
-				new Instruction("foo"),
-				new Instruction("  bar"),
-				new Instruction("  zoo"),
-			]),
-			new Thread([
-				new Instruction("bar"),
-				new AssignInstruction("global hello = 'foo'", 'hello', 'String', 'foo'),
 
-				new Instruction("foo"),
-				new Instruction("bar"),
-			])
-		]),
 
 	"tutorial": new Level(
 	    "tutorial",
@@ -554,12 +517,12 @@ var levels = {
 		"Producer-Consumer",
 		"A new victory condition awaits you!",
 		"In this challenge, your goal is cause an exception to be raised.",
-		"VICTORY TODO",
+		"You should know that this was really a rather simple producer-consumer pattern to exploit but I admit you performed quite well nonetheless.",
 		[
 			new Thread([
 				createOuterWhile(),
 				new IfLongInstruction(new SemaphoreTryWaitExpression("ss"), "if"),
-				// dequeue
+				createDequeueUnsafe("queue"),
 				new ElseInstruction("if"),
 				new CommentInstruction("Nothing in the queue."),
 				new EndIfLongInstruction("if"),
@@ -585,9 +548,37 @@ var levels = {
 				value : 0
 			}
 		}
+	),
+	"S3-producerConsumer" : new Level(
+		"S3-producerConsumer",
+		"Producer-Consumer (variant)",
+		"The victory conditions just keep coming!",
+		"For this challenge, it will be useful to know that most library methods are not thread-safe and if two threads enter an unsafe method on the same object simultaneously, strange things may happen. Things that result in your victory.",
+		"Congratulations, Scheduler! Are you ready for the next challenge?",
+		[
+			new Thread([
+				new CommentInstruction("The Producer"),
+				createOuterWhile(),
+				createEnqueueUnsafe("queue", 42),
+				createOuterWhileEnd()
+			]),
+			new Thread([
+				new CommentInstruction("The Consumer"),
+				createOuterWhile(),
+				new IfInstruction(new QueueNotEmptyExpression("queue"), "if"),
+				createDequeueUnsafe("queue"),
+				new EndIfInstruction("if"),
+				createOuterWhileEnd()
+			])
+		],
+		{
+			"queue" : {
+				name : 'queue',
+				type : "System.Queue<int>",
+				value : 0
+			}
+		}
 	)
-
-
 
 
 

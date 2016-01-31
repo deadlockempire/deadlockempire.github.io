@@ -21,6 +21,7 @@ var goToInstruction = function(threadState, line) {
 
 var Instruction = function(code) {
 	this.code = code;
+	this.tooltip = "This statement does nothing and merely fills up space.";
 	this.execute = function(threadState, globalState) {
 		moveToNextInstruction(threadState);
 	};
@@ -29,7 +30,7 @@ var Instruction = function(code) {
 
 var FlavorInstruction = function(flavorText) {
 	this.code = "<i>" + flavorText + "</i>;";
-	this.tooltip = "This instruction does nothing and merely fills up space.";
+	this.tooltip = "This statement does nothing. It is part of the business logic and does not affect parallelism. You may consider it thread-safe.";
 	this.execute = function(threadState, globalState) {
 		moveToNextInstruction(threadState);
 	};
@@ -59,18 +60,10 @@ var WinningInstruction = function(code) {
 	};
 };
 
-var AssignInstruction = function(code, variable, type, value) {
-	this.code = code;
-	this.variable = variable;
-	this.execute = function(threadState, globalState) {
-		assign(variable, type, value);
-		moveToNextInstruction(threadState);
-	};
-};
-
 var IfInstruction = function(expression, name) {
-	this.code = "if (" + expression.code + ") {";
+	this.code = "<span class='keyword'>if</span> (" + expression.code + ") {";
 	this.name = name;
+	this.tooltip = "The \"if\" statement evaluates an expression. If it's true, the specified statements are executed. Otherwise, they are skipped.";
 	this.isBlocking = function(threadState, globalState) {
 		return (expression.isBlocking && expression.isBlocking(threadState, globalState));
 	}
@@ -103,8 +96,9 @@ var EndIfInstruction = function(name) {
 };
 
 var IfLongInstruction = function(expression, name) {
-	this.code = "if (" + expression.code + ") {";
+	this.code = "<span class='keyword'>if</span> (" + expression.code + ") {";
 	this.name = name;
+	this.tooltip = "The \"if\" statement evaluates an expression. If it's true, the specified statements are executed. Otherwise, the \"else\" statements are executed.";
 	this.isBlocking = function(threadState, globalState) {
 		return (expression.isBlocking && expression.isBlocking(threadState, globalState));
 	}
@@ -116,7 +110,6 @@ var IfLongInstruction = function(expression, name) {
 			var i;
 			for (i = 0; i < threadProgram.length; i++) {
 				var instruction = threadProgram[i];
-				console.log(instruction);
 				if ((instruction instanceof ElseInstruction) && instruction.name == name) {
 					break;
 				}
@@ -126,14 +119,14 @@ var IfLongInstruction = function(expression, name) {
 	};
 };
 var ElseInstruction = function(name) {
-	this.code = "} else {";
+	this.code = "} <span class='keyword'>else</span> {";
 	this.name = name;
+	this.tooltip = "This is part of an \"if/else\" statement.";
 	this.execute = function(threadState, globalState, threadProgram) {
 
 			var i;
 			for (i = 0; i < threadProgram.length; i++) {
 				var instruction = threadProgram[i];
-				console.log(instruction);
 				if ((instruction instanceof EndIfLongInstruction) && instruction.name == name) {
 					break;
 				}
@@ -155,6 +148,7 @@ var EndIfLongInstruction = function(name) {
 var ExpandableInstruction = function(code, minorInstructions) {
 	this.code = code;
 	this.minorInstructions = minorInstructions;
+	this.tooltip = "This statement is not atomic and can be expanded into several minor statements that are atomic.";
 	this.execute = function(threadState, globalState, threadProgram) {
 		console.assert(!threadState.expanded);
 		threadState.expanded = true;
@@ -216,8 +210,9 @@ var CommentInstruction = function(comment) {
 };
 
 var WhileInstruction = function(expression, name, code) {
-	this.code = code ? code : ("while (" + expression.code + ") {");
+	this.code = code ? code : ("<span class='keyword'>while</span> (" + expression.code + ") {");
 	this.name = name;
+	this.tooltip = "Executes the statements in the loop body until the specified condition ceases to be true.";
 
 	this.execute = function(threadState, globalState, threadProgram) {
 		if (expression.evaluate(threadState, globalState)) {
@@ -245,6 +240,7 @@ var createOuterWhileEnd = function() {
 
 var EndWhileInstruction = function( name) {
 	this.code = "}";
+	this.tooltip = "Marks the end of a while loop.";
 	this.name = name;
 	this.execute = function(threadState, globalState, threadProgram) {
 		var i = 0;

@@ -1,4 +1,5 @@
 var campaign = [
+        /*
     {
         name : "Debugging Levels",
         levels : [
@@ -10,6 +11,7 @@ var campaign = [
             "deadlock"
         ]
     },
+        */
     {
         name : "Unsynchronized Code",
         levels : [
@@ -24,7 +26,8 @@ var campaign = [
         name : "Semaphores",
         levels : [
             "S1-simple",
-            "S2-producerConsumer"
+            "S2-producerConsumer",
+            "S3-producerConsumer"
         ]
     },
     {
@@ -38,6 +41,8 @@ var campaign = [
     {
         name : "The Deadlock Empire",
         levels : [
+            "D1-Dragonfire",
+            "D2-Sorcerer"
         ]
     }
 ];

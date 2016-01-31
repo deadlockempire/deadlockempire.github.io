@@ -33,7 +33,7 @@ var updateProgramCounters = function() {
 
 var updateGlobalVariables = function() {
 	var area = $('.global-state');
-	area.html("");
+	area.html("<hr>");
 	for (var key in gameState.globalState) {
 		var variable = gameState.globalState[key];
 		var representation = $('<div class="variable"></div>');
@@ -52,7 +52,7 @@ var updateGlobalVariables = function() {
 			else if (variable.type.indexOf("Semaphore") != -1) {
 				valueRepr = 'SemaphoreSlim [count: ' + variable.value + ']';
 			}
-			if (variable.type.indexOf("Queue") != -1) {
+			else if (variable.type.indexOf("Queue") != -1) {
 				valueRepr = 'Queue [element count: ' + variable.value + ']';
 			}
 			else {

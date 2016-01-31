@@ -1,5 +1,5 @@
 var MonitorEnterInstruction = function(monitorName) {
-    this.code = "Monitor.Enter(" + monitorName + ");";
+    this.code = "<span class='static'>Monitor</span>.Enter(" + monitorName + ");";
     this.tooltip = "Atomic. Acquires a lock. If this thread already owns this lock, the lock counter is incremented. If another thread currently owns this lock, this call blocks until the lock is released.";
     this.isBlocking = function(threadState, globalState) {
         var monitor = globalState[monitorName];
@@ -30,7 +30,7 @@ var MonitorEnterInstruction = function(monitorName) {
     }
 };
 var MonitorTryEnterExpression = function (monitorName) {
-    this.code = "Monitor.TryEnter(" + monitorName + ")";
+    this.code = "<span class='static'>Monitor</span>.TryEnter(" + monitorName + ")";
     this.evaluate = function(threadState, globalState) {
         var monitor = globalState[monitorName];
         if (monitor.lastLockedByThread != null &&
@@ -51,7 +51,7 @@ var MonitorTryEnterExpression = function (monitorName) {
     }
 }
 var MonitorExitInstruction = function(monitorName) {
-    this.code = "Monitor.Exit(" + monitorName + ");";
+    this.code = "<span class='static'>Monitor</span>.Exit(" + monitorName + ");";
     this.tooltip = "Atomic. Releases a lock. If this thread had this locked multiple times, decrements the timer only. If this thread does not own this lock, an exception is thrown (and you win the level).";
     this.execute = function(threadState, globalState) {
         var monitor = globalState[monitorName];

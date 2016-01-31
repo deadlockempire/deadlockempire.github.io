@@ -21,7 +21,7 @@ var win = function(reason) {
 
 	var text = level.victoryText;
 	if (reason) {
-		text += "<p>" + reason + "</p>";
+		text += "<br><br><p>Victory Condition: <i>" + reason + "</i></p>";
 	}
 	$('#win-message').html(text);
 
