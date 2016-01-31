@@ -97,7 +97,7 @@ var redraw = function() {
 			threadButtons[i].step.attr('disabled', true);
 			threadButtons[i].step.attr('title', 'This thread is finished.');
 			threadButtons[i].step.tooltip();
-		} else if (currentInstruction.isBlocking && currentInstruction.isBlocking(threadState, gameState.globalState)) {
+		} else if (isThreadBlocked(i)) {
 			threadButtons[i].step.attr('disabled', true);
 			threadButtons[i].step.attr('title', 'This thread is blocked.');
 			threadButtons[i].step.tooltip();
