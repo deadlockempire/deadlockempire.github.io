@@ -64,11 +64,11 @@ var returnToMainMenu = function() {
 		}
 	}
 
-	/*
-	for (var levelId in levels) {
-		// TODO: 'clear saved progress' button
-		var source = makeLevelBox(levelId);
-		$("#mainarea").append(source);
-	}
-	*/
+	var clearButton = $('<button class="btn btn-danger"><span class="glyphicon glyphicon-floppy-remove"></span>&nbsp;Clear progress</button>');
+	clearButton.click(clearProgressAction);
+
+	var clearButtonArea = $('<div style="text-align: right; margin-top: 5em;"></div>');
+	clearButtonArea.append(clearButton);
+
+	mainArea.append(clearButtonArea);
 }
