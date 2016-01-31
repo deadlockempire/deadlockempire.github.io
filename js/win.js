@@ -23,6 +23,9 @@ var win = function(reason) {
 	if (findNextLevelInCampaign(window.levelName) == null) {
 		// game finished
 		$('#win-message').append("<br><br>You mastered all the lessons of Deadlock Empire. Thank you for playing!");
+		$('#win-next-level').hide();
+	} else {
+		$('#win-next-level').show();
 	}
 };
 
