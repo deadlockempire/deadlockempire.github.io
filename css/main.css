@@ -149,3 +149,18 @@ h2.menu-heading {
 	/*clear: both;*/
 	margin-left: 4em;
 }
+
+#logo {
+	float: left;
+}
+h1#game {
+	padding-top: 1em;
+	font-size: 3.5em;
+	font-family: 'Amatic SC', cursive;
+}
+footer {
+	border-top: 1px dotted #eee;
+	margin-top: 1em;
+	padding-top: 1em;
+	color: #999;
+}
