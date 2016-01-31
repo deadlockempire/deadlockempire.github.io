@@ -1,6 +1,7 @@
 var winScreen;
 
 var win = function(reason) {
+	localStorage.setItem('level_' + window.level.id, "solved");
 	winScreen.fadeIn(400);
 
 	//$('#win-screen .icon').slideDown();
@@ -22,7 +23,7 @@ var win = function(reason) {
 
 	if (findNextLevelInCampaign(window.levelName) == null) {
 		// game finished
-		$('#win-message').append("<br><br>You mastered all the lessons of Deadlock Empire. Thank you for playing!");
+		$('#win-message').append("<br><br>You mastered all the lessons of The Deadlock Empire. Thank you for playing!");
 		$('#win-next-level').hide();
 	} else {
 		$('#win-next-level').show();
