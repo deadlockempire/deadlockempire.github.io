@@ -41,7 +41,7 @@ var returnToMainMenu = function() {
 	var foundUnfinished = false;
 	for (var campaignKey in campaign) {
 		var quest = campaign[campaignKey];
-		if (quest.name == "Debugging levels" && !debugMode) {
+		if (quest.name == "Debugging Levels" && !debugMode) {
 			continue;
 		}
 		var heading = $('<h2 class="menu-heading"></h2>');
