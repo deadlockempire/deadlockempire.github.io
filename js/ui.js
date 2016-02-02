@@ -5,7 +5,6 @@ function showMessage(caption, text) {
 }
 
 var updateProgramCounters = function() {
-	var threadCount = level.threads.length;
 	$('.instruction').each(function() {
 		$(this).removeClass('current-instruction');
 	});
@@ -13,15 +12,16 @@ var updateProgramCounters = function() {
 		$(this).css({display: "none"});
 	});
 	// update program counters
-	for (var i = 0; i < threadCount; i++) {
+	for (var i = 0; i < gameState.getThreadCount(); i++) {
 		var threadState = gameState.threadState[i];
 		var pc = threadState.programCounter[0];
+		var program = gameState.getProgramOfThread(i);
 
-		if (pc < level.threads[i].instructions.length) {
+		if (pc < program.length) {
 			$('#instruction-' + i + '-' + pc).addClass('current-instruction');
 		}
 
-		if (level.threads[i].instructions[pc] instanceof ExpandableInstruction) {
+		if (program[pc] instanceof ExpandableInstruction) {
 			$('#instruction-' + i + '-' + pc + '-expansion').css({display: (threadState.expanded ? 'block' : 'none')});
 
 			if (threadState.expanded) {
@@ -88,8 +88,8 @@ var redraw = function() {
 		wonBanner.hide();
 	}
 
-	for (var i = 0; i < getThreadCount(); i++) {
-		var program = level.threads[i].instructions;
+	for (var i = 0; i < gameState.getThreadCount(); i++) {
+		var program = gameState.getProgramOfThread(i);
 		var threadState = gameState.threadState[i];
 		var currentInstruction = program[threadState.programCounter[0]];
 

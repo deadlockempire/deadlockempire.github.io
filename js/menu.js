@@ -6,7 +6,7 @@ function startLevelCreator(level) {
 
 var wasLevelCompleted = function(levelId) {
 	return localStorage.getItem('level_' + levelId);
-}
+};
 
 var returnToMainMenu = function() {
 	var mainArea = $('#mainarea');
@@ -32,7 +32,7 @@ var returnToMainMenu = function() {
 			return $('<div></div>');
 		}
 		var source = $('<div class="mainMenuLevel"></div>');
-		if (wasLevelCompleted(level.id)) {
+		if (wasLevelCompleted(levelId)) {
 			source.addClass('completed');
 			source.append('<span class="menu-completion-icon glyphicon glyphicon-ok"></span>');
 		}

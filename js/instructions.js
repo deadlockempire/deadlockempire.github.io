@@ -2,7 +2,7 @@ var moveToNextInstruction = function(threadState) {
 	if (threadState.expanded) {
 		threadState.programCounter[1]++;
 
-		var program = level.threads[threadState.id].instructions;
+		var program = gameState.getProgramOfThread(threadState.id);
 		if (threadState.programCounter[1] >= program[threadState.programCounter[0]].minorInstructions.length) {
 			threadState.expanded = false;
 			threadState.programCounter[0]++;

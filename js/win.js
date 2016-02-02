@@ -4,13 +4,12 @@ var win = function(reason) {
 	if (levelWasCleared) {
 		return;
 	}
-	localStorage.setItem('level_' + window.level.id, "solved");
+	localStorage.setItem('level_' + gameState.getLevelId(), "solved");
 	winScreen.fadeIn(400);
 	levelWasCleared = true;
 
 	//$('#win-screen .icon').slideDown();
 	//
-	localStorage.setItem("level_" + window.levelName, true);
 
 	var messages = ["You win!", "Great job!", "Congratulations!"];
 	var randomMessage = messages[Math.floor(3 * Math.random())];
@@ -19,7 +18,7 @@ var win = function(reason) {
 
 	// TODO: taky popsat, jak jsem to znicil
 
-	var text = level.victoryText;
+	var text = gameState.getLevel().victoryText;
 	if (reason) {
 		text += "<br><br><p>Victory Condition: <i>" + reason + "</i></p>";
 	}
@@ -35,7 +34,7 @@ var win = function(reason) {
 };
 
 var areThereMoreLevels = function() {
-	return findNextLevelInCampaign(window.levelName) != null;
+	return findNextLevelInCampaign(gameState.getLevelId()) != null;
 };
 
 $(function() {

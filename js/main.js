@@ -1,43 +1,3 @@
-var level = null;
-
-var debugMode = false;
-
-var getQueryString = function ( field, url ) {
-	var href = url ? url : window.location.href;
-	var reg = new RegExp( '[?&]' + field + '=([^&#]*)', 'i' );
-	var string = reg.exec(href);
-	return string ? string[1] : null;
-};
-
-$(function() {
-	debugMode = (getQueryString('debug') != null);
-	if (!debugMode) {
-		$('#debug-toolbar').remove();
-	}
-});
-
-var gameState = {
-	// thread state:
-	// {
-	//	programCounter: [(number of current instruction), (number of current subinstruction)],
-	//	expanded: (boolean: is current major instruction expanded)
-	// }
-	threadState: null,
-
-	// global variables
-	// keyed by variable name
-	// value is {
-	//	'type': (typ),
-	//	'name': (jmeno),
-	//	'value': (value, JS primitive),
-	//	'lastLockedByThread': (ID of last thread that locked the
-	//		variable, or null),
-	//	'lockCount': (lock count, 0 if none)
-	// }
-	globalState: null
-};
-
-
 var assign = function(variable, type, value) {
 	// TODO: type checking?
 	gameState.globalState[variable] = {
@@ -53,7 +13,7 @@ var isThreadBlocked = function(threadId) {
 	if (isThreadFinished(threadId)) {
 		return false;
 	}
-	var program = level.threads[threadId].instructions;
+	var program = gameState.getProgramOfThread(threadId);
 	var threadState = gameState.threadState[threadId];
 	var currentInstruction = program[threadState.programCounter[0]];
 	if (currentInstruction.isBlocking && currentInstruction.isBlocking(threadState, gameState.globalState)) {
@@ -69,7 +29,7 @@ var isThreadBlocked = function(threadId) {
 };
 
 var areAllThreadsBlocked = function() {
-	for (var threadId in level.threads) {
+	for (var threadId in gameState.getLevel().threads) {
 		if (!isThreadBlocked(threadId)) {
 			return false;
 		}
@@ -79,11 +39,11 @@ var areAllThreadsBlocked = function() {
 
 var checkForVictoryConditions = function() {
 	var howManyCriticalSections = 0;
-	for (var threadId in level.threads) {
+	for (var threadId in gameState.getLevel().threads) {
 		if (isThreadFinished(threadId)) {
 			continue;
 		}
-		var thread = level.threads[threadId];
+		var thread = gameState.getLevel().threads[threadId];
 		var instructions = thread.instructions;
 		var threadState = gameState.threadState[threadId];
 		var programCounter = threadState.programCounter;
@@ -104,7 +64,7 @@ var checkForVictoryConditions = function() {
 };
 
 var isThreadFinished = function(thread) {
-	var program = level.threads[thread].instructions;
+	var program = gameState.getProgramOfThread(thread);
 	var maxInstructions = program.length;
         var threadState = gameState.threadState[thread];
 	var pc = threadState.programCounter[0];
@@ -112,7 +72,7 @@ var isThreadFinished = function(thread) {
 };
 
 var stepThread = function(thread) {
-	var program = level.threads[thread].instructions;
+	var program = gameState.getProgramOfThread(thread);
 	var threadState = gameState.threadState[thread];
 	var pc = threadState.programCounter[0];
 	if (!isThreadFinished(thread)) {
@@ -133,10 +93,6 @@ var expandThread = function(thread) {
 	saveForUndo();
 	gameState.threadState[thread].expanded = true;
 	redraw();
-};
-
-var getThreadCount = function() {
-	return level.threads.length;
 };
 
 var undoHistory = [];
@@ -162,7 +118,7 @@ var undo = function() {
 };
 
 var resetLevel = function() {
-	startLevel(window.levelName);
+	startLevel(gameState.getLevelId());
 };
 
 var undoButton;
@@ -173,7 +129,7 @@ var nextChallengeButton;
 var levelWasCleared = false;
 
 var goToNextLevel = function() {
-	var next = findNextLevelInCampaign(window.levelName);
+	var next = findNextLevelInCampaign(gameState.getLevelId());
 	startLevel(next);
 	winScreen.fadeOut(300);
 };
@@ -181,17 +137,15 @@ var goToNextLevel = function() {
 var startLevel = function(levelName) {
 	levelWasCleared = false;
 	undoHistory = [];
-	level = levels[levelName];
+	var level = levels[levelName];
 	if (!level) {
-		console.log("trying to start nonexisting level ", levelName);
+		fail("trying to start nonexisting level ", levelName);
 		return;
 	}
 	console.log(level);
 
 	var mainArea = $('#mainarea');
 	mainArea.html("");
-	window.level = level;
-	window.levelName = levelName;
 
 	var title = $('<h1></h1>');
 	title.text(level.name);
@@ -342,19 +296,7 @@ var startLevel = function(levelName) {
 
 	mainArea.append('<div class="global-state"></div>');
 
-	gameState.threadState = [];
-	for (var i = 0; i < threadCount; i++) {
-		gameState.threadState[i] = {
-			programCounter: [0, 0],
-			id: i,
-			expanded: false
-		};
-	}
-	gameState.globalState = {};
-	if (level.variables) {
-		// HAX
-		gameState.globalState = JSON.parse(JSON.stringify(level.variables));
-	}
+	gameState.resetForLevel(level);
 
 	redraw();
 	if (level.id == "T1-Interface") {
@@ -386,11 +328,9 @@ $(function() {
 		$('#alert').hide();
 	});
 	var select = $("#levelSelect");
-	$.each(levels,function(key, value)
-	{
+	$.each(levels,function(key, value) {
 		select.append('<option value=' + key + '>' + value.name + '</option>');
-		$.each(value.threads, function(key2, thread)
-		{
+		$.each(value.threads, function(key2, thread) {
 			var indent = 0;
 			for (var instructionName in thread.instructions) {
 				var instruction = thread.instructions[instructionName];
@@ -420,9 +360,12 @@ var route = function() {
 	if (location.hash == '#menu' || !location.hash) {
 		returnToMainMenu();
 	} else {
-		var level = location.hash.replace('#', '');
-		if (level in levels) {
-			startLevel(level);
+		var levelId = location.hash.replace('#', '');
+		if (levelId in levels) {
+			startLevel(levelId);
+		} else {
+			console.warn("hash does not correspond to level, returning to main menu", location.hash);
+			returnToMainMenu();
 		}
 	}
 };

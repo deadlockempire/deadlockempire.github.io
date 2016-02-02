@@ -1,40 +1,44 @@
 var Level = function(id, name, short, long, victoryText, threads, variables) {
 	this.id = id;
+	this.name = name;
 	this.shortDescription = short;
 	this.longDescription = long;
-	this.name = name;
 	this.victoryText = victoryText;
 	this.threads = threads;
 	this.variables = variables;
 };
 
+Level.prototype.createFreshGlobalState = function() {
+	if (this.variables) {
+		// HAX
+		return JSON.parse(JSON.stringify(this.variables));
+	}
+	return {};
+};
+
+/**
+ * @param {string} levelId
+ * @return {Level}
+ */
 var findNextLevelInCampaign = function(levelId) {
 	for (var i = 0; i < campaign.length; i++) {
 		var quest = campaign[i];
-		var levels = quest.levels;
-		var found = false;
-		//console.log(levels);
-		for (var j = 0; j < levels.length; j++) {
-			if (levelId == levels[j]) {
-			//	console.log('found as ', j);
-				found = true;
-				break;
-			}
-		}
-
-		if (found) {
-			if (j == levels.length - 1) {
-				//console.log('next campaign');
-				if (i < campaign.length - 1) {
-					return campaign[i + 1].levels[0];
+		for (var j = 0; j < quest.levels.length; j++) {
+			if (quest.levels[j] == levelId) {
+				if (j == quest.levels.length - 1) {
+					if (i < campaign.length - 1) {
+						// Start next quest.
+						return campaign[i + 1].levels[0];
+					} else {
+						// This was the last level.
+						return null;
+					}
 				} else {
-					// TODO: game over, finished
-					return null;
+					// Go to next level of quest.
+					return campaign[i].levels[j + 1];
 				}
-			} else {
-				return campaign[i].levels[j + 1];
 			}
 		}
 	}
-	console.log("level not in campaign!");
+	fail("level not in campaign:", levelId);
 };
