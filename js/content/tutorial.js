@@ -41,7 +41,7 @@ var loadTutorial1 = function() {
     });
     intro.start();
 };
-levels["T2-Expansion"] = new Level("T1-Expansion",
+levels["T2-Expansion"] = new Level("T2-Expansion",
     "Tutorial 2: Non-Atomic Instructions",
     "In the second tutorial, you will learn to expand statements.",
     "Many statements are not atomic and are actually composed of several \"minor\" statements. Whenever such a statement is the active instruction, you can \"expand\" it to be able to step through with more precision. Follow the path outlined below, watch changes in the global state and learn how this works.<br><br>" +
