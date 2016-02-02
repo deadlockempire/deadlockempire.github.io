@@ -199,7 +199,7 @@ var levels = {
 		"3-simpleCounter",
 		"Simple Counter",
 		"Let's test your skills with a simple problem.",
-		"Here also you must make both threads enter the critical section. This should not be hard.",
+		"Here also you must make both threads enter the critical section. This should not be hard.<br>If you'd like to reset the counter, use the orange 'Reset level' button on the right.",
 		"As you have seen previously, once you pass a test, such as an integer comparison, you don't care about what other threads do to the operands - you have already passed the test and may continue to the critical section. To make this work, you would need locks.",
 		[
 			new Thread([

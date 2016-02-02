@@ -27,7 +27,6 @@ var Instruction = function(code) {
 	};
 };
 
-
 var FlavorInstruction = function(flavorText) {
 	this.code = "<i>" + flavorText + "</i>;";
 	this.tooltip = "This statement does nothing. It is part of the business logic and does not affect parallelism. You may consider it thread-safe.";
@@ -37,20 +36,20 @@ var FlavorInstruction = function(flavorText) {
 };
 
 var FailureInstruction = function() {
-    this.code = "<i>failure-statement</i>;";
-    this.tooltip = "If you execute this statement, you will win this level.";
-    this.execute = function(threadState, globalState) {
-	    win("You executed a failure instruction.");
-    };
+	this.code = "<i>failure-statement</i>;";
+	this.tooltip = "If you execute this statement, you will win this level.";
+	this.execute = function(threadState, globalState) {
+		win("You executed a failure instruction.");
+	};
 };
 
 var CriticalSectionInstruction = function() {
-    this.isCriticalSection = true;
-    this.code = "<span class='critical-section'>critical_section</span>();";
-    this.tooltip = "If two threads are about to execute a Critical Section Instruction at the same time, you win the level.";
-    this.execute = function (threadState, globalState) {
-        moveToNextInstruction(threadState);
-    };
+	this.isCriticalSection = true;
+	this.code = "<span class='critical-section'>critical_section</span>();";
+	this.tooltip = "If two threads are about to execute a Critical Section Instruction at the same time, you win the level.";
+	this.execute = function (threadState, globalState) {
+		moveToNextInstruction(threadState);
+	};
 };
 
 var WinningInstruction = function(code) {
@@ -58,6 +57,17 @@ var WinningInstruction = function(code) {
 	this.execute = function(threadState, globalState) {
 		win("You have executed the Winning Instruction.");
 	};
+};
+
+var findMatchingInstructionIndex = function(program, name, type) {
+	for (var i = 0; i < program.length; i++) {
+		var instruction = program[i];
+		if ((instruction instanceof type) && instruction.name == name) {
+			return i;
+		}
+	}
+	fail("Failed to find matching instruction", program, name, type);
+	return 0;
 };
 
 var IfInstruction = function(expression, name) {
@@ -71,17 +81,9 @@ var IfInstruction = function(expression, name) {
 		if (expression.evaluate(threadState, globalState)) {
 			moveToNextInstruction(threadState);  // goto true branch
 		} else {
-			// false -> find matching Else
-			var i;
-			for (i = 0; i < threadProgram.length; i++) {
-				var instruction = threadProgram[i];
-				console.log(instruction);
-				if ((instruction instanceof EndIfInstruction) && instruction.name == name) {
-					break;
-				}
-			}
-			console.assert(i < threadProgram.length);
-			goToInstruction(threadState, i);
+			// Condition is false, jump to matching EndIf.
+			var matchingEndIf = findMatchingInstructionIndex(threadProgram, name, EndIfInstruction);
+			goToInstruction(threadState, matchingEndIf);
 		}
 	};
 };
@@ -106,35 +108,23 @@ var IfLongInstruction = function(expression, name) {
 		if (expression.evaluate(threadState, globalState)) {
 			moveToNextInstruction(threadState);  // goto true branch
 		} else {
-			// false -> find matching Else
-			var i;
-			for (i = 0; i < threadProgram.length; i++) {
-				var instruction = threadProgram[i];
-				if ((instruction instanceof ElseInstruction) && instruction.name == name) {
-					break;
-				}
-			}
-			goToInstruction(threadState, i + 1);
+			// false -> move 1 instruction after matching 'else'
+			var matchingElse = findMatchingInstructionIndex(threadProgram, name, ElseInstruction);
+			goToInstruction(threadState, matchingElse + 1);
 		}
 	};
 };
+
 var ElseInstruction = function(name) {
 	this.code = "} <span class='keyword'>else</span> {";
 	this.name = name;
 	this.tooltip = "This is part of an \"if/else\" statement.";
 	this.execute = function(threadState, globalState, threadProgram) {
-
-			var i;
-			for (i = 0; i < threadProgram.length; i++) {
-				var instruction = threadProgram[i];
-				if ((instruction instanceof EndIfLongInstruction) && instruction.name == name) {
-					break;
-				}
-			}
-			goToInstruction(threadState, i );
-
+		var matchingEndIfLong = findMatchingInstructionIndex(threadProgram, name, EndIfLongInstruction);
+		goToInstruction(threadState, matchingEndIfLong);
 	};
 };
+
 var EndIfLongInstruction = function(name) {
 	this.code = "}";
 	this.tooltip = "This is the end of a complex \"if\" statement.";
@@ -188,6 +178,7 @@ var createAssignment = function(name, expression) {
 	v.tooltip = "[Expandable] Assigns the value of the right-side expression to the variable on the left. This operation is non-atomic.";
 	return v;
 };
+
 var createIncrement = function(name) {
 	var minorInstructions = [
 		new AtomicAssignmentToTemp(new AdditionExpression(new VariableExpression(name), new LiteralExpression(1))),
@@ -205,6 +196,7 @@ var EmptyStatement = function() {
 		moveToNextInstruction(threadState);
 	};
 };
+
 var CommentInstruction = function(comment) {
 	this.code = "<font color='Gray'>// " + comment + "</font>";
 	this.tooltip = "This is a comment. It does nothing.";
@@ -222,15 +214,9 @@ var WhileInstruction = function(expression, name, code) {
 		if (expression.evaluate(threadState, globalState)) {
 			moveToNextInstruction(threadState);
 		} else {
-			// false -> find matching EndWhile
-			var i;
-			for (i = 0; i < threadProgram.length; i++) {
-				var instruction = threadProgram[i];
-				if ((instruction instanceof EndWhileInstruction) && instruction.name == name) {
-					break;
-				}
-			}
-			threadState.programCounter = [ i + 1 , 0 ];
+			// false -> move 1 instruction after matching EndWhile
+			var matchingEndWhile = findMatchingInstructionIndex(threadProgram, name, EndWhileInstruction);
+			goToInstruction(threadState, matchingEndWhile + 1);
 		}
 	};
 };
@@ -247,13 +233,8 @@ var EndWhileInstruction = function( name) {
 	this.tooltip = "Marks the end of a while loop.";
 	this.name = name;
 	this.execute = function(threadState, globalState, threadProgram) {
-		var i = 0;
-		for (i = 0; i < threadProgram.length; i++) {
-			var instruction = threadProgram[i];
-			if ((instruction instanceof WhileInstruction) && instruction.name == name) {
-				break;
-			}
-		}
-		threadState.programCounter = [i, 0];
+		// Jump back to start of matching 'while'.
+		var matchingWhile = findMatchingInstructionIndex(threadProgram, name, WhileInstruction);
+		goToInstruction(threadState, matchingWhile);
 	};
 };

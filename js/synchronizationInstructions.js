@@ -65,7 +65,7 @@ var MonitorExitInstruction = function(monitorName) {
         }
         else
         {
-            declareVictory("The SynchronizationLockException was thrown because a thread attempted to release a lock it did not have.");
+            win("The SynchronizationLockException was thrown because a thread attempted to release a lock it did not have.");
         }
         moveToNextInstruction(threadState);
     }
