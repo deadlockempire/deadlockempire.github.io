@@ -503,7 +503,7 @@ var levels = {
 	"S1-simple" : new Level(
 		"S1-simple",
 		"Semaphores",
-		"Semaphore is a simple synchronization primitive.",
+		"A semaphore is a simple synchronization primitive.",
 		"This is an introductory level and should not take too much effort.",
 		"Yay! You know how to use semaphores maybe! Let's now proceed to harder levels.",
 		[

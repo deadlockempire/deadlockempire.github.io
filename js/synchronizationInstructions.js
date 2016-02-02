@@ -5,7 +5,7 @@ var MonitorEnterInstruction = function(monitorName) {
         var monitor = globalState[monitorName];
         if (monitor.lastLockedByThread != null &&
             monitor.lastLockedByThread != threadState.id) {
-            return true;
+            return "Waiting for thread " + monitor.lastLockedByThread + " to unlock <code>" + monitorName + "</code>.";
         } else {
             return false;
         }
@@ -89,7 +89,7 @@ var SemaphoreWaitInstruction = function(semaphoreName) {
         if (globalState[semaphoreName].value > 0) {
             return false;
         } else {
-            return true;
+            return "Waiting for another thread to call <code>" + semaphoreName + ".Release()</code>.";
         }
     };
     this.execute = function(threadState, globalState) {
@@ -134,10 +134,16 @@ var MinorWaitIntro = function(mutexName) {
 
 };
 
-var MinorAwaitWakeUp = function() {
+var MinorAwaitWakeUp = function(mutex) {
     this.code = "wait until woken up";
     this.execute = function(threadState) { moveToNextInstruction(threadState); };
-    this.isBlocking = function(threadState) { return threadState.asleep; };
+    this.isBlocking = function(threadState) {
+	    if (!threadState.asleep) {
+		    return false;
+	    } else {
+		    return "Waiting for pulse on <code>" + mutex + "</code>.";
+	    }
+    };
     this.tooltip = "This thread won't receive priority until it is woken up by a pulse. When the pulse arrives, you may step forwards as normal.";
 };
 var MinorInternalMonitorEnter = function(mutex) {
@@ -145,7 +151,7 @@ var MinorInternalMonitorEnter = function(mutex) {
         var monitor = globalState[mutex];
         if (monitor.lastLockedByThread != null &&
             monitor.lastLockedByThread != threadState.id) {
-            return true;
+            return "Waiting for thread " + monitor.lastLockedByThread + " to unlock <code>" + mutex + "</code>.";
         } else {
             return false;
         }
@@ -162,7 +168,7 @@ var MinorInternalMonitorEnter = function(mutex) {
 var createMonitorWait = function(mutex) {
     var minorInstructions = [
         new MinorWaitIntro(mutex),
-        new MinorAwaitWakeUp(),
+        new MinorAwaitWakeUp(mutex),
         new MinorInternalMonitorEnter(mutex)
     ];
     var v = new ExpandableInstruction("<span class='static'>Monitor</span>.Wait(" + mutex + ");", minorInstructions);

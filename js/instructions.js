@@ -27,6 +27,15 @@ var Instruction = function(code) {
 	};
 };
 
+/**
+ * Instructions may define a isBlocking method. If there is no such method
+ * or if it returns false, the instruction can be executed. If the method
+ * returns a string, it is blocking the thread and the string is the reason for
+ * the block. 'True' means 'we are blocking, but give no reason'.
+ *
+ * TODO(prvak): Figure out some nicer way to share code between instructions.
+ */
+
 var FlavorInstruction = function(flavorText) {
 	this.code = "<i>" + flavorText + "</i>;";
 	this.tooltip = "This statement does nothing. It is part of the business logic and does not affect parallelism. You may consider it thread-safe.";

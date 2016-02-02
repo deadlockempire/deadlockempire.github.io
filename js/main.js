@@ -9,6 +9,12 @@ var assign = function(variable, type, value) {
 	};
 };
 
+/**
+ * @return {bool|string} false if nothing is blocked, string if blocked with a
+ *                       reason, true if blocked without a given reason.
+ *
+ * TODO(prvak): The naming is getting a bit weird now that we return block reasons.
+ */
 var isThreadBlocked = function(threadId) {
 	if (isThreadFinished(threadId)) {
 		return false;
@@ -16,13 +22,19 @@ var isThreadBlocked = function(threadId) {
 	var program = gameState.getProgramOfThread(threadId);
 	var threadState = gameState.threadState[threadId];
 	var currentInstruction = program[threadState.programCounter[0]];
-	if (currentInstruction.isBlocking && currentInstruction.isBlocking(threadState, gameState.globalState)) {
-		return true;
+	if (currentInstruction.isBlocking) {
+		var result = currentInstruction.isBlocking(threadState, gameState.globalState);
+		if (result) {
+			return result;
+		}
 	}
 	if (threadState.expanded) {
 		var currentMinor = currentInstruction.minorInstructions[threadState.programCounter[1]];
-		if (currentMinor.isBlocking && currentMinor.isBlocking(threadState, gameState.globalState)) {
-			return true;
+		if (currentMinor.isBlocking) {
+			var result = currentMinor.isBlocking(threadState, gameState.globalState);
+			if (result) {
+				return result;
+			}
 		}
 	}
 	return false;
@@ -112,6 +124,8 @@ var saveForUndo = function() {
 var undo = function() {
 	var last = JSON.parse(undoHistory.pop());
 	console.log(last);
+	// TODO(prvak): This forces us to have JSON-serializable threadState
+	// and globalState. Properly (de)serialize?
 	gameState.threadState = last.threadState;
 	gameState.globalState = last.globalState;
 	redraw();
@@ -222,6 +236,9 @@ var startLevel = function(levelName) {
 
 		var threadArea = $('<div class="thread"></div>');
 
+		var threadHeader = $('<h3 class="thread-header">Thread ' + i + '</h3>');
+		threadArea.append(threadHeader);
+
 		var stepButton = $('<button class="stepforwards btn btn-default"><span class="glyphicon glyphicon-play"></span>&nbsp;Step</button>');
 		stepButton.data('thread', i);
 		stepButton.click(function() {
@@ -236,9 +253,13 @@ var startLevel = function(levelName) {
 		});
 		threadArea.append(expandButton);
 
+		var blockReason = $('<div class="block-reason"></div>');
+		threadArea.append(blockReason);
+
 		threadButtons[i] = {
 			step: stepButton,
-			expand: expandButton
+			expand: expandButton,
+			blockReason: blockReason
 		};
 
 		var contextualButtons = $('<span class="contextual-buttons"></span>');
@@ -319,9 +340,7 @@ var clearProgressAction = function () {
 
 $(function() {
 	$('button#start').click(startSelectedLevel);
-	$('button#goToMain').click(function() {
-		navigateToMainMenu();
-	});
+	$('button#goToMain').click(navigateToMainMenu);
 	$('#clearProgress').click(clearProgressAction);
 	$('#alertHide').click(function () {
 		console.log("hiding");

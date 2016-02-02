@@ -93,21 +93,32 @@ var redraw = function() {
 		var threadState = gameState.threadState[i];
 		var currentInstruction = program[threadState.programCounter[0]];
 
+		var buttons = threadButtons[i];
+		var stepButton = buttons.step;
 		if (isThreadFinished(i)) {
-			threadButtons[i].step.attr('disabled', true);
-			threadButtons[i].step.attr('title', 'This thread is finished.');
-			threadButtons[i].step.tooltip();
+			stepButton.attr('disabled', true);
+			stepButton.attr('title', 'This thread is finished.');
+			stepButton.tooltip();
+			buttons.blockReason.html('');
 		} else if (isThreadBlocked(i)) {
-			threadButtons[i].step.attr('disabled', true);
-			threadButtons[i].step.attr('title', 'This thread is blocked.');
-			threadButtons[i].step.tooltip();
+			stepButton.attr('disabled', true);
+			stepButton.attr('title', 'This thread is blocked.');
+			stepButton.tooltip();
+
+			var reason = isThreadBlocked(i);
+			if (reason === true) {
+				// (Default filler.)
+				reason = "This thread is blocked.";
+			}
+			buttons.blockReason.html('<span class="glyphicon glyphicon-time"></span>&nbsp;' + reason);
 		} else {
-			threadButtons[i].step.attr('disabled', false);
-			threadButtons[i].step.attr('title', '');
-			threadButtons[i].step.tooltip('destroy');
+			stepButton.attr('disabled', false);
+			stepButton.attr('title', '');
+			stepButton.tooltip('destroy');
+			buttons.blockReason.html('');
 		}
 
 		var isExpandable = (currentInstruction instanceof ExpandableInstruction);
-		threadButtons[i].expand.attr('disabled', !(isExpandable && !threadState.expanded));
+		buttons.expand.attr('disabled', !(isExpandable && !threadState.expanded));
 	}
 };

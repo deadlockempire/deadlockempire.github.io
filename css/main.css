@@ -191,7 +191,7 @@ hr {
 	padding: 0;
 }
 .tooltip_code {
-	font-family: monospace;
+	font-family: Consolas, monospace;
 	font-weight: bold;
 	font-size: 1.2em;
 }
@@ -200,4 +200,20 @@ hr {
 }
 .static {
 	color: #2b91af
+}
+.block-reason {
+	height: 1.6em;
+	line-height: 1.6em;
+}
+code {
+	font-family: Consolas, monospace;
+}
+.block-reason code {
+	background: transparent;
+	color: #000;
+	font-size: 1.2em;
+}
+h3.thread-header {
+	font-family: Consolas, monospace;
+	font-size: 1.4em;
 }
