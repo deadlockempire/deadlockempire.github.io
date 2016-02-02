@@ -48,7 +48,8 @@ levels["T2-Expansion"] = new Level("T1-Expansion",
     "First, click 'Expand' in the first thread to reveal what an assignment consists of.<br>" +
     "Then, click 'Step' in the first thread to evaluate the expression, but not twice! We will still need the old value of 'a' (zero) in the second thread!<br>" +
     "Then, click 'Step' in the second thread to move to the assignment statement and expand it. Again, click 'Step' to read the expression into a thread-local variable.<br>" +
-    "The order of steps does not matter after this. You should be able to get into the critical section with both threads.",
+    "The order of steps does not matter after this. You should be able to get into the critical section with both threads.<br><br>" +
+    "If you miss the right order, just click 'Reset level' and try again.",
     "Congratulations! You have completed the tutorial! You may now either proceed with the first non-tutorial level (very easy) or choose a level from the main menu yourself. We hope you will have fun playing this game!",
     [
         new Thread([
