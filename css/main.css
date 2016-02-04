@@ -1,7 +1,30 @@
-body {
+html {
+	background: red url("../img/landscape-mountains-nature-clouds-downscale.jpg") no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
-#win-screen {
+body {
+	background: transparent;
+	/*
+	background-image: url("../img/RedMist.png");
+	background-attachment: fixed;
+	*/
+
+}
+#mainContainer {
+	/*
+	*/
+}
+
+#game-window {
+	background: rgba(255, 255, 255, 0.9);
+}
+
+
+#win-screen, #lose-screen {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -9,26 +32,93 @@ body {
 	z-index: 5;
 	width: 100%;
 	height: 100%;
+
+	/*display: flex;*/
+	align-items: center;
+	justify-content: center;
+
+	display: none;
 }
 
-#win-screen h3 {
-	font-size: 5em;
-	font-family: 'Pacifico', cursive;
+#win-screen .container, #lose-screen .container {
+	border: 2px solid black;
+	border-radius: 10px;
+	padding: 0;
+	background-color: #fff;
+
+	font-size: 1.3em;
+}
+
+.win-part, .lose-part {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+#win-screen .buttons, #lose-screen .buttons {
+	text-align: right;
+	padding: 10px;
+}
+
+.top-section {
+	padding: 0;
+	border-bottom: 2px solid black;
 	margin-bottom: 0.5em;
+	display: flex;
+	align-items: center;
+	justify-content: left;
+	flex-wrap: wrap;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	padding-right: 1em;
 }
 
-#win-screen .container {
-	margin-top: 20%;
+.top-section h3 {
+	font-size: 2.7em;
+	flex-grow: 1;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+#win-screen .top-section .icon, #lose-screen .top-section .icon {
+	font-size: 2.4em;
+	padding: 0 0.5em;
+}
+
+.undobutton {
+	margin-left: .5em;
+}
+
+.failure-condition, .victory-condition {
+	/* HAX */
+	/*
+	padding-top: .5em;
+	padding-right: 1em;
+	*/
+}
+
+#win-screen h3, #lose-screen h3 {
+	font-family: 'Consolas', monospace;
+}
+
+#win-screen .container, #lose-screen .container {
+	/*margin-top: 20%;*/
+}
+
+#win-screen .icon, #lose-screen .icon {
+	font-size: 1.3em;
 }
 
 #win-screen .icon {
-	font-size: 1.3em;
 	color: #0c0;
-	margin-right: 2em;
+}
+
+#lose-screen .icon {
+	color: #c00;
 }
 
 #mainarea, .sources, .thread {
 /*	border: 1px solid black;*/
+	text-align: justify;
 }
 
 .thread {
@@ -97,11 +187,21 @@ div.instruction.current-instruction div.expansion {
 }
 .critical-section {
 	font-style: italic;
+	color: #00cc00;
+}
+.failure-statement {
+	font-style: italic;
+	color: #00cc00;
+}
+.game-over-instruction {
+	font-style: italic;
+	color: red;
 }
 
 .global-buttons {
 	float: right;
 	margin-bottom: 1em;
+	margin-left: 1em;
 }
 
 .sources {
@@ -111,18 +211,21 @@ div.instruction.current-instruction div.expansion {
 .menu-completion-icon {
 	color: #afa;
 	float: left;
-	font-size: 2em;
+	font-size: 3em;
 }
 .menu-next-to-play-icon {
 	color: #E9BF4D;
 	float: left;
-	font-size: 2em;
+	font-size: 3em;
 }
 
 h2.menu-heading {
-	margin-top: 1em;
-	margin-bottom: 1em;
+	margin-top: 1.5em;
 }
+.menu-subheading {
+	 margin-bottom: 1em;
+	 font-size: large;
+ }
 
 .mainMenuLevel {
 	font-size: 1.3em;
@@ -144,7 +247,7 @@ h2.menu-heading {
 	background-color: #f5fff5;
 }
 .mainMenuLevel.completed {
-	color: #666;
+	/*color: #666;*/
 }
 .mainMenuLevelCaption {
 	font-weight: bold;
@@ -173,10 +276,16 @@ h1#game {
 	padding-top: 1em;
 }
 footer {
-	border-top: 1px dotted #eee;
-	margin-top: 1em;
-	padding-top: 1em;
+	border-top: 1px dotted #666;
+	text-align: right;
+	margin-top: 1.5em;
+	padding-top: 1.5em;
 	color: #999;
+	display: flex;
+}
+
+footer #credits {
+	flex-grow: 1;
 }
 
 #won-banner {
@@ -195,7 +304,7 @@ hr {
 	margin: 1em 0;
 	padding: 0;
 }
-.tooltip_code {
+.tooltip code {
 	font-family: Consolas, monospace;
 	font-weight: bold;
 	font-size: 1.2em;
@@ -211,10 +320,10 @@ hr {
 	color: gray;
 }
 
-.tooltip_code .keyword {
+.tooltip code .keyword {
 	color: #268bd2;
 }
-.tooltip_code .static {
+.tooltip code .static {
 	color: #228e87;
 }
 
@@ -224,6 +333,11 @@ hr {
 }
 code {
 	font-family: Consolas, monospace;
+
+	/* Counteract Bootstrap's <code> styling */
+	background-color: transparent;
+	padding: 0;
+	color: inherit;
 }
 .block-reason code {
 	background: transparent;
@@ -233,4 +347,30 @@ code {
 h3.thread-header {
 	font-family: Consolas, monospace;
 	font-size: 1.4em;
+}
+
+.tutorial-button-mock {
+	border: 1px solid #999;
+	border-radius: 4px;
+	padding: 1px 5px;
+	margin: 1px 0;
+	display: inline-block;
+	font-size: 0.9em;
+}
+
+a.msdn-link {
+	/* TODO: somehow style MSDN links */
+}
+
+.story-intro, .story-outro {
+	font-style: italic;
+	margin-bottom: 1em;
+}
+
+#game-window {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border: 2px solid #666;
+	border-radius: 8px;
+	padding: 1em;
 }

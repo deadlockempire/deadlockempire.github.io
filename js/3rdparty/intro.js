@@ -790,7 +790,7 @@
       if (fixParents && fixParents.length > 0) {
         for (var i = fixParents.length - 1; i >= 0; i--) {
           fixParents[i].className = fixParents[i].className.replace(/introjs-fixParent/g, '').replace(/^\s+|\s+$/g, '');
-        };
+        }
       }
 
       //remove old classes
@@ -1072,8 +1072,7 @@
     } else {
       return propValue;
     }
-  };
-
+  }
   /**
    * Checks to see if target element (or parents) position is fixed or not
    *
@@ -1094,8 +1093,7 @@
     }
 
     return _isFixed(p);
-  };
-
+  }
   /**
    * Provides a cross-browser way to get the screen dimensions
    * via: http://stackoverflow.com/questions/5864467/internet-explorer-innerheight
@@ -1179,8 +1177,7 @@
     }, 10);
 
     return true;
-  };
-
+  }
   /**
    * Removes open hint (tooltip hint)
    *
@@ -1196,8 +1193,7 @@
       tooltip.parentNode.removeChild(tooltip);
       return step;
     }
-  };
-
+  }
   /**
    * Start parsing hint items
    *
@@ -1207,7 +1203,7 @@
    */
   function _populateHints(targetElm) {
     var self = this;
-    this._introItems = []
+    this._introItems = [];
 
     if (this._options.hints) {
       for (var i = 0, l = this._options.hints.length; i < l; i++) {
@@ -1256,8 +1252,7 @@
       document.attachEvent('onclick', _removeHintTooltip.bind(this));
       document.attachEvent('onresize', _reAlignHints.bind(this));
     }
-  };
-
+  }
   /**
    * Re-aligns all hint elements
    *
@@ -1289,8 +1284,7 @@
     if (typeof (this._hintCloseCallback) !== 'undefined') {
       this._hintCloseCallback.call(this, stepId);
     }
-  };
-
+  }
   /**
    * Add all available hints to the page
    *
@@ -1364,8 +1358,7 @@
     if (typeof (this._hintsAddedCallback) !== 'undefined') {
       this._hintsAddedCallback.call(this);
     }
-  };
-
+  }
   /**
    * Aligns hint position
    *
@@ -1407,8 +1400,7 @@
         hint.style.top = offset.top + 'px';
         break;
     }
-  };
-
+  }
   /**
    * Triggers when user clicks on the hint element
    *
@@ -1481,8 +1473,7 @@
 
     //set proper position
     _placeTooltip.call(this, hintElement, tooltipLayer, arrowLayer, null, true);
-  };
-
+  }
   /**
    * Get an element position on the page
    * Thanks to `meouw`: http://stackoverflow.com/a/442474/375966
@@ -1515,8 +1506,7 @@
     elementPosition.left = _x;
 
     return elementPosition;
-  };
-
+  }
   /**
    * Gets the current progress percentage
    *
@@ -1528,8 +1518,7 @@
     // Steps are 0 indexed
     var currentStep = parseInt((this._currentStep + 1), 10);
     return ((currentStep / this._introItems.length) * 100);
-  };
-
+  }
   /**
    * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
    * via: http://stackoverflow.com/questions/171251/how-can-i-merge-properties-of-two-javascript-objects-dynamically
@@ -1543,8 +1532,7 @@
     for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
     for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
     return obj3;
-  };
-
+  }
   var introJs = function (targetElm) {
     if (typeof (targetElm) === 'object') {
       //Ok, create a new instance

@@ -1,129 +1,4 @@
 var levels = {
-	"monitortest" : new Level("monitortest",
-	"A","B","C","D",
-	[
-		new Thread([
-			new MonitorEnterInstruction("mutex"),
-			createMonitorWait("mutex")
-
-		]),
-		new Thread([
-			new MonitorEnterInstruction("mutex"),
-			createMonitorWait("mutex")
-		])
-	],
-		{
-			"mutex" : {
-				name: "mutex",
-				type: "System.Object",
-				value: "unimportant",
-				"lockCount": 0,
-				"lastLockedByThread": null,
-			}
-		}),
-
-	"tutorial": new Level(
-	    "tutorial",
-		"Tutorial Level",
-		"We don't have enough instructions.",
-		"You have learnt no lesson here.",
-		"victorytext",
-		[
-			new Thread([
-				new Instruction("This is the single-thread tutorial.")
-			])
-		]),
-	"criticalSectionTest": new Level(
-		"criticalSectionTest",
-		"Critical Section Test",
-		"This is short description.",
-		"This is victory lesson.",
-		[
-			new Thread([
-				new Instruction("This does nothing."),
-				new CriticalSectionInstruction()
-			]),
-			new Thread([
-			new Instruction("This does nothing."),
-			new CriticalSectionInstruction()
-			])
-
-		]),
-	"semaphoreTest": new Level(
-		"semaphoreTest",
-		"Semaphore Test",
-		"DESC",
-		"VCIT",
-		[
-			new Thread([
-				new SemaphoreWaitInstruction("ss"),
-				new CriticalSectionInstruction(),
-				new SemaphoreReleaseInstruction("ss")
-			]), new Thread([
-				new SemaphoreWaitInstruction("ss"),
-				new CriticalSectionInstruction(),
-				new SemaphoreReleaseInstruction("ss")
-			])
-		],
-		{
-			"ss": {
-				"name" : "ss",
-				"type" : "System.Threading.SemaphoreSlim",
-				"value" : 0
-			}
-		}
-		),
-	"infiniteLevel": new Level(
-		"infiniteLevel",
-		"Infinite Level",
-		"DESC",
-		"VICTORY",
-		[
-			new Thread([
-				new WhileInstruction("true", function() { return true; }, "eternal"),
-				new FlavorInstruction("business_logic()"),
-				new EndWhileInstruction("eternal")
-			])
-		]
-	),
-	"deadlock": new Level(
-		"deadlock",
-		"Simple Deadlock",
-		"You must cause a deadlock.",
-		"Yay. A deadlock!",
-		[
-			new Thread([
-				new MonitorEnterInstruction("mutex"),
-				new MonitorEnterInstruction("mutex2"),
-				new CriticalSectionInstruction(),
-				new MonitorExitInstruction("mutex"),
-				new MonitorExitInstruction("mutex2"),
-			]),
-			new Thread([
-				new MonitorEnterInstruction("mutex2"),
-				new MonitorEnterInstruction("mutex"),
-				new CriticalSectionInstruction(),
-				new MonitorExitInstruction("mutex2"),
-				new MonitorExitInstruction("mutex"),
-			]),
-		],
-		{
-			"mutex" : {
-				name: "mutex",
-				type: "System.Object",
-				value: "unimportant",
-				"lockCount": 0,
-				"lastLockedByThread": null,
-			},
-			"mutex2" : {
-				name: "mutex2",
-				type: "System.Object",
-				value: "unimportant",
-				"lastLockedByThread": null,
-				"lockCount": 0
-			}
-		}
-	),
 	"1-simpletest": new Level(
 		"1-simpletest",
 		"Simple Test",
@@ -152,9 +27,11 @@ var levels = {
 	"2-flags": new Level(
 		"2-flags",
 		"Boolean Flags Are Enough For Everyone",
-		"Who needs locks when you can get by with using just variables? ...or can you?",
-		"Who needs locks when you can get by with using just variables? ...or can you?",
-		"To break synchronization, stop at unexpected times - here, for example, you had to stop immediately after the end of the loop. The most difficult parallelism bugs come from situations that rarely really happen because they require some strange timing, as in here.",
+		"Or so thinks the Deadlock Empire.",
+		"<div class='story-intro'>The day finally came. The Deadlock Empire opened its gates and from them surged massive amounts of soldiers, loyal servants of the evil Parallel Wizard. The Wizard has many strengths - his armies are fast, and he can do a lot of stuff that we can't. But now he set out to conquer the world, and we cannot have that.<br><br>" +
+		"You are our best <b>Scheduler</b>, commander! We have fewer troops and simpler ones, so we will need your help. Already two armies of the Deadlock Empire are approaching our border keeps. They are poorly equipped and poorly trained, however. You might be able to desync them and break their morale.</div>" +
+		"<div>If two threads enter a critical section at the same time, the program is not thread-safe and thus you win the challenge. The <i>while</i> loop at the beginning is called a <i>guard</i> - it prevents execution from continuing into a critical section under certain conditions. However, this here is a weak guard. After you pass it in one thread, if you stop at the right time, you will be able to pass it in the other thread, too.</div>",
+		"<div class='story-outro'>You've done it, Scheduler! The armies have broken apart and our soldiers are driving them back. But do not grow complacent - this is merely the beginning of a war - <b>The Great Concurrency War</b> - and we <i>will</i>  win it!</div><div>Congratulations!</div>",
 		[
 			new Thread([
 				new WhileInstruction(new LiteralExpression(true), "eternal"),
@@ -170,7 +47,7 @@ var levels = {
 				createAssignment("flag", new LiteralExpression(false)),
 
 				new EndWhileInstruction("eternal")
-			]),
+			], "First Army"),
 			new Thread([
 				new WhileInstruction(new LiteralExpression(true), "eternal"),
 
@@ -185,7 +62,7 @@ var levels = {
 				createAssignment("flag", new LiteralExpression(false)),
 
 				new EndWhileInstruction("eternal")
-			])
+			], "Second Army")
 		],
 		{
 			"flag" : {
@@ -198,9 +75,10 @@ var levels = {
 	"3-simpleCounter" : new Level(
 		"3-simpleCounter",
 		"Simple Counter",
-		"Let's test your skills with a simple problem.",
-		"Here also you must make both threads enter the critical section. This should not be hard.<br>If you'd like to reset the counter, use the orange 'Reset level' button on the right.",
-		"As you have seen previously, once you pass a test, such as an integer comparison, you don't care about what other threads do to the operands - you have already passed the test and may continue to the critical section. To make this work, you would need locks.",
+		"Is the Deadlock Empire stupid?",
+		"<div class='story-intro'>The Parallel Wizard, leader of the Deadlock Empire, has unleashed the first Dragons upon you - these are terrifying creatures but for some reason, these two dragons appear to have critical weakspots specifically designed to be weak. Maybe you can exploit that, Scheduler.</div> <div>Here also you must make both threads enter the critical section.<br>If you'd like to reset the counter, use the orange <span class='tutorial-button-mock'>Reset level</span> button on the right.</div>",
+		"<div class='story-outro'>Yes, the dragons are both defeated! But we have just received news that the Empire is sending more of their monsters at your towns. You can't be everywhere, Scheduler, and we win wherever you go, but you should know that each passing hour more villages fall to the dread Empire.</div>" +
+		"As you have seen previously, once you pass a test, such as an integer comparison, you don't care about what other threads do to the operands - you have already passed the test and may continue to the critical section. To fix this program, locks would be needed.",
 		[
 			new Thread([
 				new WhileInstruction(new LiteralExpression(true), "while"),						createIncrement("counter"),
@@ -208,14 +86,14 @@ var levels = {
 				new CriticalSectionInstruction(),
 				new EndIfInstruction("if"),
 				new EndWhileInstruction("while")
-			]),
+			], "Five-Headed Dragon"),
 			new Thread([
 				new WhileInstruction(new LiteralExpression(true), "while"), 				createIncrement("counter"),
 				new IfInstruction(new EqualityExpression(new VariableExpression("counter"), new LiteralExpression(3)), "if"),
 				new CriticalSectionInstruction(),
 				new EndIfInstruction("if"),
 				new EndWhileInstruction("while")
-			])
+			], "Three-Headed Dragon")
 		],
 		{
 			"counter": {
@@ -229,8 +107,8 @@ var levels = {
 		"4-confusedCounter",
 		"Confused Counter",
 		"Could it be that some instructions are hidden from sight?",
-		"Could it be that some instructions are hidden from sight?",
-		"Most instructions are <i>not</i> atomic. That means that context may switch during the instruction's execution. For assignments, for example, it means that the expression may be read into registers of a thread, but then context may switch and when the thread receives priority again, it won't read the expression again, it will simply write the register into the left-hand variable.",
+		"<div class='story-intro'>The Parallel Wizard is now more cunning and the dragons he designs and the armies he trains are more resilient than ever. But still they must be defeated, or else the entire world will fall to the Empire and we will all be forced to learn parallel programming!</div>Could it be that some instructions are hidden from sight?<br><br>Most instructions are <i>not</i> atomic. That means that context may switch during the instruction's execution. For assignments, for example, it means that the expression may be read into registers of a thread, but then context may switch and when the thread receives priority again, it won't read the expression again, it will simply write the register into the left-hand variable.",
+		"<div class='story-outro'>And yet again the Wizard's tactics have been foiled! Hurray for simplicity!</div>",
 		[
 			new Thread([
 				new FlavorInstruction("business_logic()"),
@@ -364,8 +242,11 @@ var levels = {
 		"L1-lock",
 		"Insufficient Lock",
 		"Locks don't solve everything.",
-		"These threads have total mutual exclusion - one cannot run while the other is active. But still the program can fail. Can you make it so?",
-		"Congratulations on this effort!",
+		"<div class='story-intro'>The Deadlock Empire strikes again, and in force!<br><br>" +
+		"Their dragons still have critical sections where they are weak, but this time, they have brought armored locks to hide them from us. Our artillery is not powerful enough to punch through this armor or to defeat the dragons without exploiting the critical sections. It falls upon you, Scheduler, to reveal to us a way to access the critical sections, even under the armored locks.</div>" +
+		"RULES INTRO",
+		"<div class='story-outro'>As soon as you revealed to us the way to get under the lock armor, our mages let out a volley of cold fire against the dragons. We slaughtered them and as the dragons feel, the invading army retreated.</div>" +
+		"Locks are the most commonly used synchronization primitive. It is very useful to know them.",
 		[
 			new Thread([
 				createOuterWhile(),
@@ -411,15 +292,15 @@ var levels = {
 				new MonitorEnterInstruction("mutex2"),
 				new CriticalSectionInstruction(),
 				new MonitorExitInstruction("mutex"),
-				new MonitorExitInstruction("mutex2"),
+				new MonitorExitInstruction("mutex2")
 			]),
 			new Thread([
 				new MonitorEnterInstruction("mutex2"),
 				new MonitorEnterInstruction("mutex"),
 				new CriticalSectionInstruction(),
 				new MonitorExitInstruction("mutex2"),
-				new MonitorExitInstruction("mutex"),
-			]),
+				new MonitorExitInstruction("mutex")
+			])
 		],
 		{
 			"mutex" : {
@@ -439,8 +320,10 @@ var levels = {
 		"L3-complexer",
 		"A More Complex Thread",
 		"Three locks, two threads, one flag.",
-		"Solving this problem isn't actually <i>that</i> difficult. Try to understand the program, to split it into parts and then you will find the solution is actually quite easy.",
-		"The <b><a href='https://msdn.microsoft.com/en-us/library/system.threading.monitor.tryenter'>Monitor.TryEnter()</a></b> method, if successful, also locks the mutex and in C#, objects can be locked recursively. In order for a lock to be released, it must be <i>exited</i> the same number of times it was <i>entered</i>. In this game, you saw that there is no matching <i>Monitor.Exit()</i> call to the <i>.TryEnter()</i> call and thus the first thread was able to lock the object, recursively, many times, making it impossible for the second thread to lock it.",
+		"<span class='story-intro'>You look up the hill at the lone flag that shows who controls this important territory. You climb fast - you must reach it first. Unfortunately, that won't happen - not one, not two, but three enemy armies are closing in on the hill and they will all reach the flag before you do. You must do something about this, stop them somehow, if you are to claim this territory.</span><br><br>" +
+		"This may appear difficult at first. There's a lot of locks, a boolean flag and critical sections. The code is not very readable and an error could be anywhere. In fact, it wouldn't surprise us if you found a solution to this challenge different from what we thought of when creating it. You should definitely write more concise and understandable code than this.<br><br>" +
+		"Even so, you might use this advice: In C#, locks can be locked recursively. For example, a thread can <i>lock</i> (via <i>Monitor.Enter</i>) a single object multiple times. In order to release the lock on that object and permit other threads to lock it, <i>all</i> of the locks must be released, i.e. the method <i>Monitor.Exit</i> must be called the same number of times as <i>Monitor.Enter</i>.",
+		"<span class='story-outro'>You replace the neutral flag with the sign of the Sequentialists. You have won. Smiling, you look down from the hill at the three armies locked in place - neither able to move. Once again, you have proven the uselessness of parallelism.</span><br><br>The <b><a href='https://msdn.microsoft.com/en-us/library/system.threading.monitor.tryenter'>Monitor.TryEnter()</a></b> method, if successful, also locks the mutex and in C#, objects can be locked recursively. In order for a lock to be released, it must be <i>exited</i> the same number of times it was <i>entered</i>. In this game, you saw that there is no matching <i>Monitor.Exit()</i> call to the <i>.TryEnter()</i> call and thus the first thread was able to lock the object, recursively, many times, making it impossible for the second thread to lock it.",
 		[
 			new Thread([
 				createOuterWhile(),
@@ -478,22 +361,10 @@ var levels = {
 			])
 		],
 		{
-			"mutex" : {
-				name : "mutex",
-				type : "System.Object",
-				value : "unimportant"
-			},
-			"mutex2" : {
-				name : "mutex2",
-				type : "System.Object",
-				value : "unimportant"
-			},
-			"mutex3" : {
-				name : "mutex2",
-				type : "System.Object",
-				value : "unimportant"
-			},
-			"flag": {
+			"mutex" : new ObjectVariable("mutex"),
+			"mutex2" : new ObjectVariable("mutex2"),
+			"mutex3" :  new ObjectVariable("mutex3"),
+			"flag":  {
 				name : "flag",
 				type : "System.Boolean",
 				value : false
@@ -504,7 +375,11 @@ var levels = {
 		"S1-simple",
 		"Semaphores",
 		"A semaphore is a simple synchronization primitive.",
-		"This is an introductory level and should not take too much effort.",
+		"<a href='https://msdn.microsoft.com/en-us/library/system.threading.semaphoreslim(v=vs.110).aspx'>Semaphores</a> limit the number of threads that can access a resource at the same time. In C#, they are implemented by the SemaphoreSlim class." +
+		"You can imagine a semaphore as a stack of coins. When a thread wants to access the resource protected by the semaphore, it needs to take a coin. Once it's done, it returns the coin to the stack.<br>" +
+		"To take a coin, you can call the <code><a href='https://msdn.microsoft.com/en-us/library/dd270787(v=vs.110).aspx'>Wait()</a></code> method on the semaphore. If there are no coins on the stack, the method waits until someone returns a coin. If you don't want to wait forever, you can pass it how long should it wait, in milliseconds. In that case, <code>Wait()</code> will return a boolean indicating whether it obtained a coin.<br>" +
+		"The <code><a href='https://msdn.microsoft.com/en-us/library/dd235727(v=vs.110).aspx'>Release()</a></code> method adds a coin on the stack. Normally, you would call <code>Release()</code> only after a <code>Wait()</code> - you would take a coin, do something while you have it, and then give it back. However, you can also call <code>Release()</code> while you don't have any coins yourself. If you let Thread 1 run, you will see it do this: if it can't find a coin within 500 milliseconds, it will create a new one.<br><br>" +
+		"The two threads below try to use a semaphore to ensure they don't enter the critical section at the same time. Can you figure out what are they doing wrong?",
 		"Yay! You know how to use semaphores maybe! Let's now proceed to harder levels.",
 		[
 			new Thread([
@@ -526,18 +401,18 @@ var levels = {
 			])
 		],
 		{
-			"ss" : {
-				name : "ss",
-				type : "System.Threading.SemaphoreSlim",
-				value : 0
-			}
+			"ss" : new SemaphoreVariable("ss", 0)
 		}
 	),
 	"S2-producerConsumer" : new Level(
 		"S2-producerConsumer",
 		"Producer-Consumer",
 		"A new victory condition awaits you!",
-		"In this challenge, your goal is cause an exception to be raised.",
+		"In <a href='https://en.wikipedia.org/wiki/Producer–consumer_problem'>producer-consumer scenarios</a>, one thread produces some items that another thread consumes. " +
+		"For example, one thread could accept work requests from a user, and another thread could take outstanding requests and fulfill them.<br>" +
+		"Even through the producer-consumer problem might look trivial, it has some subtle complexity to it. For example, what if the consumer needs a lot of time to consume one item, while the producer produces items as fast as it can? We could run out of memory.<br>" +
+		'Semaphores are useful for producer-consumer problems. Remember the "coin stack" analogy: each item in the queue is represented by a coin; when the producer produces a new one, it adds a coin, and when the consumer consumes an item, it removes a coin.<br><br>' +
+		"In this challenge, your goal is cause an exception to be raised.<br>",
 		"You should know that this was really a rather simple producer-consumer pattern to exploit but I admit you performed quite well nonetheless.",
 		[
 			new Thread([
@@ -563,11 +438,7 @@ var levels = {
 				type : "System.Threading.SemaphoreSlim",
 				value : 0
 			},
-			"queue" : {
-				name : "queue",
-				type : "System.Queue<int>",
-				value : 0
-			}
+			"queue" : new QueueVariable("queue", "int", 0)
 		}
 	),
 	"S3-producerConsumer" : new Level(
@@ -578,26 +449,20 @@ var levels = {
 		"Congratulations, Scheduler! Are you ready for the next challenge?",
 		[
 			new Thread([
-				new CommentInstruction("The Producer"),
 				createOuterWhile(),
 				createEnqueueUnsafe("queue", 42),
 				createOuterWhileEnd()
-			]),
+			], "The Producer"),
 			new Thread([
-				new CommentInstruction("The Consumer"),
 				createOuterWhile(),
 				new IfInstruction(new QueueNotEmptyExpression("queue"), "if"),
 				createDequeueUnsafe("queue"),
 				new EndIfInstruction("if"),
 				createOuterWhileEnd()
-			])
+			], "The Consumer")
 		],
 		{
-			"queue" : {
-				name : 'queue',
-				type : "System.Queue<int>",
-				value : 0
-			}
+			"queue" : new QueueVariable("queue", "int", 0)
 		}
 	),
 	"CV1-simple": new Level(
@@ -642,14 +507,7 @@ var levels = {
 				type : "System.Object",
 				value : "unimportant"
 			},
-			"queue" : {
-				name : "queue",
-				type : "System.Collections.Generic.Queue<int>",
-				value : 0
-			}
+			"queue" : new QueueVariable("queue", "int", 0)
 		}
 	)
-
-
-
 };

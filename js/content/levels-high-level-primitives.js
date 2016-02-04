@@ -25,11 +25,7 @@ levels["H1-ManualResetEvent"] = new Level(
     ],
     {
         "counter" : new IntegerVariable("counter", 0),
-        "sync" : {
-            name : "sync",
-            type : "System.Threading.ManualResetEventSlim",
-            value : false
-        }
+        "sync" : new ManualResetEventVariable("sync", false)
     }
 );
 levels["H2-CountdownEvent"] = new Level(
@@ -70,5 +66,78 @@ levels["H2-CountdownEvent"] = new Level(
     {
         "progress" : new IntegerVariable("progress", 0),
         "event" : new CountdownEventVariable("event", 3)
+    }
+);
+levels["H3-CountdownEvent"] = new Level(
+    "H3-CountdownEvent",
+    "Countdown Event Revisited",
+    "I fixed the bug. What are you going to do about it, huh?",
+    "This is now much simpler, no? This <a href='https://msdn.microsoft.com/en-us/library/system.threading.countdownevent'>CountdownEvent</a> is going to be a breeze for you, Scheduler.",
+    "The high-level synchronization primitives such as <i>CountdownEvent</i> are very safe and throw exceptions whenever something bad happens. For example, as you have just seen, it is impossible to signal if the event counter is already at zero. Good job!",
+    [
+        new Thread([
+            createOuterWhile(),
+            createAssignment("progress", new AdditionExpression(new VariableExpression("progress"), new LiteralExpression(20))),
+            new CountdownEventSignal("event"),
+            new CountdownEventWait("event"),
+            new IfInstruction(new EqualityExpression(new VariableExpression("progress"), new LiteralExpression(100)), "success"),
+            new GameOverInstruction(),
+            new EndIfInstruction("success"),
+            createOuterWhileEnd()
+        ]),
+        new Thread([
+            createOuterWhile(),
+            createAssignment("progress", new AdditionExpression(new VariableExpression("progress"), new LiteralExpression(30))),
+            new CountdownEventSignal("event"),
+            createAssignment("progress", new AdditionExpression(new VariableExpression("progress"), new LiteralExpression(50))),
+            new CountdownEventSignal("event"),
+            new CountdownEventWait("event"),
+            new IfInstruction(new EqualityExpression(new VariableExpression("progress"), new LiteralExpression(100)), "success"),
+            new GameOverInstruction(),
+            new EndIfInstruction("success"),
+            createOuterWhileEnd()
+        ])
+    ],
+    {
+        "progress" : new IntegerVariable("progress", 0),
+        "event" : new CountdownEventVariable("event", 3)
+    }
+);
+levels["H4-Barrier"] = new Level(
+    "H4-Barrier",
+    "The Barrier",
+    "The Deadlock Empire rolls out a new defensive weapon.",
+    "<span class='story-intro'>Soldiers of the Deadlock Empire let out a mighty cheer as a new device rolls out from their factories. It is a giant armored <b>wall</b>, covered in spikes and it is now rolling on its mighty wheels towards your troops, casting fireballs from its magical engines. You would do well to destroy this new weapon before it crushes your armies.</span><br><br>" +
+    "The <a href='https://msdn.microsoft.com/en-us/library/system.threading.barrier'>Barrier class</a> is quite safe when used correctly, though it must have been difficult to create correctly for the developers of the .NET framework. The Barrier has a fixed <i>number of participants</i> - in this case, <b>two</b>. It has only one useful method - <i>.SignalAndWait()</i> that blocks until all participants reach it. Then, all participant threads are let through the barrier and the barrier resets.",
+    "<span class='story-intro'>Three courageous heroes punched their way to the Barrier. The Barrier shoots fireballs but your heroes are agile and evade successfully. In the end, the Barrier crumbles. It's another victory for the Sequentialists!</span><br><br>It is highly recommended that you set the participant count to exactly the number of threads using the barrier in any real-world code.",
+    [
+        new Thread([
+            createOuterWhile(),
+            new InterlockedIncrement("fireballCharge"),
+            new BarrierSignalAndWait("barrier"),
+            new IfInstruction(new LessThanExpression(new VariableExpression("fireballCharge"), new LiteralExpression(2)), "if"),
+            new FailureInstruction(),
+            new EndIfInstruction("if"),
+            new FlavorInstruction("fireball();"),
+            createOuterWhileEnd()
+        ]),
+        new Thread([
+            createOuterWhile(),
+            new InterlockedIncrement("fireballCharge"),
+            new BarrierSignalAndWait("barrier"),
+            createOuterWhileEnd()
+        ]),
+        new Thread([
+            createOuterWhile(),
+            new InterlockedIncrement("fireballCharge"),
+            new BarrierSignalAndWait("barrier"),
+            new BarrierSignalAndWait("barrier"),
+            createAssignment("fireballCharge",  new LiteralExpression(0)),
+            createOuterWhileEnd()
+        ])
+    ],
+    {
+        "fireballCharge" : new IntegerVariable("fireballCharge", 0),
+        "barrier": new BarrierVariable("barrier", 2)
     }
 );

@@ -1,14 +1,3 @@
-var assign = function(variable, type, value) {
-	// TODO: type checking?
-	gameState.globalState[variable] = {
-		type: type,
-		name: variable,
-		value: value,
-		lastLockedByThread: null,
-		lockCount: 0
-	};
-};
-
 /**
  * @return {bool|string} false if nothing is blocked, string if blocked with a
  *                       reason, true if blocked without a given reason.
@@ -49,6 +38,15 @@ var areAllThreadsBlocked = function() {
 	return true;
 };
 
+var areAllThreadsFinished = function() {
+	for (var threadId in gameState.getLevel().threads) {
+		if (!isThreadFinished(threadId)) {
+			return false;
+		}
+	}
+	return true;
+};
+
 var checkForVictoryConditions = function() {
 	var howManyCriticalSections = 0;
 	for (var threadId in gameState.getLevel().threads) {
@@ -71,6 +69,11 @@ var checkForVictoryConditions = function() {
 
 	if (areAllThreadsBlocked()) {
 		win("A deadlock occurred - all threads were blocked simultaneously.");
+		return;
+	}
+
+	if (areAllThreadsFinished()) {
+		lose('All threads of the program ran to the end, so the program was successful. Try to sabotage the program before it finishes.');
 		return;
 	}
 };
@@ -200,7 +203,7 @@ var startLevel = function(levelName) {
 	globalButtons.append("&nbsp;&nbsp;");
 
 	nextChallengeButton = $('<button class="btn btn-primary"><span class="glyphicon glyphicon-chevron-right"></span>&nbsp;Next challenge</button>');
-	nextChallengeButton.click(goToNextLevel);
+	nextChallengeButton.click(openWinScreen);
 	globalButtons.append(nextChallengeButton);
 
 	var mainMenuButton = $('<button class="btn btn-danger"><span class="glyphicon glyphicon-menu-hamburger"></span>&nbsp;Return to main menu</button>');
@@ -215,11 +218,11 @@ var startLevel = function(levelName) {
 		if (needConfirmation) {
 			bootbox.confirm('Really give up?', function(confirmed) {
 				if (confirmed) {
-					navigateToMainMenu();
+					navigateToMainMenu(gameState.getLevelId());
 				}
 			});
 		} else {
-			navigateToMainMenu();
+			navigateToMainMenu(gameState.getLevelId());
 		}
 	});
 	globalButtons.append(mainMenuButton);
@@ -229,6 +232,8 @@ var startLevel = function(levelName) {
 	var threadCount = level.threads.length;
 	var width = 100.0 / threadCount;
 
+	gameState.resetForLevel(level);
+
 	threadButtons = [];
 	threadContextualButtons = [];
 	for (var i = 0; i < threadCount; i++) {
@@ -236,7 +241,7 @@ var startLevel = function(levelName) {
 
 		var threadArea = $('<div class="thread"></div>');
 
-		var threadHeader = $('<h3 class="thread-header">Thread ' + i + '</h3>');
+		var threadHeader = $('<h3 class="thread-header"></h3>').text(level.getThreadName(i));
 		threadArea.append(threadHeader);
 
 		var stepButton = $('<button class="stepforwards btn btn-default"><span class="glyphicon glyphicon-play"></span>&nbsp;Step</button>');
@@ -284,7 +289,7 @@ var startLevel = function(levelName) {
 			span.append($('<span class="body"></span>').html(instruction.code));
 
 			if (instruction.tooltip) {
-				span.attr("title", "<div style='text-align: left;'><span class='tooltip_code'>" + instruction.code + "</span><br>" + instruction.tooltip + "</div>");
+				span.attr("title", "<div style='text-align: left;'><code>" + instruction.code + "</code><br>" + instruction.tooltip + "</div>");
 			}
 			var placement = 'left';
 			if (goLeft) {
@@ -325,12 +330,14 @@ var startLevel = function(levelName) {
 
 	mainArea.append('<div class="global-state"></div>');
 
-	gameState.resetForLevel(level);
-
 	redraw();
 	if (level.id == "T1-Interface") {
 		loadTutorial1();
 	}
+
+	$('body')[0].scrollIntoView();
+
+	updateMSDNLinks();
 };
 
 var startSelectedLevel = function() {
@@ -412,9 +419,15 @@ var navigateToLevel = function(level) {
 	route();
 };
 
-var navigateToMainMenu = function() {
+/**
+ * @param {string} levelIdToDisplay Optional. Level to scroll to.
+ */
+var navigateToMainMenu = function(levelIdToDisplay) {
 	history.pushState({menu: true}, "menu", "#menu");
 	route();
+	if (levelIdToDisplay) {
+		scrollLevelIntoView(levelIdToDisplay);
+	}
 };
 
 $(window).bind('popstate', function(event) {
@@ -426,5 +439,3 @@ $(window).bind('popstate', function(event) {
 $(function() {
 	route();
 });
-
-Mousetrap.bind('ctrl+a', function() { alert("hello"); });

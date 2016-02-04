@@ -2,7 +2,6 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
 		<link href='https://fonts.googleapis.com/css?family=Amatic+SC' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
@@ -24,11 +23,11 @@
 		<script src="js/win.js"></script>
 		<script src="js/common.js"></script>
 		<script src="js/expression.js"></script>
-		<script src="js/instructions.js"></script>
 		<script src="js/variables.js"></script>
-		<script src="js/synchronizationInstructions.js"></script>
-		<script src="js/highLevelSynchronizationPrimitives.js"></script>
-		<script src="js/customInstructions.js"></script>
+		<script src="js/instructions/instructions.js"></script>
+		<script src="js/instructions/instructions-synchronization.js"></script>
+		<script src="js/instructions/instructions-high-level-synchronization.js"></script>
+		<script src="js/instructions/instructions-queue.js"></script>
 		<script src="js/level.js"></script>
 		<script src="js/thread.js">s</script>
 		<script src="js/main.js"></script>
@@ -66,9 +65,9 @@
 		<meta property="og:url" content="https://deadlockempire.github.io">
 		<meta property="og:title" content="The Deadlock Empire">
 		<meta property="og:description" content="Slay dragons, learn
-		concurrency! Play the malicious Scheduler, exploit flawed
+		concurrency! Play the cunning Scheduler, exploit flawed
 		programs and defeat the armies of the Parallel Wizard.">
-		<meta property="og:image" content="http://deadlockempire.github.io/img/logo.png">
+		<meta property="og:image" content="http://deadlockempire.github.io/img/logo-large.png">
 
 	</head>
 	<body>
@@ -85,7 +84,9 @@
 		}(document, 'script', 'facebook-jssdk'));
 		</script>
 
+		<div  id="mainContainer">
 		<div class="container">
+			<div id="game-window">
 			<div id="debug-toolbar" style="border: 1px solid black; width: 100%; margin: 2px; padding: 2px;">
 				This is the toolbar. | Select level:
 				<select id="levelSelect" >
@@ -104,32 +105,42 @@
 				<span id="alertText">This is the alert message.</span>
 			</div>
 			<footer>
-				<div class="fb-like" data-href="https://deadlockempire.github.io" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+				<span class="fb-share-button"
+					data-href="https://deadlockempire.github.io"
+					data-layout="button_count">
+				</span>
 
-				<div>
+				<span id="credits">
 					GitHub: <a href="https://github.com/deadlockempire/deadlockempire.github.io">deadlockempire/deadlockempire.github.io</a>.
 					Made by <a href="http://hudecekpetr.cz">Petr Hudeček</a>
 					and <a href="http://rny.cz">Michal Pokorný</a> at
 					HackCambridge 2016.
-				</div>
+				</span>
 			</footer>
+			</div>
+
 		</div>
 
 		<div id="win-screen">
 			<div class="container">
-				<!-- TODO: hezke psaci pismo -->
-				<h3>
-				<span class="icon glyphicon glyphicon-ok"></span>
-				<span id="win-congratulation">
-				You win!
-				</span>
-				</h3>
+				<div class="top-section">
+					<span class="icon glyphicon glyphicon-ok"></span>
+
+					<h3>
+						<span id="win-congratulation">
+						You win!
+						</span>
+					</h3>
+
+					<div class="victory-condition">
+					</div>
+				</div>
 
 				<div class="win-part">
 					<div id="win-message"></div>
 				</div>
 
-				<div style="text-align: right">
+				<div class="buttons">
 					<button id="dismiss-win" class="btn btn-default">Back to the code</button>
 					<button id="win-go-to-menu" class="btn btn-default">Return to Main Menu</button>
 					<button id="win-next-level" class="btn btn-primary">Next challenge&nbsp;
@@ -137,5 +148,33 @@
 				</div>
 			</div>
 		</div>
+
+		<div id="lose-screen">
+			<div class="container">
+				<div class="top-section">
+					<span class="icon glyphicon glyphicon-remove"></span>
+
+					<h3>
+						<span id="fail-heading">
+						Challenge lost!
+						</span>
+					</h3>
+				</div>
+
+				<div class="lose-part">
+					<div id="lose-message"></div>
+
+					<div class="failure-condition">
+					</div>
+				</div>
+
+				<div class="buttons">
+					<button id="lose-restart" class="btn btn-primary">Reset and try again</button>
+					<button id="lose-step-back" class="btn btn-default">Return to code and undo last step</button>
+					<button id="lose-go-to-menu" class="btn btn-default">Return to Main Menu</button>
+				</div>
+			</div>
+		</div>		</div>
+
 	</body>
 </html>

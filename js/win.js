@@ -1,26 +1,28 @@
 var winScreen;
+var loseScreen;
+
+var openWinScreen = function() {
+	winScreen.css({display: 'flex'}).hide().fadeIn(400);
+};
 
 var win = function(reason) {
 	if (levelWasCleared) {
 		return;
 	}
 	localStorage.setItem('level_' + gameState.getLevelId(), "solved");
-	winScreen.fadeIn(400);
+	winReason = reason;
 	levelWasCleared = true;
-
-	//$('#win-screen .icon').slideDown();
-	//
 
 	var messages = ["You win!", "Great job!", "Congratulations!"];
 	var randomMessage = messages[Math.floor(3 * Math.random())];
 
 	$('#win-congratulation').text(randomMessage);
 
-	// TODO: taky popsat, jak jsem to znicil
-
 	var text = gameState.getLevel().victoryText;
 	if (reason) {
-		text += "<br><br><p>Victory Condition: <i>" + reason + "</i></p>";
+		$('.victory-condition').html(reason);
+	} else {
+		$('.victory-condition').html('');
 	}
 	$('#win-message').html(text);
 
@@ -31,10 +33,26 @@ var win = function(reason) {
 	} else {
 		$('#win-next-level').show();
 	}
+
+	openWinScreen();
 };
 
 var areThereMoreLevels = function() {
 	return findNextLevelInCampaign(gameState.getLevelId()) != null;
+};
+
+var lose = function(reason) {
+	loseScreen.css({display: 'flex'}).fadeIn(400);
+	var text = "";
+	if (gameState.getLevel().failureText) {
+		text = gameState.getLevel().failureText;
+	}
+	if (reason) {
+		$('.failure-condition').html(reason);
+	} else {
+		$('.failure-condition').html('');
+	}
+	$("#lose-message").html(text);
 };
 
 $(function() {
@@ -50,7 +68,24 @@ $(function() {
 	$('#win-next-level').click(goToNextLevel);
 
 	$('#win-go-to-menu').click(function() {
-		returnToMainMenu();
+		navigateToMainMenu(gameState.getLevelId());
 		winScreen.fadeOut(300);
 	});
+
+	$('#lose-restart').click(function() {
+		resetLevel();
+		loseScreen.fadeOut(300);
+	});
+
+	$('#lose-step-back').click(function() {
+		undo();
+		loseScreen.fadeOut(300);
+	});
+
+	$('#lose-go-to-menu').click(function() {
+		navigateToMainMenu(gameState.getLevelId());
+		loseScreen.fadeOut(300);
+	});
+
+	loseScreen = $('#lose-screen');
 });

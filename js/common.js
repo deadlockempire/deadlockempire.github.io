@@ -27,3 +27,8 @@ var fail = function() {
 		alert("FAIL");
 	}
 };
+
+
+Mousetrap.bind('shift+w', function() {
+	win("You have used the Shift+W debugging keyboard shortcut to win.");
+});
