@@ -22,7 +22,10 @@ var ManualResetEventWait = function(name) {
     this.tooltip = "Atomic. Blocks until the ManualResetEventSlim's state is set to 'signaled'.";
     this.isBlocking = function(threadState, globalState) {
         var mres = globalState[name];
-        return !mres.value;
+	if (!mres.value) {
+		return false;
+	}
+	return "Waiting for signal (<code>" + name + ".Set()</code>)";
     };
     this.execute = function(threadState, globalState) {
         moveToNextInstruction(threadState);
@@ -46,7 +49,10 @@ var CountdownEventWait = function(name) {
     this.tooltip = "Atomic. Blocks until the CountdownEvent's countdown timer reaches zero.";
     this.isBlocking = function(threadState, globalState) {
         var mres = globalState[name];
-        return mres.value > 0;
+	if (mres.value == 0) {
+		return false;
+	}
+	return "Waiting until <code>" + name + "</code> counts down to zero.";
     };
     this.execute = function(threadState, globalState) {
         moveToNextInstruction(threadState);

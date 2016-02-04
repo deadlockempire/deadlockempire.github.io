@@ -243,6 +243,8 @@ var startLevel = function(levelName) {
 	var threadCount = level.threads.length;
 	var width = 100.0 / threadCount;
 
+	gameState.resetForLevel(level);
+
 	threadButtons = [];
 	threadContextualButtons = [];
 	for (var i = 0; i < threadCount; i++) {
@@ -250,7 +252,7 @@ var startLevel = function(levelName) {
 
 		var threadArea = $('<div class="thread"></div>');
 
-		var threadHeader = $('<h3 class="thread-header">Thread ' + i + '</h3>');
+		var threadHeader = $('<h3 class="thread-header"></h3>').text(level.getThreadName(i));
 		threadArea.append(threadHeader);
 
 		var stepButton = $('<button class="stepforwards btn btn-default"><span class="glyphicon glyphicon-play"></span>&nbsp;Step</button>');
@@ -338,8 +340,6 @@ var startLevel = function(levelName) {
 	mainArea.append('<div class="clearboth"></div>');
 
 	mainArea.append('<div class="global-state"></div>');
-
-	gameState.resetForLevel(level);
 
 	redraw();
 	if (level.id == "T1-Interface") {
