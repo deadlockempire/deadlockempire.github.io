@@ -44,11 +44,9 @@ animations. The design is implemented using vanilla
 [Intro.js](https://usablica.github.io/intro.js/) to familiarize the player
 with the controls. Keyboard shortcuts are implemented using [Mousetrap](https://craig.is/killing/mice).
 
-The game uses two custom fonts published by [Vernon
-Adams](http://www.fontsquirrel.com/fonts/list/foundry/vernon-adams)
-published on [Google Fonts](https://www.google.com/fonts): [Amatic
-SC](http://www.fontsquirrel.com/fonts/amatic) in the logo and
-[Pacifico](http://www.fontsquirrel.com/fonts/pacifico) for congratulations.
+The game uses the [Amatic SC](http://www.fontsquirrel.com/fonts/amatic) font
+published by [Vernon Adams](http://www.fontsquirrel.com/fonts/list/foundry/vernon-adams)
+published on [Google Fonts](https://www.google.com/fonts).
 
 The logo is a combination of the dragon from
 [the Welsh flag](https://commons.wikimedia.org/wiki/File:Flag_of_Wales_2.svg)

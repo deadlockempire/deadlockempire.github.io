@@ -31,6 +31,8 @@ body {
 	border-radius: 10px;
 	padding: 0;
 	background-color: #fff;
+
+	font-size: 1.3em;
 }
 
 .win-part, .lose-part {
@@ -57,14 +59,14 @@ body {
 }
 
 .top-section h3 {
-	font-size: 3em;
+	font-size: 2.7em;
 	flex-grow: 1;
 	margin-top: 0;
 	margin-bottom: 0;
 }
 
 #win-screen .top-section .icon, #lose-screen .top-section .icon {
-	font-size: 2.5em;
+	font-size: 2.4em;
 	padding: 0 0.5em;
 }
 
@@ -76,10 +78,8 @@ body {
 	*/
 }
 
-#win-screen h3 {
-	/*
-	font-family: 'Pacifico', cursive;
-	*/
+#win-screen h3, #lose-screen h3 {
+	font-family: 'Consolas', monospace;
 }
 
 #win-screen .container, #lose-screen .container {
