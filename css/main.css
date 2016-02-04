@@ -48,6 +48,7 @@ body {
 
 #mainarea, .sources, .thread {
 /*	border: 1px solid black;*/
+	text-align: justify;
 }
 
 .thread {
@@ -130,6 +131,7 @@ div.instruction.current-instruction div.expansion {
 .global-buttons {
 	float: right;
 	margin-bottom: 1em;
+	margin-left: 1em;
 }
 
 .sources {
@@ -148,9 +150,12 @@ div.instruction.current-instruction div.expansion {
 }
 
 h2.menu-heading {
-	margin-top: 1em;
-	margin-bottom: 1em;
+	margin-top: 1.5em;
 }
+.menu-subheading {
+	 margin-bottom: 1em;
+	 font-size: large;
+ }
 
 .mainMenuLevel {
 	font-size: 1.3em;
@@ -288,4 +293,5 @@ a.msdn-link {
 
 .story-intro, .story-outro {
 	font-style: italic;
+	margin-bottom: 1em;
 }

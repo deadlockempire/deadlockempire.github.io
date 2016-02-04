@@ -57,6 +57,9 @@ var returnToMainMenu = function() {
 		var heading = $('<h2 class="menu-heading"></h2>');
 		heading.text(quest.name);
 		mainArea.append(heading);
+		var questDescription = $('<div class="menu-subheading"></div>');
+		questDescription.html(quest.description);
+		mainArea.append(questDescription);
 		for (var i = 0; i < quest.levels.length; i++) {
 			var levelId = quest.levels[i];
 			var source = makeLevelBox(levelId);
