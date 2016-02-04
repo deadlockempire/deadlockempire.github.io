@@ -402,7 +402,11 @@ var levels = {
 		"S2-producerConsumer",
 		"Producer-Consumer",
 		"A new victory condition awaits you!",
-		"In this challenge, your goal is cause an exception to be raised.",
+		"In <a href='https://en.wikipedia.org/wiki/Producer–consumer_problem'>producer-consumer scenarios</a>, one thread produces some items that another thread consumes. " +
+		"For example, one thread could accept work requests from a user, and another thread could take outstanding requests and fulfill them.<br>" +
+		"Even through the producer-consumer problem might look trivial, it has some subtle complexity to it. For example, what if the consumer needs a lot of time to consume one item, while the producer produces items as fast as it can? We could run out of memory.<br>" +
+		'Semaphores are useful for producer-consumer problems. Remember the "coin stack" analogy: each item in the queue is represented by a coin; when the producer produces a new one, it adds a coin, and when the consumer consumes an item, it removes a coin.<br><br>' +
+		"In this challenge, your goal is cause an exception to be raised.<br>",
 		"You should know that this was really a rather simple producer-consumer pattern to exploit but I admit you performed quite well nonetheless.",
 		[
 			new Thread([
@@ -439,19 +443,17 @@ var levels = {
 		"Congratulations, Scheduler! Are you ready for the next challenge?",
 		[
 			new Thread([
-				new CommentInstruction("The Producer"),
 				createOuterWhile(),
 				createEnqueueUnsafe("queue", 42),
 				createOuterWhileEnd()
-			]),
+			], "The Producer"),
 			new Thread([
-				new CommentInstruction("The Consumer"),
 				createOuterWhile(),
 				new IfInstruction(new QueueNotEmptyExpression("queue"), "if"),
 				createDequeueUnsafe("queue"),
 				new EndIfInstruction("if"),
 				createOuterWhileEnd()
-			])
+			], "The Consumer")
 		],
 		{
 			"queue" : new QueueVariable("queue", "int", 0)
