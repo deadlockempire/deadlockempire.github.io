@@ -7,7 +7,7 @@ function startLevelCreator(level) {
 var wasLevelCompleted = function(levelId) {
 	return localStorage.getItem('level_' + levelId);
 };
-
+var toBeDeleted = false;
 var returnToMainMenu = function() {
 	var mainArea = $('#mainarea');
 	mainArea.html("");
