@@ -25,11 +25,7 @@ levels["H1-ManualResetEvent"] = new Level(
     ],
     {
         "counter" : new IntegerVariable("counter", 0),
-        "sync" : {
-            name : "sync",
-            type : "System.Threading.ManualResetEventSlim",
-            value : false
-        }
+        "sync" : new ManualResetEventVariable("sync", false)
     }
 );
 levels["H2-CountdownEvent"] = new Level(
@@ -65,6 +61,41 @@ levels["H2-CountdownEvent"] = new Level(
             new EndIfInstruction("if2"),
 
             new CountdownEventWait("event")
+        ])
+    ],
+    {
+        "progress" : new IntegerVariable("progress", 0),
+        "event" : new CountdownEventVariable("event", 3)
+    }
+);
+levels["H3-CountdownEvent"] = new Level(
+    "H3-CountdownEvent",
+    "Countdown Event Revisited",
+    "I fixed the bug. What are you going to do about it, huh?",
+    "This is now much simpler, no? This <a href='https://msdn.microsoft.com/en-us/library/system.threading.countdownevent'>CountdownEvent</a> is going to be a breeze for you, Scheduler.",
+    "The high-level synchronization primitives such as <i>CountdownEvent</i> are very safe and throw exceptions whenever something bad happens. For example, as you have just seen, it is impossible to signal if the event counter is already at zero. Good job!",
+    [
+        new Thread([
+            createOuterWhile(),
+            createAssignment("progress", new AdditionExpression(new VariableExpression("progress"), new LiteralExpression(20))),
+            new CountdownEventSignal("event"),
+            new CountdownEventWait("event"),
+            new IfInstruction(new EqualityExpression(new VariableExpression("progress"), new LiteralExpression(100)), "success"),
+            new GameOverInstruction(),
+            new EndIfInstruction("success"),
+            createOuterWhileEnd()
+        ]),
+        new Thread([
+            createOuterWhile(),
+            createAssignment("progress", new AdditionExpression(new VariableExpression("progress"), new LiteralExpression(30))),
+            new CountdownEventSignal("event"),
+            createAssignment("progress", new AdditionExpression(new VariableExpression("progress"), new LiteralExpression(50))),
+            new CountdownEventSignal("event"),
+            new CountdownEventWait("event"),
+            new IfInstruction(new EqualityExpression(new VariableExpression("progress"), new LiteralExpression(100)), "success"),
+            new GameOverInstruction(),
+            new EndIfInstruction("success"),
+            createOuterWhileEnd()
         ])
     ],
     {

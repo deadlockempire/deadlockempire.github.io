@@ -43,9 +43,15 @@ var FlavorInstruction = function(flavorText) {
 		moveToNextInstruction(threadState);
 	};
 };
-
+var GameOverInstruction = function () {
+	this.code = "<span class='game-over-instruction'>Environment.Exit(0);</span>";
+	this.tooltip = "If the program reaches this statement, then it's considered to have succeeded and you, as the player, lose this level, and will need to undo or reset.";
+	this.execute = function (threadState) {
+		// TODO make this work
+	};
+};
 var FailureInstruction = function() {
-	this.code = "<i>failure-statement</i>;";
+	this.code = "<span class='failure-statement'>failure-statement</span>;";
 	this.tooltip = "If you execute this statement, you will win this level.";
 	this.execute = function(threadState, globalState) {
 		win("You executed a failure instruction.");

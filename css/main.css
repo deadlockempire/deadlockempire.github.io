@@ -100,6 +100,15 @@ div.instruction.current-instruction div.expansion {
 }
 .critical-section {
 	font-style: italic;
+	color: #00cc00;
+}
+.failure-instruction {
+	font-style: italic;
+	color: #00cc00;
+}
+.game-over-instruction {
+	font-style: italic;
+	color: red;
 }
 
 .global-buttons {
