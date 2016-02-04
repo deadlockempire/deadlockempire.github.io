@@ -276,3 +276,7 @@ h3.thread-header {
 a.msdn-link {
 	/* TODO: somehow style MSDN links */
 }
+
+.story-intro {
+	font-style: italic;
+}

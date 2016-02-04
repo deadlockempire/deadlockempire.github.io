@@ -219,4 +219,12 @@ var MonitorPulseAll = function(mutex) {
         moveToNextInstruction(threadState);
     };
 };
+var InterlockedIncrement = function(name) {
+    this.code =  "<span class='static'>Interlocked</span>.Increment(<span class='keyword'>ref</span> " + name + ");";
+    this.tooltip = "Atomic. Atomically increments the variable by 1.";
+    this.execute = function (threadState, globalState) {
+        globalState[name].value++;
+        moveToNextInstruction(threadState);
+    }
+};
 

@@ -58,3 +58,32 @@ var CountdownEventWait = function(name) {
         moveToNextInstruction(threadState);
     }
 };
+
+var BarrierSignalAndWait = function(name) {
+    this.code = name + ".SignalAndWait();";
+    this.tooltip = "Atomic! Blocks until all threads in arrive at the barrier, then enters a new phase - its counter is reset back to the initial number of participants.";
+    this.isBlocking = function(threadState, globalState) {
+        var barrier = globalState[name];
+        return barrier.hasArrived && barrier.hasArrived[threadState.id];
+        // TODO (sooth, elsewhere): a level attempting to implement a multiphase barrier without barrier
+    };
+    this.execute = function(threadState, globalState) {
+        var barrier = globalState[name];
+        barrier.value--;
+        barrier.hasArrived[threadState.id] = true;
+        if (barrier.value == 0) {
+            for (var threadId in gameState.threadState) {
+                var thread = gameState.threadState[threadId];
+                if (barrier.hasArrived[threadId]) {
+                    moveToNextInstruction(thread);
+                    barrier.hasArrived[threadId] = false;
+                }
+            }
+            barrier.phase++;
+            barrier.value = barrier.numberOfParticipants;
+        }
+        else if (barrier.value < 0) {
+            console.log("THIS MUST NEVER HAPPEN.");
+        }
+    }
+};
