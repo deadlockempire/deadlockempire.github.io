@@ -61,3 +61,18 @@ var InequalityExpression =
         this.code = left.code + " != " + right.code;
 
     };
+var GreaterThanExpression =
+    function (left, right) {
+        this.evaluate = function(threadState, globalState)  {
+            return left.evaluate(threadState, globalState) > right.evaluate(threadState, globalState);
+        };
+        this.code = left.code + " > " + right.code;
+    };
+var GreaterOrEqualExpression =
+    function (left, right) {
+        this.evaluate = function(threadState, globalState)  {
+            return left.evaluate(threadState, globalState) >= right.evaluate(threadState, globalState);
+        };
+        this.code = left.code + " >= " + right.code;
+
+    };

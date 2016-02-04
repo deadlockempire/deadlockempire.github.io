@@ -32,18 +32,43 @@ levels["H1-ManualResetEvent"] = new Level(
         }
     }
 );
-// TODO (sooth): huh, how is countdownEvent different from barrier? is it superseded?
 levels["H2-CountdownEvent"] = new Level(
   "H2-CountdownEvent",
   "Countdown Event",
-  "Introduces the CountdownEvent class HUH",
-    "INTRO",
-    "OUTRO",
+  "Introduces the CountdownEvent class, a more powerful barrier but also trickier.",
+    "The <b><a href='https://msdn.microsoft.com/en-us/library/system.threading.countdownevent'>CountdownEvent</a></b> class has an internal counter and is initialized with a number. " +
+    "Its <a href='https://msdn.microsoft.com/en-us/library/dd321954'>.Signal()</a> method atomically decrements the counter. Its <a href='https://msdn.microsoft.com/en-us/library/dd270769'>.Wait()</a> method blocks the calling thread until the counter reaches zero. You can use this primitive to wait until all threads finished their work if you know the size of the work, for example. Its advantage compared to the <a href='https://msdn.microsoft.com/en-us/library/system.threading.barrier'>Barrier</a> is that you can wait without signalling, and that you can signal multiple times from the same thread.<br><br>" +
+    "However, this could also be a vulnerability if handled improperly, as you can see in this level.",
+    "Yes! When using the <a href='https://msdn.microsoft.com/en-us/library/system.threading.countdownevent'>CountdownEvent</a>, you must make extra sure that you are not leaving yourself open to deadlocks - the <i>.Wait()</i> calls will block indefinitely if not enough <i>.Signal()</i> calls have been made. Suppose you use the CountdownEvent for loading data. If one of threads fails to load data and somehow crashes, therefore not signalling, the program will be blocked and you won't be able to terminate the waiting thrads.",
     [
+        new Thread([
+            createAssignment("progress", new AdditionExpression(new VariableExpression("progress"), new LiteralExpression(20))),
+            new IfInstruction(new GreaterOrEqualExpression(new VariableExpression("progress"), new LiteralExpression(20)), "if"),
+            new CountdownEventSignal("event"),
+            new EndIfInstruction("if"),
 
+            new CountdownEventWait("event")
+        ]),
+        new Thread([
+            createAssignment("progress", new AdditionExpression(new VariableExpression("progress"), new LiteralExpression(30))),
+
+            new IfInstruction(new GreaterOrEqualExpression(new VariableExpression("progress"), new LiteralExpression(30)), "if"),
+            new CountdownEventSignal("event"),
+            new EndIfInstruction("if"),
+
+
+
+            createAssignment("progress", new AdditionExpression(new VariableExpression("progress"), new LiteralExpression(50))),
+
+            new IfInstruction(new GreaterOrEqualExpression(new VariableExpression("progress"), new LiteralExpression(80)), "if2"),
+            new CountdownEventSignal("event"),
+            new EndIfInstruction("if2"),
+
+            new CountdownEventWait("event")
+        ])
     ],
     {
-
+        "progress" : new IntegerVariable("progress", 0),
+        "event" : new CountdownEventVariable("event", 3)
     }
 );
-// TODO (sooth, elsewhere): improve syntax coloring in tooltips (dark blue to light blue)
