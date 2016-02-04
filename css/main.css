@@ -70,6 +70,10 @@ body {
 	padding: 0 0.5em;
 }
 
+.undobutton {
+	margin-left: .5em;
+}
+
 .failure-condition, .victory-condition {
 	/* HAX */
 	/*
