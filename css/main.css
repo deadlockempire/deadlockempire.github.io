@@ -26,8 +26,15 @@ body {
 
 #win-screen .icon, #lose-screen .icon {
 	font-size: 1.3em;
+	margin-right: 1.5em;
+}
+
+#win-screen .icon {
 	color: #0c0;
-	margin-right: 2em;
+}
+
+#lose-screen .icon {
+	color: #c00;
 }
 
 #mainarea, .sources, .thread {
@@ -251,6 +258,20 @@ h3.thread-header {
 #win-screen, #lose-screen {
 	display: none;
 }
+
+.tutorial-button-mock {
+	border: 1px solid #999;
+	border-radius: 4px;
+	padding: 1px 5px;
+	margin: 1px 0;
+	display: inline-block;
+	font-size: 0.9em;
+}
+
+a.msdn-link {
+	/* TODO: somehow style MSDN links */
+}
+
 .story-intro {
 	font-style: italic;
 }

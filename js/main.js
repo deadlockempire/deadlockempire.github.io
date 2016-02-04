@@ -38,6 +38,15 @@ var areAllThreadsBlocked = function() {
 	return true;
 };
 
+var areAllThreadsFinished = function() {
+	for (var threadId in gameState.getLevel().threads) {
+		if (!isThreadFinished(threadId)) {
+			return false;
+		}
+	}
+	return true;
+};
+
 var checkForVictoryConditions = function() {
 	var howManyCriticalSections = 0;
 	for (var threadId in gameState.getLevel().threads) {
@@ -60,7 +69,12 @@ var checkForVictoryConditions = function() {
 
 	if (areAllThreadsBlocked()) {
 		win("A deadlock occurred - all threads were blocked simultaneously.");
+		return;
+	}
 
+	if (areAllThreadsFinished()) {
+		lose('All threads of the program ran to the end, so the program was successful. Try to sabotage the program before it finishes.');
+		return;
 	}
 };
 
@@ -204,11 +218,11 @@ var startLevel = function(levelName) {
 		if (needConfirmation) {
 			bootbox.confirm('Really give up?', function(confirmed) {
 				if (confirmed) {
-					navigateToMainMenu();
+					navigateToMainMenu(gameState.getLevelId());
 				}
 			});
 		} else {
-			navigateToMainMenu();
+			navigateToMainMenu(gameState.getLevelId());
 		}
 	});
 	globalButtons.append(mainMenuButton);
@@ -320,6 +334,10 @@ var startLevel = function(levelName) {
 	if (level.id == "T1-Interface") {
 		loadTutorial1();
 	}
+
+	$('body')[0].scrollIntoView();
+
+	updateMSDNLinks();
 };
 
 var startSelectedLevel = function() {
@@ -401,9 +419,15 @@ var navigateToLevel = function(level) {
 	route();
 };
 
-var navigateToMainMenu = function() {
+/**
+ * @param {string} levelIdToDisplay Optional. Level to scroll to.
+ */
+var navigateToMainMenu = function(levelIdToDisplay) {
 	history.pushState({menu: true}, "menu", "#menu");
 	route();
+	if (levelIdToDisplay) {
+		scrollLevelIntoView(levelIdToDisplay);
+	}
 };
 
 $(window).bind('popstate', function(event) {

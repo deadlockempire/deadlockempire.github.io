@@ -35,12 +35,15 @@ var areThereMoreLevels = function() {
 
 var lose = function(reason) {
 	loseScreen.fadeIn(400);
-	var text;
+	var text = "";
 	if (gameState.getLevel().failureText) {
 		text = gameState.getLevel().failureText;
-		if (reason) {
-			text += "<br><br><p>Failure Condition: <i>" + reason + "</i></p>";
+	}
+	if (reason) {
+		if (text != "") {
+			text += "<br><br>";
 		}
+		text += "<p>Failure Condition: <i>" + reason + "</i></p>";
 	}
 	$("#lose-message").html(text);
 };
@@ -58,7 +61,7 @@ $(function() {
 	$('#win-next-level').click(goToNextLevel);
 
 	$('#win-go-to-menu').click(function() {
-		returnToMainMenu();
+		navigateToMainMenu(gameState.getLevelId());
 		winScreen.fadeOut(300);
 	});
 
@@ -67,8 +70,13 @@ $(function() {
 		loseScreen.fadeOut(300);
 	});
 
+	$('#lose-step-back').click(function() {
+		undo();
+		loseScreen.fadeOut(300);
+	});
+
 	$('#lose-go-to-menu').click(function() {
-		returnToMainMenu();
+		navigateToMainMenu(gameState.getLevelId());
 		loseScreen.fadeOut(300);
 	});
 

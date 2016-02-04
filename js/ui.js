@@ -41,12 +41,9 @@ var updateGlobalVariables = function() {
 		representation.append($('<span class="name"></span>').text(variable.name));
 		if (variable.value == "unimportant") {
 
-		}
-		else if (ToString(variable) != null) {
+		} else if (ToString(variable) != null) {
 			representation.append($('<span class="value"></span>').text(" " + ToString(variable)));
-		}
-		else {
-			console.log(variable.display);
+		} else {
 			representation.append($('<span class="equalSign"></span>').text('='));
 
 			var valueRepr;
@@ -76,6 +73,8 @@ var updateGlobalVariables = function() {
 		}
 		area.append(representation);
 	}
+
+	updateMSDNLinks();
 };
 
 var redraw = function() {
@@ -130,3 +129,16 @@ var redraw = function() {
 		buttons.expand.attr('disabled', !(isExpandable && !threadState.expanded));
 	}
 };
+
+var updateMSDNLinks = function() {
+	$('a').each(function(i) {
+		if (!$(this).hasClass("msdn-link")) {
+			if (this.href.indexOf("msdn.microsoft.com") !== -1) {
+				$(this).addClass("msdn-link");
+				$(this).attr('target', '_blank');
+			}
+		}
+	});
+};
+
+$(updateMSDNLinks);
