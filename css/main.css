@@ -1,5 +1,12 @@
 body {
+	background-image: url("../img/RedMist.png");
+	background-attachment: fixed;
+
 }
+#mainContainer {
+	background: rgba(255, 255, 255, 0.9);
+}
+
 
 #win-screen, #lose-screen {
 	position: fixed;
@@ -163,7 +170,7 @@ h2.menu-heading {
 	background-color: #f5fff5;
 }
 .mainMenuLevel.completed {
-	color: #666;
+	/*color: #666;*/
 }
 .mainMenuLevelCaption {
 	font-weight: bold;
@@ -277,6 +284,6 @@ a.msdn-link {
 	/* TODO: somehow style MSDN links */
 }
 
-.story-intro {
+.story-intro, .story-outro {
 	font-style: italic;
 }

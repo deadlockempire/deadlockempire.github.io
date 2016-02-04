@@ -314,8 +314,10 @@ var levels = {
 		"L3-complexer",
 		"A More Complex Thread",
 		"Three locks, two threads, one flag.",
-		"Solving this problem isn't actually <i>that</i> difficult. Try to understand the program, to split it into parts and then you will find the solution is actually quite easy.",
-		"The <b><a href='https://msdn.microsoft.com/en-us/library/system.threading.monitor.tryenter'>Monitor.TryEnter()</a></b> method, if successful, also locks the mutex and in C#, objects can be locked recursively. In order for a lock to be released, it must be <i>exited</i> the same number of times it was <i>entered</i>. In this game, you saw that there is no matching <i>Monitor.Exit()</i> call to the <i>.TryEnter()</i> call and thus the first thread was able to lock the object, recursively, many times, making it impossible for the second thread to lock it.",
+		"<span class='story-intro'>You look up the hill at the lone flag that shows who controls this important territory. You climb fast - you must reach it first. Unfortunately, that won't happen - not one, not two, but three enemy armies are closing in on the hill and they will all reach the flag before you do. You must do something about this, stop them somehow, if you are to claim this territory.</span><br><br>" +
+		"This may appear difficult at first. There's a lot of locks, a boolean flag and critical sections. The code is not very readable and an error could be anywhere. In fact, it wouldn't surprise us if you found a solution to this challenge different from what we thought of when creating it. You should definitely write more concise and understandable code than this.<br><br>" +
+		"Even so, you might use this advice: In C#, locks can be locked recursively. For example, a thread can <i>lock</i> (via <i>Monitor.Enter</i>) a single object multiple times. In order to release the lock on that object and permit other threads to lock it, <i>all</i> of the locks must be released, i.e. the method <i>Monitor.Exit</i> must be called the same number of times as <i>Monitor.Enter</i>.",
+		"<span class='story-outro'>You replace the neutral flag with the sign of the Sequentialists. You have won. Smiling, you look down from the hill at the three armies locked in place - neither able to move. Once again, you have proven the uselessness of parallelism.</span><br><br>The <b><a href='https://msdn.microsoft.com/en-us/library/system.threading.monitor.tryenter'>Monitor.TryEnter()</a></b> method, if successful, also locks the mutex and in C#, objects can be locked recursively. In order for a lock to be released, it must be <i>exited</i> the same number of times it was <i>entered</i>. In this game, you saw that there is no matching <i>Monitor.Exit()</i> call to the <i>.TryEnter()</i> call and thus the first thread was able to lock the object, recursively, many times, making it impossible for the second thread to lock it.",
 		[
 			new Thread([
 				createOuterWhile(),
@@ -353,22 +355,10 @@ var levels = {
 			])
 		],
 		{
-			"mutex" : {
-				name : "mutex",
-				type : "System.Object",
-				value : "unimportant"
-			},
-			"mutex2" : {
-				name : "mutex2",
-				type : "System.Object",
-				value : "unimportant"
-			},
-			"mutex3" : {
-				name : "mutex2",
-				type : "System.Object",
-				value : "unimportant"
-			},
-			"flag": {
+			"mutex" : new ObjectVariable("mutex"),
+			"mutex2" : new ObjectVariable("mutex2"),
+			"mutex3" :  new ObjectVariable("mutex3"),
+			"flag":  {
 				name : "flag",
 				type : "System.Boolean",
 				value : false

@@ -439,5 +439,3 @@ $(window).bind('popstate', function(event) {
 $(function() {
 	route();
 });
-
-Mousetrap.bind('ctrl+a', function() { alert("hello"); });
