@@ -31,6 +31,7 @@ var MonitorEnterInstruction = function(monitorName) {
 };
 var MonitorTryEnterExpression = function (monitorName) {
     this.code = "<span class='static'>Monitor</span>.TryEnter(" + monitorName + ")";
+    this.tooltip = "Atomic. Checks whether the current thread can lock the specified object. If yes, it locks the object and returns true. If no, returns false.";
     this.evaluate = function(threadState, globalState) {
         var monitor = globalState[monitorName];
         if (monitor.lastLockedByThread != null &&
@@ -49,7 +50,7 @@ var MonitorTryEnterExpression = function (monitorName) {
             return true;
         }
     }
-}
+};
 var MonitorExitInstruction = function(monitorName) {
     this.code = "<span class='static'>Monitor</span>.Exit(" + monitorName + ");";
     this.tooltip = "Atomic. Releases a lock. If this thread had this locked multiple times, decrements the timer only. If this thread does not own this lock, an exception is thrown (and you win the level).";
@@ -72,6 +73,7 @@ var MonitorExitInstruction = function(monitorName) {
 };
 var SemaphoreTryWaitExpression = function(semaphoreName) {
     this.code = semaphoreName + ".TryWait(500)";
+    this.tooltip = "Blocks the thread until the semaphore has a positive value or the specified timeout elapses. In the first case, it decrements the semaphore and returns true. In the second case, it returns false.<br><br>In this game, you can always step through this expression. What happens will be determined by whether the semaphore currently has a positive value.";
     this.evaluate = function(threadState, globalState) {
         if (globalState[semaphoreName].value > 0) {
             globalState[semaphoreName].value --;

@@ -67,13 +67,6 @@ var CriticalSectionInstruction = function() {
 	};
 };
 
-var WinningInstruction = function(code) {
-	this.code = code;
-	this.execute = function(threadState, globalState) {
-		win("You have executed the Winning Instruction.");
-	};
-};
-
 var findMatchingInstructionIndex = function(program, name, type) {
 	for (var i = 0; i < program.length; i++) {
 		var instruction = program[i];
@@ -89,9 +82,12 @@ var IfInstruction = function(expression, name) {
 	this.code = "<span class='keyword'>if</span> (" + expression.code + ") {";
 	this.name = name;
 	this.tooltip = "The \"if\" statement evaluates an expression. If it's true, the specified statements are executed. Otherwise, they are skipped.";
+	if (expression.tooltip) {
+		this.tooltip += "<br><br><b>Expression:</b><br>" + expression.tooltip;
+	}
 	this.isBlocking = function(threadState, globalState) {
 		return (expression.isBlocking && expression.isBlocking(threadState, globalState));
-	}
+	};
 	this.execute = function(threadState, globalState, threadProgram) {
 		if (expression.evaluate(threadState, globalState)) {
 			moveToNextInstruction(threadState);  // goto true branch
@@ -116,9 +112,12 @@ var IfLongInstruction = function(expression, name) {
 	this.code = "<span class='keyword'>if</span> (" + expression.code + ") {";
 	this.name = name;
 	this.tooltip = "The \"if\" statement evaluates an expression. If it's true, the specified statements are executed. Otherwise, the \"else\" statements are executed.";
+	if (expression.tooltip) {
+		this.tooltip += "<br><br><b>Expression:</b><br>" + expression.tooltip;
+	}
 	this.isBlocking = function(threadState, globalState) {
 		return (expression.isBlocking && expression.isBlocking(threadState, globalState));
-	}
+	};
 	this.execute = function(threadState, globalState, threadProgram) {
 		if (expression.evaluate(threadState, globalState)) {
 			moveToNextInstruction(threadState);  // goto true branch
@@ -170,8 +169,7 @@ var AtomicAssignmentToTemp = function (expression) {
 	this.code = "temp = " + expression.code + ";";
 	this.tooltip = "Evaluates the expression to the right and assigns it to the thread-local temporary variable on the left.";
 	this.execute = function(threadState, globalState) {
-		var value = expression.evaluate(threadState, globalState);
-		threadState.temporaryVariableValue = value;
+		threadState.temporaryVariableValue = expression.evaluate(threadState, globalState);
 		moveToNextInstruction(threadState);
 	};
 };
@@ -224,7 +222,9 @@ var WhileInstruction = function(expression, name, code) {
 	this.code = code ? code : ("<span class='keyword'>while</span> (" + expression.code + ") {");
 	this.name = name;
 	this.tooltip = "Executes the statements in the loop body until the specified condition ceases to be true.";
-
+	if (expression.tooltip) {
+		this.tooltip += "<br><br><b>Expression:</b><br>" + expression.tooltip;
+	}
 	this.execute = function(threadState, globalState, threadProgram) {
 		if (expression.evaluate(threadState, globalState)) {
 			moveToNextInstruction(threadState);
@@ -238,10 +238,10 @@ var WhileInstruction = function(expression, name, code) {
 
 var createOuterWhile = function() {
 	return new WhileInstruction(new LiteralExpression(true), "__outerWhile");
-}
+};
 var createOuterWhileEnd = function() {
 	return new EndWhileInstruction("__outerWhile");
-}
+};
 
 var EndWhileInstruction = function( name) {
 	this.code = "}";
