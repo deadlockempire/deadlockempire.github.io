@@ -124,18 +124,24 @@
 
 		<div id="win-screen">
 			<div class="container">
-				<h3>
-				<span class="icon glyphicon glyphicon-ok"></span>
-				<span id="win-congratulation">
-				You win!
-				</span>
-				</h3>
+				<div class="top-section">
+					<span class="icon glyphicon glyphicon-ok"></span>
+
+					<h3>
+						<span id="win-congratulation">
+						You win!
+						</span>
+					</h3>
+
+					<div class="victory-condition">
+					</div>
+				</div>
 
 				<div class="win-part">
 					<div id="win-message"></div>
 				</div>
 
-				<div style="text-align: right">
+				<div class="buttons">
 					<button id="dismiss-win" class="btn btn-default">Back to the code</button>
 					<button id="win-go-to-menu" class="btn btn-default">Return to Main Menu</button>
 					<button id="win-next-level" class="btn btn-primary">Next challenge&nbsp;
@@ -146,18 +152,24 @@
 
 		<div id="lose-screen">
 			<div class="container">
-				<h3>
-				<span class="icon glyphicon glyphicon-remove"></span>
-				<span id="fail-heading">
-				Challenge lost!
-				</span>
-				</h3>
+				<div class="top-section">
+					<span class="icon glyphicon glyphicon-remove"></span>
+
+					<h3>
+						<span id="fail-heading">
+						Challenge lost!
+						</span>
+					</h3>
+
+					<div class="failure-condition">
+					</div>
+				</div>
 
 				<div class="lose-part">
 					<div id="lose-message"></div>
 				</div>
 
-				<div style="text-align: right">
+				<div class="buttons">
 					<button id="lose-restart" class="btn btn-primary">Reset and try again</button>
 					<button id="lose-step-back" class="btn btn-default">Return to code and undo last step</button>
 					<button id="lose-go-to-menu" class="btn btn-default">Return to Main Menu</button>

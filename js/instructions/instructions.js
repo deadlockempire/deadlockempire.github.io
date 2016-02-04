@@ -49,12 +49,24 @@ var GameOverInstruction = function() {
 	this.execute = function (threadState) {
 		lose("The program finished successfully by reaching <code>Environment.Exit(0)</code>. To conquer this challenge, don't let it happen.");
 	};
+	this.isBlocking = function() {
+		if (levelWasCleared) {
+			return "Program successfully exited.";
+		}
+		return false;
+	};
 };
 var FailureInstruction = function() {
 	this.code = "<span class='failure-statement'>failure-statement</span>;";
 	this.tooltip = "If you execute this statement, you will win this level.";
 	this.execute = function(threadState, globalState) {
 		win("You executed a failure instruction.");
+	};
+	this.isBlocking = function() {
+		if (levelWasCleared) {
+			return "Execution failed.";
+		}
+		return false;
 	};
 };
 
