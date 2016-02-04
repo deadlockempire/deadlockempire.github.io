@@ -46,6 +46,12 @@ var campaign = [
         ]
     },
     {
+        name : "High-Level Synchronization Primitives",
+        levels : [
+            "H1-ManualResetEvent"
+        ]
+    },
+    {
         name : "Condition Variables",
         levels : [
             "CV1-simple"
