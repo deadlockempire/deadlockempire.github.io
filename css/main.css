@@ -289,3 +289,11 @@ a.msdn-link {
 .story-intro, .story-outro {
 	font-style: italic;
 }
+
+#game-window {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border: 2px solid #666;
+	border-radius: 8px;
+	padding: 1em;
+}
