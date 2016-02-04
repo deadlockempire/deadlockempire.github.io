@@ -118,6 +118,7 @@ levels["H4-Barrier"] = new Level(
             new IfInstruction(new LessThanExpression(new VariableExpression("fireballCharge"), new LiteralExpression(2)), "if"),
             new FailureInstruction(),
             new EndIfInstruction("if"),
+            new FlavorInstruction("fireball();"),
             createOuterWhileEnd()
         ]),
         new Thread([

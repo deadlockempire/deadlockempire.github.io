@@ -16,7 +16,6 @@ var ManualResetEventReset = function(name) {
         moveToNextInstruction(threadState);
     }
 };
-// TODO (sooth, elsewhere): improve the UI display of global state for complex types
 var ManualResetEventWait = function(name) {
     this.code = name + ".Wait();";
     this.tooltip = "Atomic. Blocks until the ManualResetEventSlim's state is set to 'signaled'.";

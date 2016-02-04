@@ -3,13 +3,6 @@ var campaign = [
     {
         name : "Debugging Levels",
         levels : [
-            "monitortest",
-            "test",
-            "tutorial",
-            "criticalSectionTest",
-            "semaphoreTest",
-            "infiniteLevel",
-            "deadlock"
         ]
     },
     {
