@@ -72,7 +72,7 @@ var MonitorExitInstruction = function(monitorName) {
     }
 };
 var SemaphoreTryWaitExpression = function(semaphoreName) {
-    this.code = semaphoreName + ".TryWait(500)";
+    this.code = semaphoreName + ".Wait(500)";
     this.tooltip = "Blocks the thread until the semaphore has a positive value or the specified timeout elapses. In the first case, it decrements the semaphore and returns true. In the second case, it returns false.<br><br>In this game, you can always step through this expression. What happens will be determined by whether the semaphore currently has a positive value.";
     this.evaluate = function(threadState, globalState) {
         if (globalState[semaphoreName].value > 0) {

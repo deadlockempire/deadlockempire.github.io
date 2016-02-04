@@ -298,7 +298,7 @@ var startLevel = function(levelName) {
 			span.append($('<span class="body"></span>').html(instruction.code));
 
 			if (instruction.tooltip) {
-				span.attr("title", "<div style='text-align: left;'><span class='tooltip_code'>" + instruction.code + "</span><br>" + instruction.tooltip + "</div>");
+				span.attr("title", "<div style='text-align: left;'><code>" + instruction.code + "</code><br>" + instruction.tooltip + "</div>");
 			}
 			var placement = 'left';
 			if (goLeft) {
