@@ -1,13 +1,16 @@
 var winScreen;
 var loseScreen;
 
+var openWinScreen = function() {
+	winScreen.css({display: 'flex'}).hide().fadeIn(400);
+};
+
 var win = function(reason) {
 	if (levelWasCleared) {
 		return;
 	}
 	localStorage.setItem('level_' + gameState.getLevelId(), "solved");
-	winScreen.css({display: 'flex'});
-	winScreen.fadeIn(400);
+	winReason = reason;
 	levelWasCleared = true;
 
 	var messages = ["You win!", "Great job!", "Congratulations!"];
@@ -30,6 +33,8 @@ var win = function(reason) {
 	} else {
 		$('#win-next-level').show();
 	}
+
+	openWinScreen();
 };
 
 var areThereMoreLevels = function() {
@@ -37,8 +42,7 @@ var areThereMoreLevels = function() {
 };
 
 var lose = function(reason) {
-	loseScreen.fadeIn(400);
-	loseScreen.css({display: 'flex'});
+	loseScreen.css({display: 'flex'}).fadeIn(400);
 	var text = "";
 	if (gameState.getLevel().failureText) {
 		text = gameState.getLevel().failureText;
