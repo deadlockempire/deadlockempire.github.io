@@ -75,9 +75,10 @@ var levels = {
 	"3-simpleCounter" : new Level(
 		"3-simpleCounter",
 		"Simple Counter",
-		"Let's test your skills with a simple problem.",
-		"Here also you must make both threads enter the critical section. This should not be hard.<br>If you'd like to reset the counter, use the orange <span class='tutorial-button-mock'>Reset level</span> button on the right.",
-		"As you have seen previously, once you pass a test, such as an integer comparison, you don't care about what other threads do to the operands - you have already passed the test and may continue to the critical section. To make this work, you would need locks.",
+		"Is the Deadlock Empire stupid?",
+		"<div class='story-intro'>The Parallel Wizard, leader of the Deadlock Empire, has unleashed the first Dragons upon you - these are terrifying creatures but for some reason, these two dragons appear to have critical weakspots specifically designed to be weak. Maybe you can exploit that, Scheduler.</div> <div>Here also you must make both threads enter the critical section.<br>If you'd like to reset the counter, use the orange <span class='tutorial-button-mock'>Reset level</span> button on the right.</div>",
+		"<div class='story-outro'>Yes, the dragons are both defeated! But we have just received news that the Empire is sending more of their monsters at your towns. You can't be everywhere, Scheduler, and we win wherever you go, but you should know that each passing hour more villages fall to the dread Empire.</div>" +
+		"As you have seen previously, once you pass a test, such as an integer comparison, you don't care about what other threads do to the operands - you have already passed the test and may continue to the critical section. To fix this program, locks would be needed.",
 		[
 			new Thread([
 				new WhileInstruction(new LiteralExpression(true), "while"),						createIncrement("counter"),
@@ -85,14 +86,14 @@ var levels = {
 				new CriticalSectionInstruction(),
 				new EndIfInstruction("if"),
 				new EndWhileInstruction("while")
-			]),
+			], "Five-Headed Dragon"),
 			new Thread([
 				new WhileInstruction(new LiteralExpression(true), "while"), 				createIncrement("counter"),
 				new IfInstruction(new EqualityExpression(new VariableExpression("counter"), new LiteralExpression(3)), "if"),
 				new CriticalSectionInstruction(),
 				new EndIfInstruction("if"),
 				new EndWhileInstruction("while")
-			])
+			], "Three-Headed Dragon")
 		],
 		{
 			"counter": {
@@ -106,8 +107,8 @@ var levels = {
 		"4-confusedCounter",
 		"Confused Counter",
 		"Could it be that some instructions are hidden from sight?",
-		"Could it be that some instructions are hidden from sight?",
-		"Most instructions are <i>not</i> atomic. That means that context may switch during the instruction's execution. For assignments, for example, it means that the expression may be read into registers of a thread, but then context may switch and when the thread receives priority again, it won't read the expression again, it will simply write the register into the left-hand variable.",
+		"<div class='story-intro'>The Parallel Wizard is now more cunning and the dragons he designs and the armies he trains are more resilient than ever. But still they must be defeated, or else the entire world will fall to the Empire and we will all be forced to learn parallel programming!</div>Could it be that some instructions are hidden from sight?<br><br>Most instructions are <i>not</i> atomic. That means that context may switch during the instruction's execution. For assignments, for example, it means that the expression may be read into registers of a thread, but then context may switch and when the thread receives priority again, it won't read the expression again, it will simply write the register into the left-hand variable.",
+		"",
 		[
 			new Thread([
 				new FlavorInstruction("business_logic()"),

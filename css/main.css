@@ -183,6 +183,7 @@ div.instruction.current-instruction div.expansion {
 .global-buttons {
 	float: right;
 	margin-bottom: 1em;
+	margin-left: 1em;
 }
 
 .sources {

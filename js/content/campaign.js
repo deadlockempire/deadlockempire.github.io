@@ -26,6 +26,7 @@ var campaign = [
     },
     {
         name : "Locks",
+        description : "...because in the end, you're going to simply lock everything, anyway.",
         levels : [
             "L1-lock",
             "L2-deadlock",
@@ -34,6 +35,7 @@ var campaign = [
     },
     {
         name : "High-Level Synchronization Primitives",
+        description : "Microsoft has deemed even locks too complicated. Rightly so.",
         levels : [
             "H1-ManualResetEvent",
             "H2-CountdownEvent",
@@ -43,6 +45,7 @@ var campaign = [
     },
     {
         name : "Semaphores",
+        description : "The war against the Deadlock Empire is getting tense.",
         levels : [
             "S1-simple",
             "S2-producerConsumer",
@@ -51,12 +54,14 @@ var campaign = [
     },
     {
         name : "Condition Variables",
+        description : "We had to get to them eventually...",
         levels : [
             "CV1-simple"
         ]
     },
     {
-        name : "The Deadlock Empire",
+        name : "The Final Stretch",
+        description : "Defeat the Parallel Wizard using everything you have learned so far!",
         levels : [
             "D1-Dragonfire",
             "D2-Sorcerer",
