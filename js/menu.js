@@ -29,6 +29,8 @@ var returnToMainMenu = function() {
 	mainArea.append($('<div class="clearboth"></div>'));
 	mainArea.append(introText);
 
+	var nextToPlay = getNextQuestLevel();
+
 	var makeLevelBox = function(levelId) {
 		var level = levels[levelId];
 		if (!level) {
@@ -40,6 +42,12 @@ var returnToMainMenu = function() {
 		if (wasLevelCompleted(levelId)) {
 			source.addClass('completed');
 			source.append('<span class="menu-completion-icon glyphicon glyphicon-ok"></span>');
+		} else if (levelId == nextToPlay) {
+			source.addClass('nextToPlay');
+			source.append('<span class="menu-next-to-play-icon glyphicon glyphicon-tower"></span>');
+		} else {
+			source.addClass('not-special');
+			source.append('<span class="menu-not-special-icon"></span>');
 		}
 		source.append("<div class='mainMenuLevelCaption'>" + level.name + "</div>");
 		source.append("<div class='mainMenuLevelDescription'>" + level.shortDescription + "</div>");
@@ -48,7 +56,6 @@ var returnToMainMenu = function() {
 		return source;
 	};
 
-	var foundUnfinished = false;
 	for (var campaignKey in campaign) {
 		var quest = campaign[campaignKey];
 		if (quest.name == "Debugging Levels" && !debugMode) {
@@ -63,11 +70,6 @@ var returnToMainMenu = function() {
 		for (var i = 0; i < quest.levels.length; i++) {
 			var levelId = quest.levels[i];
 			var source = makeLevelBox(levelId);
-			if (!wasLevelCompleted(levelId) && !foundUnfinished) {
-				source.addClass('nextToPlay');
-				foundUnfinished = true;
-				source.prepend('<span class="menu-next-to-play-icon glyphicon glyphicon-tower"></span>');
-			}
 			mainArea.append(source);
 		}
 	}
