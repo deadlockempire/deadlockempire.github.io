@@ -1,5 +1,5 @@
 html {
-	background: red url("../img/landscape-mountains-nature-clouds-downscale.jpg") no-repeat center center fixed;
+	background: url("../img/landscape-mountains-nature-clouds-downscale.jpg") no-repeat center center fixed;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
