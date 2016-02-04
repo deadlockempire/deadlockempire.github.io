@@ -175,7 +175,7 @@ div.instruction.current-instruction div.expansion {
 	font-style: italic;
 	color: #00cc00;
 }
-.failure-instruction {
+.failure-statement {
 	font-style: italic;
 	color: #00cc00;
 }
