@@ -46,4 +46,3 @@ levels["H2-CountdownEvent"] = new Level(
 
     }
 );
-// TODO (sooth, elsewhere): improve syntax coloring in tooltips (dark blue to light blue)
