@@ -42,7 +42,7 @@ We use [jQuery](https://jquery.com/) for manipulating the DOM and for
 animations. The design is implemented using vanilla
 [Bootstrap](https://getbootstrap.com/). The tutorial challenge uses
 [Intro.js](https://usablica.github.io/intro.js/) to familiarize the player
-with the controls.
+with the controls. Keyboard shortcuts are implemented using [Mousetrap](https://craig.is/killing/mice).
 
 The game uses two custom fonts published by [Vernon
 Adams](http://www.fontsquirrel.com/fonts/list/foundry/vernon-adams)
