@@ -175,6 +175,7 @@ var startLevel = function(levelName) {
 	introduction.html(level.longDescription);
 	mainArea.append(introduction);
 
+	//wonBanner = $('<div id="won-banner"></div>');
 	wonBanner = $('<div id="won-banner"><span class="glyphicon glyphicon-ok"></span>&nbsp;Congratulations, you completed this challenge!</div>');
 	mainArea.append(wonBanner);
 
@@ -202,7 +203,7 @@ var startLevel = function(levelName) {
 
 	globalButtons.append("&nbsp;&nbsp;");
 
-	nextChallengeButton = $('<button class="btn btn-primary"><span class="glyphicon glyphicon-chevron-right"></span>&nbsp;Next challenge</button>');
+	nextChallengeButton = $('<button class="btn btn-primary"><span class="glyphicon glyphicon-chevron-right"></span>&nbsp;View Congratulations</button>');
 	nextChallengeButton.click(openWinScreen);
 	globalButtons.append(nextChallengeButton);
 

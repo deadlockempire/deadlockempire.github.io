@@ -283,9 +283,9 @@ var levels = {
 	"L2-deadlock": new Level(
 		"L2-deadlock",
 		"Deadlock",
-		"Stop this code in its tracks!",
-		"A 'deadlock' is a scenario where all threads in the program wait for each other to release some resource (usually locks). None of them is willing to concede a resource before the other ones and thus the program is stuck - forever waiting for locks which will never be released.",
-		"This was the most simple deadlock scenario - two threads mutually waiting for each other, because each was stuck on a different lock. Congratulations all the same for solving it!",
+		"Stop the Empire army in its tracks!",
+		"<div class='story-intro'>Encouraged by your victory against the armored dragons, you move on to the Refactor Lands, a critical territory where the Deadlock Empire is always trying to recruit more towns to convert to their paradigms. Even now, they are moving a great army to this territory in the hope of intimidating developers to accept their teachings. This must not be allowed to happen.</div>A '<a href='http://en.wikipedia.org/wiki/Deadlock' target='_blank'>deadlock</a>' is a scenario where all threads in the program wait for each other to release some resource (usually locks). None of them is willing to concede a resource before the other ones and thus the program is stuck - forever waiting for locks which will never be released. In this game, if you cause a deadlock to occur, you win the challenge immediately.",
+		"<div class='story-outro'>Today you have scored an important victory! Not only are the armies blocked from moving forward but the people of Refactor Lands have seen the problems that come with parallel programming and praise you and say they will gladly stay with a sequentialist design. Now only one thing remains to be done here - plant a flag atop the local hill.</div>This was the most simple deadlock scenario - two threads mutually waiting for each other, because each was stuck on a different lock. Congratulations all the same for solving it!",
 		[
 			new Thread([
 				new MonitorEnterInstruction("mutex"),
@@ -320,7 +320,7 @@ var levels = {
 		"L3-complexer",
 		"A More Complex Thread",
 		"Three locks, two threads, one flag.",
-		"<span class='story-intro'>You look up the hill at the lone flag that shows who controls this important territory. You climb fast - you must reach it first. Unfortunately, that won't happen - not one, not two, but three enemy armies are closing in on the hill and they will all reach the flag before you do. You must do something about this, stop them somehow, if you are to claim this territory.</span><br><br>" +
+		"<span class='story-intro'>You look up the Refactor Lands hill at the lone flag that shows who controls this important territory. You climb fast - you must reach it first. Unfortunately, that won't happen - not one, not two, but three enemy armies are closing in on the hill and they will all reach the flag before you do. You must do something about this, stop them somehow, if you are to claim this territory and save the poor people of Refactor Lands the trouble of changing paradigms.</span><br><br>" +
 		"This may appear difficult at first. There's a lot of locks, a boolean flag and critical sections. The code is not very readable and an error could be anywhere. In fact, it wouldn't surprise us if you found a solution to this challenge different from what we thought of when creating it. You should definitely write more concise and understandable code than this.<br><br>" +
 		"Even so, you might use this advice: In C#, locks can be locked recursively. For example, a thread can <i>lock</i> (via <i>Monitor.Enter</i>) a single object multiple times. In order to release the lock on that object and permit other threads to lock it, <i>all</i> of the locks must be released, i.e. the method <i>Monitor.Exit</i> must be called the same number of times as <i>Monitor.Enter</i>.",
 		"<span class='story-outro'>You replace the neutral flag with the sign of the Sequentialists. You have won. Smiling, you look down from the hill at the three armies locked in place - neither able to move. Once again, you have proven the uselessness of parallelism.</span><br><br>The <b><a href='https://msdn.microsoft.com/en-us/library/system.threading.monitor.tryenter'>Monitor.TryEnter()</a></b> method, if successful, also locks the mutex and in C#, objects can be locked recursively. In order for a lock to be released, it must be <i>exited</i> the same number of times it was <i>entered</i>. In this game, you saw that there is no matching <i>Monitor.Exit()</i> call to the <i>.TryEnter()</i> call and thus the first thread was able to lock the object, recursively, many times, making it impossible for the second thread to lock it.",
@@ -375,12 +375,13 @@ var levels = {
 		"S1-simple",
 		"Semaphores",
 		"A semaphore is a simple synchronization primitive.",
+		"<div class='story-intro'>You behold the Factory Lands of the Deadlock Empire. You are almost in awe. Everything runs smoothly and efficiently, all factories producing new materials at the same time without unnecessary delays, everything manned by thousands of workers. Cooperation. But there are weaknesses - it may be efficient but it is unstable. A single mistake - anywhere - can bring entire factories down. You take one look at the fearsome mechanical dragons leaving the factories on numerous conveyor bolts and your determination is sealed. You will destroy this land.</div>" +
 		"<a href='https://msdn.microsoft.com/en-us/library/system.threading.semaphoreslim(v=vs.110).aspx'>Semaphores</a> limit the number of threads that can access a resource at the same time. In C#, they are implemented by the SemaphoreSlim class." +
 		"You can imagine a semaphore as a stack of coins. When a thread wants to access the resource protected by the semaphore, it needs to take a coin. Once it's done, it returns the coin to the stack.<br>" +
 		"To take a coin, you can call the <code><a href='https://msdn.microsoft.com/en-us/library/dd270787(v=vs.110).aspx'>Wait()</a></code> method on the semaphore. If there are no coins on the stack, the method waits until someone returns a coin. If you don't want to wait forever, you can pass it how long should it wait, in milliseconds. In that case, <code>Wait()</code> will return a boolean indicating whether it obtained a coin.<br>" +
 		"The <code><a href='https://msdn.microsoft.com/en-us/library/dd235727(v=vs.110).aspx'>Release()</a></code> method adds a coin on the stack. Normally, you would call <code>Release()</code> only after a <code>Wait()</code> - you would take a coin, do something while you have it, and then give it back. However, you can also call <code>Release()</code> while you don't have any coins yourself. If you let Thread 1 run, you will see it do this: if it can't find a coin within 500 milliseconds, it will create a new one.<br><br>" +
 		"The two threads below try to use a semaphore to ensure they don't enter the critical section at the same time. Can you figure out what are they doing wrong?",
-		"Yay! You know how to use semaphores maybe! Let's now proceed to harder levels.",
+		"<div class='story-outro'>A few factories stopped but the Parallel Wizard is hard at work repairing them. You must move on and act quickly to capitalize on this.</div>",
 		[
 			new Thread([
 				createOuterWhile(),
@@ -408,12 +409,14 @@ var levels = {
 		"S2-producerConsumer",
 		"Producer-Consumer",
 		"A new victory condition awaits you!",
+		"<div class='story-intro'>You pick your target - one dragon-producing factory is sending its creations directly into an armory that outfits the machines with destructive weapons. If you disrupt this supply line, you will greatly reduce the number of dragons at the Empire's disposal.</div>" +
 		"In <a href='https://en.wikipedia.org/wiki/Producer–consumer_problem'>producer-consumer scenarios</a>, one thread produces some items that another thread consumes. " +
 		"For example, one thread could accept work requests from a user, and another thread could take outstanding requests and fulfill them.<br>" +
 		"Even through the producer-consumer problem might look trivial, it has some subtle complexity to it. For example, what if the consumer needs a lot of time to consume one item, while the producer produces items as fast as it can? We could run out of memory.<br>" +
 		'Semaphores are useful for producer-consumer problems. Remember the "coin stack" analogy: each item in the queue is represented by a coin; when the producer produces a new one, it adds a coin, and when the consumer consumes an item, it removes a coin.<br><br>' +
 		"In this challenge, your goal is cause an exception to be raised.<br>",
-		"You should know that this was really a rather simple producer-consumer pattern to exploit but I admit you performed quite well nonetheless.",
+		"<div class='story-outro'>Alarms sound over the lands but you hear only the sweet sound of victory. Soon, the Sequentialists will win and everything will happen in order, as was meant to be.</div>" +
+		"Admittedly, this was not an extremely difficult producer-consumer pattern to exploit but you performed quite well nonetheless.",
 		[
 			new Thread([
 				createOuterWhile(),
@@ -427,7 +430,7 @@ var levels = {
 			new Thread([
 				createOuterWhile(),
 				new SemaphoreReleaseInstruction("ss"),
-				createEnqueueUnsafe("queue", 42),
+				createEnqueueUnsafe("queue", "new Dragon()"),
 				createOuterWhileEnd()
 			])
 		]
@@ -438,19 +441,20 @@ var levels = {
 				type : "System.Threading.SemaphoreSlim",
 				value : 0
 			},
-			"queue" : new QueueVariable("queue", "int", 0)
+			"queue" : new QueueVariable("queue", "Dragon", 0)
 		}
 	),
 	"S3-producerConsumer" : new Level(
 		"S3-producerConsumer",
 		"Producer-Consumer (variant)",
 		"The victory conditions just keep coming!",
+		"<div class='story-intro'>Only one factory line remains. If you disrupt this, the entire land will be swept clean and the Empire will have lost all production.</div>" +
 		"For this challenge, it will be useful to know that most library methods are not thread-safe and if two threads enter an unsafe method on the same object simultaneously, strange things may happen. Things that result in your victory.",
-		"Congratulations, Scheduler! Are you ready for the next challenge?",
+		"<div class='story-outro'>Congratulations, Scheduler! The Empire's economy is in shambles.</div>Are you ready for the next challenge?",
 		[
 			new Thread([
 				createOuterWhile(),
-				createEnqueueUnsafe("queue", 42),
+				createEnqueueUnsafe("queue", "new Golem()"),
 				createOuterWhileEnd()
 			], "The Producer"),
 			new Thread([
@@ -462,14 +466,14 @@ var levels = {
 			], "The Consumer")
 		],
 		{
-			"queue" : new QueueVariable("queue", "int", 0)
+			"queue" : new QueueVariable("queue", "Golem", 0)
 		}
 	),
 	"CV1-simple": new Level(
 		"CV1-simple",
 		"Condition Variables",
 		"Don't worry. It's not <i>that</i> hard.",
-		"Condition variables are, unfortunately, a difficult topic. But - we have hope that you will manage.",
+		"Condition variables are, unfortunately, still a rather difficult topic. We won't even try to get you a confusing story here, they're just hard. Try. If you fail, skip.",
 		"Your skill is unmatched, Master Scheduler! Truly no program is safe before you.",
 		[
 			new Thread([

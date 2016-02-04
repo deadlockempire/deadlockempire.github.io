@@ -24,7 +24,7 @@ var MinorDequeue = function(queue) {
     this.tooltip = "Decrements the number of elements in the queue. If it falls below zero, an exception is thrown.";
     this.execute = function (threadState, globalState) {
         if (globalState[queue].value <= 0) {
-            win("An InvalidOperationException was raised when trying to read from an empty queue.")
+            win("An InvalidOperationException was thrown.<br>(trying to read from an empty queue)")
         }
         else {
             globalState[queue].value--;

@@ -36,7 +36,7 @@ var CountdownEventSignal = function(name) {
     this.execute = function(threadState, globalState) {
         var mres = globalState[name];
         if (mres.value == 0) {
-            win("An InvalidOperationException was thrown because you attempted to decrement a countdown timer below zero.");
+            win("An InvalidOperationException was thrown.<br>(attempted to decrement a countdown timer below zero)");
             return;
         }
         mres.value--;

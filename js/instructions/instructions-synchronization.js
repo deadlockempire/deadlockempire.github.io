@@ -66,7 +66,7 @@ var MonitorExitInstruction = function(monitorName) {
         }
         else
         {
-            win("The SynchronizationLockException was thrown because a thread attempted to release a lock it did not have.");
+            win("A SynchronizationLockException was thrown.<br>(thread attempted to release a lock it did not have)");
         }
         moveToNextInstruction(threadState);
     }
@@ -119,7 +119,7 @@ var MinorWaitIntro = function(mutexName) {
     this.execute = function(threadState, globalState) {
         var mutex = globalState[mutexName];
         if (mutex.lockCount == 0 || mutex.lastLockedByThread != threadState.id) {
-            win("A SynchronizationLockException was raised because the program called Wait while not having the lock.");
+            win("A SynchronizationLockException was thrown.<br>(thread called Wait while not having the lock)");
             return;
         }
         threadState.asleep = true;
@@ -183,7 +183,7 @@ var MonitorPulse = function(mutex) {
     this.execute = function (threadState, globalState) {
         var monitor = globalState[mutex];
         if (monitor.lockCount == 0 || monitor.lastLockedByThread != threadState.id) {
-            win("A SynchronizationLockException was raised because the program called Pulse while not having the lock.");
+            win("A SynchronizationLockException was thrown.<br>(thread called Pulse while not having the lock)");
             return;
         }
         if (!monitor.waiting) {
@@ -205,7 +205,7 @@ var MonitorPulseAll = function(mutex) {
     this.execute = function (threadState, globalState) {
         var monitor = globalState[mutex];
         if (monitor.lockCount == 0 || monitor.lastLockedByThread != threadState.id) {
-            win("A SynchronizationLockException was raised because the program called PulseAll while not having the lock.");
+            win("A SynchronizationLockException was thrown.<br>(thread called PulseAll while not having the lock)");
             return;
         }
         if (!monitor.waiting) {

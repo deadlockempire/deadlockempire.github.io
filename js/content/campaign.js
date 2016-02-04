@@ -45,7 +45,7 @@ var campaign = [
     },
     {
         name : "Semaphores",
-        description : "The war against the Deadlock Empire is getting tense.",
+        description : "Sabotage the Deadlock Empire's factories!",
         levels : [
             "S1-simple",
             "S2-producerConsumer",

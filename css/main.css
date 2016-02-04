@@ -95,6 +95,9 @@ body {
 	padding-right: 1em;
 	*/
 }
+.victory-condition {
+	text-align: right;
+}
 
 #win-screen h3, #lose-screen h3 {
 	font-family: 'Consolas', monospace;
@@ -262,18 +265,26 @@ h2.menu-heading {
 #logo {
 	float: left;
 }
+
+#logoRight {
+	float: right;
+}
 h1#game {
-	padding-top: 0.8em;
+	padding-top: 0.4em;
+	padding-bottom: 0.1em;
 	font-size: 3.5em;
+	text-align: center;
 	font-family: 'Amatic SC', cursive;
 }
 #subtitle {
 	font-size: 2em;
-	margin-top: -0.6em;
+	text-align: center;
+
+	margin-top: -0.4em;
 	font-family: 'Amatic SC', cursive;
 }
 #introtext {
-	padding-top: 1em;
+	padding-top: 1.5em;
 }
 footer {
 	border-top: 1px dotted #666;
