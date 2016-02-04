@@ -203,7 +203,7 @@ var startLevel = function(levelName) {
 	globalButtons.append("&nbsp;&nbsp;");
 
 	nextChallengeButton = $('<button class="btn btn-primary"><span class="glyphicon glyphicon-chevron-right"></span>&nbsp;Next challenge</button>');
-	nextChallengeButton.click(goToNextLevel);
+	nextChallengeButton.click(openWinScreen);
 	globalButtons.append(nextChallengeButton);
 
 	var mainMenuButton = $('<button class="btn btn-danger"><span class="glyphicon glyphicon-menu-hamburger"></span>&nbsp;Return to main menu</button>');
