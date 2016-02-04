@@ -347,6 +347,8 @@ var startLevel = function(levelName) {
 	}
 
 	$('body')[0].scrollIntoView();
+
+	updateMSDNLinks();
 };
 
 var startSelectedLevel = function() {

@@ -267,3 +267,7 @@ h3.thread-header {
 	display: inline-block;
 	font-size: 0.9em;
 }
+
+a.msdn-link {
+	/* TODO: somehow style MSDN links */
+}
