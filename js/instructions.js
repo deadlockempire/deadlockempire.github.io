@@ -43,11 +43,11 @@ var FlavorInstruction = function(flavorText) {
 		moveToNextInstruction(threadState);
 	};
 };
-var GameOverInstruction = function () {
+var GameOverInstruction = function() {
 	this.code = "<span class='game-over-instruction'>Environment.Exit(0);</span>";
 	this.tooltip = "If the program reaches this statement, then it's considered to have succeeded and you, as the player, lose this level, and will need to undo or reset.";
 	this.execute = function (threadState) {
-		// TODO make this work
+		lose("The program finished successfully by reaching <code>Environment.Exit(0)</code>. To conquer this challenge, don't let this happen.");
 	};
 };
 var FailureInstruction = function() {
