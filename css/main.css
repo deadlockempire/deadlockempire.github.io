@@ -214,7 +214,7 @@ hr {
 	margin: 1em 0;
 	padding: 0;
 }
-.tooltip_code {
+.tooltip code {
 	font-family: Consolas, monospace;
 	font-weight: bold;
 	font-size: 1.2em;
@@ -230,10 +230,10 @@ hr {
 	color: gray;
 }
 
-.tooltip_code .keyword {
+.tooltip code .keyword {
 	color: #268bd2;
 }
-.tooltip_code .static {
+.tooltip code .static {
 	color: #228e87;
 }
 
@@ -243,6 +243,11 @@ hr {
 }
 code {
 	font-family: Consolas, monospace;
+
+	/* Counteract Bootstrap's <code> styling */
+	background-color: transparent;
+	padding: 0;
+	color: inherit;
 }
 .block-reason code {
 	background: transparent;
