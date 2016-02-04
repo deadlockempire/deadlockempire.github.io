@@ -64,7 +64,11 @@ var updateGlobalVariables = function() {
 
 		representation.append(";");
 		if (variable.lastLockedByThread != null) {
-			representation.append(" (locked by thread " + variable.lastLockedByThread + ")");
+			if (variable.lockCount == 1) {
+				representation.append(" (locked by thread " + variable.lastLockedByThread + ")");
+			} else {
+				representation.append(" (locked by thread " + variable.lastLockedByThread + ", " + variable.lockCount + " times)");
+			}
 		}
 		area.append(representation);
 	}
