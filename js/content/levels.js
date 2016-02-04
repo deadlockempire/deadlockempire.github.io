@@ -27,9 +27,11 @@ var levels = {
 	"2-flags": new Level(
 		"2-flags",
 		"Boolean Flags Are Enough For Everyone",
-		"Who needs locks when you can get by with using just variables? ...or can you?",
-		"Who needs locks when you can get by with using just variables? ...or can you?",
-		"To break synchronization, stop at unexpected times - here, for example, you had to stop immediately after the end of the loop. The most difficult parallelism bugs come from situations that rarely really happen because they require some strange timing, as in here.",
+		"Or so thinks the Deadlock Empire.",
+		"<div class='story-intro'>The day finally came. The Deadlock Empire opened its gates and from them surged massive amounts of soldiers, loyal servants of the evil Parallel Wizard. The Wizard has many strengths - his armies are fast, and he can do a lot of stuff that we can't. But now he set out to conquer the world, and we cannot have that.<br><br>" +
+		"You are our best <b>Scheduler</b>, commander! We have fewer troops and simpler ones, so we will need your help. Already two armies of the Deadlock Empire are approaching our border keeps. They are poorly equipped and poorly trained, however. You might be able to desync them and break their morale.</div>" +
+		"<div>If two threads enter a critical section at the same time, the program is not thread-safe and thus you win the challenge. The <i>while</i> loop at the beginning is called a <i>guard</i> - it prevents execution from continuing into a critical section under certain conditions. However, this here is a weak guard. After you pass it in one thread, if you stop at the right time, you will be able to pass it in the other thread, too.</div>",
+		"<div class='story-outro'>You've done it, Scheduler! The armies have broken apart and our soldiers are driving them back. But do not grow complacent - this is merely the beginning of a war - <b>The Great Concurrency War</b> - and we <i>will</i>  win it!</div><div>Congratulations!</div>",
 		[
 			new Thread([
 				new WhileInstruction(new LiteralExpression(true), "eternal"),
@@ -45,7 +47,7 @@ var levels = {
 				createAssignment("flag", new LiteralExpression(false)),
 
 				new EndWhileInstruction("eternal")
-			]),
+			], "First Army"),
 			new Thread([
 				new WhileInstruction(new LiteralExpression(true), "eternal"),
 
@@ -60,7 +62,7 @@ var levels = {
 				createAssignment("flag", new LiteralExpression(false)),
 
 				new EndWhileInstruction("eternal")
-			])
+			], "Second Army")
 		],
 		{
 			"flag" : {
@@ -286,15 +288,15 @@ var levels = {
 				new MonitorEnterInstruction("mutex2"),
 				new CriticalSectionInstruction(),
 				new MonitorExitInstruction("mutex"),
-				new MonitorExitInstruction("mutex2"),
+				new MonitorExitInstruction("mutex2")
 			]),
 			new Thread([
 				new MonitorEnterInstruction("mutex2"),
 				new MonitorEnterInstruction("mutex"),
 				new CriticalSectionInstruction(),
 				new MonitorExitInstruction("mutex2"),
-				new MonitorExitInstruction("mutex"),
-			]),
+				new MonitorExitInstruction("mutex")
+			])
 		],
 		{
 			"mutex" : {
