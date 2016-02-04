@@ -258,3 +258,12 @@ h3.thread-header {
 #win-screen, #lose-screen {
 	display: none;
 }
+
+.tutorial-button-mock {
+	border: 1px solid #999;
+	border-radius: 4px;
+	padding: 1px 5px;
+	margin: 1px 0;
+	display: inline-block;
+	font-size: 0.9em;
+}

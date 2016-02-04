@@ -45,11 +45,11 @@ levels["T2-Expansion"] = new Level("T2-Expansion",
     "Tutorial 2: Non-Atomic Instructions",
     "In the second tutorial, you will learn to expand statements.",
     "Many statements are not atomic and are actually composed of several \"minor\" statements. Whenever such a statement is the active instruction, you can \"expand\" it to be able to step through with more precision. Follow the path outlined below, watch changes in the global state and learn how this works.<br><br>" +
-    "First, click 'Expand' in the first thread to reveal what an assignment consists of.<br>" +
-    "Then, click 'Step' in the first thread to evaluate the expression, but not twice! We will still need the old value of 'a' (zero) in the second thread!<br>" +
-    "Then, click 'Step' in the second thread to move to the assignment statement and expand it. Again, click 'Step' to read the expression into a thread-local variable.<br>" +
+    "First, click <span class='tutorial-button-mock'>Expand</span> in the first thread to reveal what an assignment consists of.<br>" +
+    "Then, click <span class='tutorial-button-mock'>Step</span> in the first thread to evaluate the expression, but not twice! We will still need the old value of 'a' (zero) in the second thread!<br>" +
+    "Then, click <span class='tutorial-button-mock'>Step</span> in the second thread to move to the assignment statement and expand it. Again, click <span class='tutorial-button-mock'>Step</span> to read the expression into a thread-local variable.<br>" +
     "The order of steps does not matter after this. You should be able to get into the critical section with both threads.<br><br>" +
-    "If you miss the right order, just click 'Reset level' and try again.",
+    "If you miss the right order, just click <span class='tutorial-button-mock'>Reset level</span> and try again. You can also <span class='tutorial-button-mock'>Undo</span> all your actions.",
     "Congratulations! You have completed the tutorial! You may now either proceed with the first non-tutorial level (very easy) or choose a level from the main menu yourself. We hope you will have fun playing this game!",
     [
         new Thread([
