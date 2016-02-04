@@ -131,7 +131,6 @@ div.instruction.current-instruction div.expansion {
 .global-buttons {
 	float: right;
 	margin-bottom: 1em;
-	margin-left: 1em;
 }
 
 .sources {
@@ -294,4 +293,12 @@ a.msdn-link {
 .story-intro, .story-outro {
 	font-style: italic;
 	margin-bottom: 1em;
+}
+
+#game-window {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border: 2px solid #666;
+	border-radius: 8px;
+	padding: 1em;
 }
