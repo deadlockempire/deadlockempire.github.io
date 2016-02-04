@@ -195,12 +195,21 @@ hr {
 	font-weight: bold;
 	font-size: 1.2em;
 }
+/* Language keywords: while, if, true, etc. */
 .keyword {
-	color: #0000ff
+	color: #0000ff;
 }
 .static {
-	color: #2b91af
+	color: #2b91af;
 }
+
+.tooltip_code .keyword {
+	color: #268bd2;
+}
+.tooltip_code .static {
+	color: #228e87;
+}
+
 .block-reason {
 	height: 1.6em;
 	line-height: 1.6em;
