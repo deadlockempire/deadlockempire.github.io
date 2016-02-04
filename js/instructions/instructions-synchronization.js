@@ -5,7 +5,7 @@ var MonitorEnterInstruction = function(monitorName) {
         var monitor = globalState[monitorName];
         if (monitor.lastLockedByThread != null &&
             monitor.lastLockedByThread != threadState.id) {
-            return "Waiting for thread " + monitor.lastLockedByThread + " to unlock <code>" + monitorName + "</code>.";
+            return "Waiting for " + gameState.getLevel().getThreadName(monitor.lastLockedByThread) + " to unlock <code>" + monitorName + "</code>.";
         } else {
             return false;
         }
@@ -153,7 +153,7 @@ var MinorInternalMonitorEnter = function(mutex) {
         var monitor = globalState[mutex];
         if (monitor.lastLockedByThread != null &&
             monitor.lastLockedByThread != threadState.id) {
-            return "Waiting for thread " + monitor.lastLockedByThread + " to unlock <code>" + mutex + "</code>.";
+            return "Waiting for " + gameState.getThreadName(monitor.lastLockedByThread) + " to unlock <code>" + mutex + "</code>.";
         } else {
             return false;
         }

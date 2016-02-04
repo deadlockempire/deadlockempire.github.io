@@ -17,6 +17,14 @@ Level.prototype.createFreshGlobalState = function() {
 	return {};
 };
 
+Level.prototype.getThreadName = function(i) {
+	if (this.threads[i].name) {
+		return this.threads[i].name;
+	} else {
+		return "Thread " + i;
+	}
+};
+
 /**
  * @param {string} levelId
  * @return {Level}

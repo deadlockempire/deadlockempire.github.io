@@ -63,7 +63,6 @@ levels["D2-Sorcerer"] = new Level(
     "And now, the time has come to take the battle to the enemy - to fight the Parallel Wizard in his own land!",
     [
         new Thread([
-            new CommentInstruction("Sorcerer"),
             createOuterWhile(),
             new MonitorEnterInstruction("conduit"),
             new CommentInstruction("I summon mana for you, dragon!"),
@@ -71,8 +70,7 @@ levels["D2-Sorcerer"] = new Level(
             createEnqueueUnsafe("energyBursts", "new EnergyBurst()"),
             new MonitorExitInstruction("conduit"),
             createOuterWhileEnd()
-        ]), new Thread([
-            new CommentInstruction("Dragon Head (Left)"),
+        ], "Sorcerer"), new Thread([
             createOuterWhile(),
             new IfInstruction(new QueueNotEmptyExpression("energyBursts"), "if"),
             new MonitorEnterInstruction("conduit"),
@@ -81,8 +79,7 @@ levels["D2-Sorcerer"] = new Level(
             new MonitorExitInstruction("conduit"),
             new EndIfInstruction("if"),
             createOuterWhileEnd()
-        ]), new Thread([
-            new CommentInstruction("Dragon Head (Right)"),
+        ], "Dragon Head (Left)"), new Thread([
             createOuterWhile(),
             new IfInstruction(new QueueNotEmptyExpression("energyBursts"), "if"),
             new MonitorEnterInstruction("conduit"),
@@ -91,7 +88,7 @@ levels["D2-Sorcerer"] = new Level(
             new MonitorExitInstruction("conduit"),
             new EndIfInstruction("if"),
             createOuterWhileEnd()
-        ])
+        ], "Dragon Head (Right)")
     ],
     {
         "conduit": new ObjectVariable("conduit"),
