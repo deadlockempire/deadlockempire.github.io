@@ -25,6 +25,21 @@ Level.prototype.getThreadName = function(i) {
 	}
 };
 
+var getNextQuestLevel = function() {
+	for (var campaignKey in campaign) {
+		var quest = campaign[campaignKey];
+		if (quest.name == "Debugging Levels" && !debugMode) {
+			continue;
+		}
+		for (var i = 0; i < quest.levels.length; i++) {
+			var levelId = quest.levels[i];
+			if (!wasLevelCompleted(levelId)) {
+				return levelId;
+			}
+		}
+	}
+};
+
 /**
  * @param {string} levelId
  * @return {Level}

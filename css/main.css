@@ -1,5 +1,5 @@
 html {
-	background: red url("../img/landscape-mountains-nature-clouds-downscale.jpg") no-repeat center center fixed;
+	background: url("../img/landscape-mountains-nature-clouds-downscale.jpg") no-repeat center center fixed;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -214,12 +214,12 @@ div.instruction.current-instruction div.expansion {
 .menu-completion-icon {
 	color: #afa;
 	float: left;
-	font-size: 2em;
+	font-size: 3em;
 }
 .menu-next-to-play-icon {
 	color: #E9BF4D;
 	float: left;
-	font-size: 2em;
+	font-size: 3em;
 }
 
 h2.menu-heading {
