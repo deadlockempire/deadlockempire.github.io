@@ -108,7 +108,7 @@ var levels = {
 		"Confused Counter",
 		"Could it be that some instructions are hidden from sight?",
 		"<div class='story-intro'>The Parallel Wizard is now more cunning and the dragons he designs and the armies he trains are more resilient than ever. But still they must be defeated, or else the entire world will fall to the Empire and we will all be forced to learn parallel programming!</div>Could it be that some instructions are hidden from sight?<br><br>Most instructions are <i>not</i> atomic. That means that context may switch during the instruction's execution. For assignments, for example, it means that the expression may be read into registers of a thread, but then context may switch and when the thread receives priority again, it won't read the expression again, it will simply write the register into the left-hand variable.",
-		"",
+		"<div class='story-outro'>And yet again the Wizard's tactics have been foiled! Hurray for simplicity!</div>",
 		[
 			new Thread([
 				new FlavorInstruction("business_logic()"),
