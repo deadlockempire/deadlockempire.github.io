@@ -48,7 +48,8 @@ var campaign = [
     {
         name : "High-Level Synchronization Primitives",
         levels : [
-            "H1-ManualResetEvent"
+            "H1-ManualResetEvent",
+            "H2-CountdownEvent",
         ]
     },
     {

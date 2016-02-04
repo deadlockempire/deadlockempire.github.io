@@ -440,7 +440,7 @@ var levels = {
 		"A More Complex Thread",
 		"Three locks, two threads, one flag.",
 		"Solving this problem isn't actually <i>that</i> difficult. Try to understand the program, to split it into parts and then you will find the solution is actually quite easy.",
-		"...yes, the 'critical section' was just there to confuse you. However, this kind of error happens in real-life programs, as well. It is not only important to ensure single access to the critical section, but to also prevent deadlocks.",
+		"The <b><a href='https://msdn.microsoft.com/en-us/library/system.threading.monitor.tryenter'>Monitor.TryEnter()</a></b> method, if successful, also locks the mutex and in C#, objects can be locked recursively. In order for a lock to be released, it must be <i>exited</i> the same number of times it was <i>entered</i>. In this game, you saw that there is no matching <i>Monitor.Exit()</i> call to the <i>.TryEnter()</i> call and thus the first thread was able to lock the object, recursively, many times, making it impossible for the second thread to lock it.",
 		[
 			new Thread([
 				createOuterWhile(),
