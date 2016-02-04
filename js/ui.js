@@ -37,12 +37,16 @@ var updateGlobalVariables = function() {
 	for (var key in gameState.globalState) {
 		var variable = gameState.globalState[key];
 		var representation = $('<div class="variable"></div>');
-		representation.append($('<span class="type"></span>').text(variable.type));
+		representation.append($('<a href="https://msdn.microsoft.com/en-us/library/' + variable.type + '" class="type"></a>').text(variable.type));
 		representation.append($('<span class="name"></span>').text(variable.name));
 		if (variable.value == "unimportant") {
 
 		}
+		else if (ToString(variable) != null) {
+			representation.append($('<span class="value"></span>').text(" " + ToString(variable)));
+		}
 		else {
+			console.log(variable.display);
 			representation.append($('<span class="equalSign"></span>').text('='));
 
 			var valueRepr;

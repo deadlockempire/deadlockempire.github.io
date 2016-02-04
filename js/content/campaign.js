@@ -50,6 +50,7 @@ var campaign = [
         levels : [
             "H1-ManualResetEvent",
             "H2-CountdownEvent",
+            "H3-CountdownEvent",
         ]
     },
     {

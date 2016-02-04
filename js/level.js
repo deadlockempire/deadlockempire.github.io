@@ -1,4 +1,5 @@
 var Level = function(id, name, short, long, victoryText, threads, variables) {
+	console.assert(arguments.length == 7);
 	this.id = id;
 	this.name = name;
 	this.shortDescription = short;
