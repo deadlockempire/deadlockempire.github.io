@@ -12,7 +12,7 @@ var VariableExpression = function(name) {
 };
 var AdditionExpression = function(left, right) {
     this.evaluate = function(threadState, globalState) { return left.evaluate(threadState, globalState) +
-            right.evaluate(threadState, globalState); }
+            right.evaluate(threadState, globalState); };
     this.code = left.code + " + " + right.code;
 };
 var ModuloExpression = function (left, right) {
@@ -24,7 +24,7 @@ var ModuloExpression = function (left, right) {
 };
 var SubtractionExpression = function(left, right) {
     this.evaluate = function(threadState, globalState) { return left.evaluate(threadState, globalState) -
-        right.evaluate(threadState, globalState); }
+        right.evaluate(threadState, globalState); };
     this.code = left.code + " - " + right.code;
 };
 var EqualityExpression =

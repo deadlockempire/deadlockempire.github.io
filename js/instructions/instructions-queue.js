@@ -34,6 +34,7 @@ var MinorDequeue = function(queue) {
 };
 var QueueNotEmptyExpression = function(queue) {
     this.code = queue + ".Count > 0";
+    this.tooltip = "Returns true if the queue is not empty.";
     this.evaluate = function (threadState, globalState) {
       if (globalState[queue].value > 0) {
           return true;
@@ -44,6 +45,7 @@ var QueueNotEmptyExpression = function(queue) {
 };
 var QueueIsEmptyExpression = function(queue) {
     this.code = queue + ".Count == 0";
+    this.tooltip = "Returns true if the queue is empty.";
     this.evaluate = function (threadState, globalState) {
         if (globalState[queue].value == 0) {
             return true;

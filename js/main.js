@@ -71,7 +71,7 @@ var checkForVictoryConditions = function() {
 
 	if (areAllThreadsBlocked()) {
 		win("A deadlock occurred - all threads were blocked simultaneously.");
-		return;
+
 	}
 };
 

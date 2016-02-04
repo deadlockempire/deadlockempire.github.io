@@ -71,4 +71,4 @@ var returnToMainMenu = function() {
 	clearButtonArea.append(clearButton);
 
 	mainArea.append(clearButtonArea);
-}
+};
