@@ -38,7 +38,7 @@ var areThereMoreLevels = function() {
 
 var lose = function(reason) {
 	loseScreen.fadeIn(400);
-	winScreen.css({display: 'flex'});
+	loseScreen.css({display: 'flex'});
 	var text = "";
 	if (gameState.getLevel().failureText) {
 		text = gameState.getLevel().failureText;
