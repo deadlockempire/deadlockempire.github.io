@@ -18,24 +18,76 @@ body {
 	z-index: 5;
 	width: 100%;
 	height: 100%;
-}
 
-#win-screen h3, #lose-screen h3 {
-	font-size: 5em;
-	margin-bottom: 0.5em;
-}
+	/*display: flex;*/
+	align-items: center;
+	justify-content: center;
 
-#win-screen h3 {
-	font-family: 'Pacifico', cursive;
+	display: none;
 }
 
 #win-screen .container, #lose-screen .container {
-	margin-top: 20%;
+	border: 2px solid black;
+	border-radius: 10px;
+	padding: 0;
+	background-color: #fff;
+}
+
+.win-part, .lose-part {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+#win-screen .buttons, #lose-screen .buttons {
+	text-align: right;
+	padding: 10px;
+}
+
+.top-section {
+	padding: 0;
+	border-bottom: 2px solid black;
+	margin-bottom: 0.5em;
+	display: flex;
+	align-items: center;
+	justify-content: left;
+	flex-wrap: wrap;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	padding-right: 1em;
+}
+
+.top-section h3 {
+	font-size: 3em;
+	flex-grow: 1;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+#win-screen .top-section .icon, #lose-screen .top-section .icon {
+	font-size: 2.5em;
+	padding: 0 0.5em;
+}
+
+.failure-condition, .victory-condition {
+	/* HAX */
+	/*
+	padding-top: .5em;
+	padding-right: 1em;
+	*/
+}
+
+#win-screen h3 {
+	/*
+	font-family: 'Pacifico', cursive;
+	*/
+}
+
+#win-screen .container, #lose-screen .container {
+	/*margin-top: 20%;*/
 }
 
 #win-screen .icon, #lose-screen .icon {
 	font-size: 1.3em;
-	margin-right: 1.5em;
 }
 
 #win-screen .icon {
@@ -271,11 +323,6 @@ code {
 h3.thread-header {
 	font-family: Consolas, monospace;
 	font-size: 1.4em;
-}
-
-/* Against win-screen FOUC. */
-#win-screen, #lose-screen {
-	display: none;
 }
 
 .tutorial-button-mock {
