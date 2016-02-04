@@ -1,4 +1,13 @@
+html {
+	background: red url("../img/landscape-mountains-nature-clouds-downscale.jpg") no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
 body {
+	background: transparent;
 	/*
 	background-image: url("../img/RedMist.png");
 	background-attachment: fixed;
@@ -6,6 +15,11 @@ body {
 
 }
 #mainContainer {
+	/*
+	*/
+}
+
+#game-window {
 	background: rgba(255, 255, 255, 0.9);
 }
 
@@ -262,10 +276,16 @@ h1#game {
 	padding-top: 1em;
 }
 footer {
-	border-top: 1px dotted #eee;
-	margin-top: 1em;
-	padding-top: 1em;
+	border-top: 1px dotted #666;
+	text-align: right;
+	margin-top: 1.5em;
+	padding-top: 1.5em;
 	color: #999;
+	display: flex;
+}
+
+footer #credits {
+	flex-grow: 1;
 }
 
 #won-banner {
