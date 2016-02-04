@@ -1,7 +1,7 @@
 body {
 }
 
-#win-screen {
+#win-screen, #lose-screen {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -11,17 +11,20 @@ body {
 	height: 100%;
 }
 
-#win-screen h3 {
+#win-screen h3, #lose-screen h3 {
 	font-size: 5em;
-	font-family: 'Pacifico', cursive;
 	margin-bottom: 0.5em;
 }
 
-#win-screen .container {
+#win-screen h3 {
+	font-family: 'Pacifico', cursive;
+}
+
+#win-screen .container, #lose-screen .container {
 	margin-top: 20%;
 }
 
-#win-screen .icon {
+#win-screen .icon, #lose-screen .icon {
 	font-size: 1.3em;
 	color: #0c0;
 	margin-right: 2em;
@@ -233,4 +236,9 @@ code {
 h3.thread-header {
 	font-family: Consolas, monospace;
 	font-size: 1.4em;
+}
+
+/* Against win-screen FOUC. */
+#win-screen, #lose-screen {
+	display: none;
 }
