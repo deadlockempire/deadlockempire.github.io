@@ -242,8 +242,11 @@ var levels = {
 		"L1-lock",
 		"Insufficient Lock",
 		"Locks don't solve everything.",
-		"These threads have total mutual exclusion - one cannot run while the other is active. But still the program can fail. Can you make it so?",
-		"Congratulations on this effort!",
+		"<div class='story-intro'>The Deadlock Empire strikes again, and in force!<br><br>" +
+		"Their dragons still have critical sections where they are weak, but this time, they have brought armored locks to hide them from us. Our artillery is not powerful enough to punch through this armor or to defeat the dragons without exploiting the critical sections. It falls upon you, Scheduler, to reveal to us a way to access the critical sections, even under the armored locks.</div>" +
+		"RULES INTRO",
+		"<div class='story-outro'>As soon as you revealed to us the way to get under the lock armor, our mages let out a volley of cold fire against the dragons. We slaughtered them and as the dragons feel, the invading army retreated.</div>" +
+		"Locks are the most commonly used synchronization primitive. It is very useful to know them.",
 		[
 			new Thread([
 				createOuterWhile(),

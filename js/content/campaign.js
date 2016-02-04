@@ -1,10 +1,10 @@
 var campaign = [
-
+/*
     {
         name : "Debugging Levels",
         levels : [
         ]
-    },
+    },*/
     {
         name : "Tutorial",
         description : "Learn to fight.",
