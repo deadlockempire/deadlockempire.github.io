@@ -103,3 +103,40 @@ levels["H3-CountdownEvent"] = new Level(
         "event" : new CountdownEventVariable("event", 3)
     }
 );
+levels["H4-Barrier"] = new Level(
+    "H4-Barrier",
+    "The Barrier",
+    "The Deadlock Empire rolls out a new defensive weapon.",
+    "<span class='story-intro'>Soldiers of the Deadlock Empire let out a mighty cheer as a new device rolls out from their factories. It is a giant armored <b>wall</b>, covered in spikes and it is now rolling on its mighty wheels towards your troops, casting fireballs from its magical engines. You would do well to destroy this new weapon before it crushes your armies.</span><br><br>" +
+    "The <a href='https://msdn.microsoft.com/en-us/library/system.threading.barrier'>Barrier class</a> is quite safe when used correctly, though it must have been difficult to create correctly for the developers of the .NET framework. The Barrier has a fixed <i>number of participants</i> - in this case, <b>two</b>. It has only one useful method - <i>.SignalAndWait()</i> that blocks until all participants reach it. Then, all participant threads are let through the barrier and the barrier resets.",
+    "<span class='story-intro'>Three courageous heroes punched their way to the Barrier. The Barrier shoots fireballs but your heroes are agile and evade successfully. In the end, the Barrier crumbles. It's another victory for the Sequentialists!</span><br><br>It is highly recommended that you set the participant count to exactly the number of threads using the barrier in any real-world code.",
+    [
+        new Thread([
+            createOuterWhile(),
+            new InterlockedIncrement("fireballCharge"),
+            new BarrierSignalAndWait("barrier"),
+            new IfInstruction(new LessThanExpression(new VariableExpression("fireballCharge"), new LiteralExpression(2)), "if"),
+            new FailureInstruction(),
+            new EndIfInstruction("if"),
+            createOuterWhileEnd()
+        ]),
+        new Thread([
+            createOuterWhile(),
+            new InterlockedIncrement("fireballCharge"),
+            new BarrierSignalAndWait("barrier"),
+            createOuterWhileEnd()
+        ]),
+        new Thread([
+            createOuterWhile(),
+            new InterlockedIncrement("fireballCharge"),
+            new BarrierSignalAndWait("barrier"),
+            new BarrierSignalAndWait("barrier"),
+            createAssignment("fireballCharge",  new LiteralExpression(0)),
+            createOuterWhileEnd()
+        ])
+    ],
+    {
+        "fireballCharge" : new IntegerVariable("fireballCharge", 0),
+        "barrier": new BarrierVariable("barrier", 2)
+    }
+);

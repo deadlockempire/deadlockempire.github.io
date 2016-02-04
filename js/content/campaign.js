@@ -51,6 +51,7 @@ var campaign = [
             "H1-ManualResetEvent",
             "H2-CountdownEvent",
             "H3-CountdownEvent",
+            "H4-Barrier"
         ]
     },
     {

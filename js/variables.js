@@ -13,6 +13,14 @@ var ManualResetEventVariable = function (name, value) {
     this.type = "System.Threading.ManualResetEventSlim";
     this.value = value;
 };
+var BarrierVariable = function (name, participantCount) {
+    this.name = name;
+    this.type = "System.Threading.Barrier";
+    this.value = participantCount;
+    this.numberOfParticipants = participantCount;
+    this.hasArrived = [];
+    this.phase = 0;
+};
 /**
  * Returns the variable value in human-readable form.
  * @param variable A variable.
@@ -26,6 +34,8 @@ var ToString = function(variable) {
             return value == 0 ? "[event set]" : (value == 1 ? "[waits for one more signal]" : "[waits for " + value + " more signals]");
         case "System.Threading.ManualResetEventSlim":
             return "[" + (value ? "signaled" : "nonsignaled" ) + "]";
+        case "System.Threading.Barrier":
+            return "[phase " + variable.phase + ", waiting for " + value + " threads]";
 
     }
     return null;

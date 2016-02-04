@@ -1,14 +1,3 @@
-var assign = function(variable, type, value) {
-	// TODO: type checking?
-	gameState.globalState[variable] = {
-		type: type,
-		name: variable,
-		value: value,
-		lastLockedByThread: null,
-		lockCount: 0
-	};
-};
-
 /**
  * @return {bool|string} false if nothing is blocked, string if blocked with a
  *                       reason, true if blocked without a given reason.

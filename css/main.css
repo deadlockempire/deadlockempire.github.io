@@ -251,3 +251,6 @@ h3.thread-header {
 #win-screen, #lose-screen {
 	display: none;
 }
+.story-intro {
+	font-style: italic;
+}
