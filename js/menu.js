@@ -7,7 +7,12 @@ function startLevelCreator(level) {
 var wasLevelCompleted = function(levelId) {
 	return localStorage.getItem('level_' + levelId);
 };
-var toBeDeleted = false;
+
+var scrollLevelIntoView = function(levelId) {
+	console.log('scrolling to display level', levelId);
+	$('#level-' + levelId)[0].scrollIntoView();
+};
+
 var returnToMainMenu = function() {
 	var mainArea = $('#mainarea');
 	mainArea.html("");
@@ -24,7 +29,6 @@ var returnToMainMenu = function() {
 	mainArea.append($('<div class="clearboth"></div>'));
 	mainArea.append(introText);
 
-
 	var makeLevelBox = function(levelId) {
 		var level = levels[levelId];
 		if (!level) {
@@ -32,6 +36,7 @@ var returnToMainMenu = function() {
 			return $('<div></div>');
 		}
 		var source = $('<div class="mainMenuLevel"></div>');
+		source.attr('id', 'level-' + levelId);
 		if (wasLevelCompleted(levelId)) {
 			source.addClass('completed');
 			source.append('<span class="menu-completion-icon glyphicon glyphicon-ok"></span>');

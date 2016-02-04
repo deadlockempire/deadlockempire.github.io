@@ -61,7 +61,7 @@ $(function() {
 	$('#win-next-level').click(goToNextLevel);
 
 	$('#win-go-to-menu').click(function() {
-		returnToMainMenu();
+		navigateToMainMenu(gameState.getLevelId());
 		winScreen.fadeOut(300);
 	});
 
@@ -76,7 +76,7 @@ $(function() {
 	});
 
 	$('#lose-go-to-menu').click(function() {
-		returnToMainMenu();
+		navigateToMainMenu(gameState.getLevelId());
 		loseScreen.fadeOut(300);
 	});
 
