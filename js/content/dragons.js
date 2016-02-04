@@ -41,31 +41,14 @@ levels["D1-Dragonfire"] = new Level("D1-Dragonfire",
             new CommentInstruction("I hate being in here."),
             new CriticalSectionInstruction(),
             new EndIfLongInstruction("if"),
-            /*
-             new MonitorEnterInstruction("firebreathing"),
-             new FlavorInstruction("scorch_a_single_villager()"),
-             new MonitorExitInstruction("firebreathing"),
-             */
             createOuterWhileEnd()
 
         ])
     ],
     {
-        "firebreathing": {
-            name: "firebreathing",
-            type: "System.Object",
-            value: "awesome power"
-        },
-        "fireball": {
-            name: "fireball",
-            type: "System.Threading.SemaphoreSlim",
-            value: 0
-        },
-        "c": {
-            name: "c",
-            type: "System.Int32",
-            value: 0
-        }
+        "firebreathing": new ObjectVariable("firebreathing"),
+        "fireball": new SemaphoreVariable("fireball", 0),
+        "c": new IntegerVariable("c", 0)
     }
 );
 levels["D2-Sorcerer"] = new Level(
@@ -108,16 +91,8 @@ levels["D2-Sorcerer"] = new Level(
         ], "Dragon Head (Right)")
     ],
     {
-        "conduit": {
-            name: "conduit",
-            type: "System.Object",
-            value: "magical power"
-        },
-        "energyBursts": {
-            name: "energyBursts",
-            type: "System.Queue<EnergyBurst>",
-            value: 3
-        }
+        "conduit": new ObjectVariable("conduit"),
+        "energyBursts": new QueueVariable("energyBursts", "EnergyBurst", 3)
     }
 );
 levels["D4-Boss"] = new Level(
@@ -182,32 +157,11 @@ levels["D4-Boss"] = new Level(
         ])
     ],
     {
-        "darkness" : {
-            name : "darkness",
-            type : "System.Int32",
-            value : 0
-         },
-        "evil" : {
-            name : "evil",
-            type : "System.Int32",
-            value : 0
-        },
-        "fortress" : {
-            name : "fortress",
-            type : "System.Threading.SemaphoreSlim",
-            value : 0
-        },
-        "sanctum" : {
-            name : "sanctum",
-            type : "System.Object",
-            value : "unimportant"
-        }
+        "darkness" : new IntegerVariable("darkness", 0),
+        "evil" : new IntegerVariable("evil", 0),
+        "fortress" : new SemaphoreVariable("fortress", 0),
+        "sanctum" : new ObjectVariable("sanctum")
     }
-
-
-
-
-
 );
 
 levels["D3-Gate"] = new Level(

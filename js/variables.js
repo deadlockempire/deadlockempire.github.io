@@ -21,6 +21,20 @@ var BarrierVariable = function (name, participantCount) {
     this.hasArrived = [];
     this.phase = 0;
 };
+var SemaphoreVariable = function(name, value) {
+    this.name = name;
+    this.type = 'System.Threading.SemaphoreSlim';
+    this.value = value;
+};
+var QueueVariable = function(name, innerType, value) {
+    this.name = name;
+    this.type = 'System.Collections.Generic.Queue<' + innerType + '>';
+    this.value = value;
+};
+var ObjectVariable = function(name) {
+    this.name = name;
+    this.type = 'System.Object';
+};
 /**
  * Returns the variable value in human-readable form.
  * @param variable A variable.
@@ -36,7 +50,14 @@ var ToString = function(variable) {
             return "[" + (value ? "signaled" : "nonsignaled" ) + "]";
         case "System.Threading.Barrier":
             return "[phase " + variable.phase + ", waiting for " + value + " threads]";
+        case "System.Object":
+            return "";
+        case "System.Threading.SemaphoreSlim":
+            return "[counter: " + value + "]";
 
+    }
+    if (type.indexOf('System.Collections.Generic.Queue') == 0) {
+        return "[number of enqueued items: " + value + "]";
     }
     return null;
 };
