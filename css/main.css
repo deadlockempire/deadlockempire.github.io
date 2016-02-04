@@ -26,8 +26,15 @@ body {
 
 #win-screen .icon, #lose-screen .icon {
 	font-size: 1.3em;
+	margin-right: 1.5em;
+}
+
+#win-screen .icon {
 	color: #0c0;
-	margin-right: 2em;
+}
+
+#lose-screen .icon {
+	color: #c00;
 }
 
 #mainarea, .sources, .thread {
