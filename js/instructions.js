@@ -207,7 +207,7 @@ var EmptyStatement = function() {
 };
 
 var CommentInstruction = function(comment) {
-	this.code = "<font color='Gray'>// " + comment + "</font>";
+	this.code = "<span class='comment'>// " + comment + "</span>";
 	this.tooltip = "This is a comment. It does nothing.";
 	this.execute = function(threadState, globalState) {
 		moveToNextInstruction(threadState);

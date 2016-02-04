@@ -83,9 +83,14 @@ div.clearboth {
 }
 
 .expansion {
-	font-size: .8em;
-	padding-left: 2em;
 	background-color: white;
+}
+.expansion .instruction {
+	margin-right: 0;
+	line-height: .96em;  /* .8em * 1.2 */
+}
+.expansion .body {
+	font-size: .8em;
 }
 div.instruction.current-instruction div.expansion {
 	font-weight: normal;
@@ -195,12 +200,24 @@ hr {
 	font-weight: bold;
 	font-size: 1.2em;
 }
+/* Language keywords: while, if, true, etc. */
 .keyword {
-	color: #0000ff
+	color: #0000ff;
 }
 .static {
-	color: #2b91af
+	color: #2b91af;
 }
+.comment {
+	color: gray;
+}
+
+.tooltip_code .keyword {
+	color: #268bd2;
+}
+.tooltip_code .static {
+	color: #228e87;
+}
+
 .block-reason {
 	height: 1.6em;
 	line-height: 1.6em;

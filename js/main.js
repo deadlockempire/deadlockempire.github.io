@@ -270,21 +270,29 @@ var startLevel = function(levelName) {
 
 		var source = $('<div class="code"></div>');
 
-		var makeInstruction = function(i, goLeft) {
-			var instruction = $('<div class="instruction"></div>');
+		var makeInstruction = function(instruction, goLeft) {
+			var line = $('<div class="instruction"></div>');
 
 			var span = $('<span></span>');
-			span.html(i.code);
-			if (i.tooltip) {
-				span.attr("title", "<div style='text-align: left;'><span class='tooltip_code'>" + i.code + "</span><br>" + i.tooltip + "</div>");
+
+			var indentation = "";
+			console.log(instruction);
+			for (var i = 0; i < instruction.indent; i++) {
+				indentation += "  ";
+			}
+			span.append(indentation);
+			span.append($('<span class="body"></span>').html(instruction.code));
+
+			if (instruction.tooltip) {
+				span.attr("title", "<div style='text-align: left;'><span class='tooltip_code'>" + instruction.code + "</span><br>" + instruction.tooltip + "</div>");
 			}
 			var placement = 'left';
 			if (goLeft) {
 				placement = 'right';
 			}
 			span.tooltip({'placement': placement, 'html': true});
-			instruction.append(span);
-			return instruction;
+			line.append(span);
+			return line;
 		};
 
 		for (var j = 0; j < thread.instructions.length; j++) {
@@ -338,6 +346,35 @@ var clearProgressAction = function () {
 	});
 };
 
+var autoindentLevels = function() {
+	$.each(levels,function(key, value) {
+		$.each(value.threads, function(key2, thread) {
+			var indent = 0;
+			for (var instructionName in thread.instructions) {
+				var instruction = thread.instructions[instructionName];
+				if (instruction instanceof EndIfInstruction ||
+					instruction instanceof EndIfLongInstruction ||
+					instruction instanceof ElseInstruction ||
+					instruction instanceof EndWhileInstruction) {
+					indent--;
+				}
+				instruction.indent = indent;
+				if (instruction instanceof ExpandableInstruction) {
+					for (var j = 0; j < instruction.minorInstructions.length; j++) {
+						instruction.minorInstructions[j].indent = indent + 1;
+					}
+				}
+				if (instruction instanceof IfInstruction ||
+					instruction instanceof IfLongInstruction ||
+					instruction instanceof ElseInstruction ||
+					instruction instanceof WhileInstruction) {
+					indent++;
+				}
+			}
+		});
+	});
+};
+
 $(function() {
 	$('button#start').click(startSelectedLevel);
 	$('button#goToMain').click(navigateToMainMenu);
@@ -349,30 +386,8 @@ $(function() {
 	var select = $("#levelSelect");
 	$.each(levels,function(key, value) {
 		select.append('<option value=' + key + '>' + value.name + '</option>');
-		$.each(value.threads, function(key2, thread) {
-			var indent = 0;
-			for (var instructionName in thread.instructions) {
-				var instruction = thread.instructions[instructionName];
-				if (instruction instanceof EndIfInstruction ||
-					instruction instanceof EndIfLongInstruction ||
-					instruction instanceof ElseInstruction ||
-					instruction instanceof EndWhileInstruction) {
-					indent--;
-				}
-				for (var i = 0; i < indent; i++) {
-					instruction.code = "  " + instruction.code;
-				}
-				if (instruction instanceof IfInstruction ||
-					instruction instanceof IfLongInstruction ||
-					instruction instanceof ElseInstruction ||
-					instruction instanceof WhileInstruction) {
-					indent++;
-				}
-			}
-		});
 	});
-
-
+	autoindentLevels();
 });
 
 /**
@@ -411,3 +426,5 @@ $(window).bind('popstate', function(event) {
 $(function() {
 	route();
 });
+
+Mousetrap.bind('ctrl+a', function() { alert("hello"); });

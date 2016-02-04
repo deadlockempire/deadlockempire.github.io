@@ -1,6 +1,10 @@
 var LiteralExpression = function(value) {
     this.evaluate = function() { return value; };
-    this.code = (value === false) || (value === true) ? "<span class='keyword'>" + value.toString() + "</span>" : value.toString();
+    if ((value === false) || (value === true)) {
+	    this.code = "<span class='keyword'>" + value.toString() + "</span>";
+    } else {
+	    this.code = value.toString();
+    }
 };
 var VariableExpression = function(name) {
     this.evaluate = function(threadState, globalState) { return globalState[name].value; };
