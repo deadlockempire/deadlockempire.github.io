@@ -372,7 +372,7 @@ var levels = {
 		"S1-simple",
 		"Semaphores",
 		"A semaphore is a simple synchronization primitive.",
-		"<a href='https://msdn.microsoft.com/en-us/library/system.threading.semaphoreslim(v=vs.110).aspx'>Semaphores</a> limit the number of threads that can access a resource at the same time. In C#, they are implemented by the SemaphoreSlim class. " +
+		"<a href='https://msdn.microsoft.com/en-us/library/system.threading.semaphoreslim(v=vs.110).aspx'>Semaphores</a> limit the number of threads that can access a resource at the same time. In C#, they are implemented by the SemaphoreSlim class." +
 		"You can imagine a semaphore as a stack of coins. When a thread wants to access the resource protected by the semaphore, it needs to take a coin. Once it's done, it returns the coin to the stack.<br>" +
 		"To take a coin, you can call the <code><a href='https://msdn.microsoft.com/en-us/library/dd270787(v=vs.110).aspx'>Wait()</a></code> method on the semaphore. If there are no coins on the stack, the method waits until someone returns a coin. If you don't want to wait forever, you can pass it how long should it wait, in milliseconds. In that case, <code>Wait()</code> will return a boolean indicating whether it obtained a coin.<br>" +
 		"The <code><a href='https://msdn.microsoft.com/en-us/library/dd235727(v=vs.110).aspx'>Release()</a></code> method adds a coin on the stack. Normally, you would call <code>Release()</code> only after a <code>Wait()</code> - you would take a coin, do something while you have it, and then give it back. However, you can also call <code>Release()</code> while you don't have any coins yourself. If you let Thread 1 run, you will see it do this: if it can't find a coin within 500 milliseconds, it will create a new one.<br><br>" +
