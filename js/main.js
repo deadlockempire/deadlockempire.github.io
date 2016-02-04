@@ -49,6 +49,15 @@ var areAllThreadsBlocked = function() {
 	return true;
 };
 
+var areAllThreadsFinished = function() {
+	for (var threadId in gameState.getLevel().threads) {
+		if (!isThreadFinished(threadId)) {
+			return false;
+		}
+	}
+	return true;
+};
+
 var checkForVictoryConditions = function() {
 	var howManyCriticalSections = 0;
 	for (var threadId in gameState.getLevel().threads) {
@@ -71,7 +80,12 @@ var checkForVictoryConditions = function() {
 
 	if (areAllThreadsBlocked()) {
 		win("A deadlock occurred - all threads were blocked simultaneously.");
+		return;
+	}
 
+	if (areAllThreadsFinished()) {
+		lose('All threads of the program ran to the end, so the program was successful. Try to sabotage the program before it finishes.');
+		return;
 	}
 };
 
