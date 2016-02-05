@@ -275,14 +275,14 @@ h1#game {
 	padding-bottom: 0.1em;
 	font-size: 3.5em;
 	text-align: center;
-	font-family: 'Amatic SC', cursive;
+	font-family: cursive; /* was: 'Amatic SC' */
 }
 #subtitle {
 	font-size: 2em;
 	text-align: center;
 
 	margin-top: -0.4em;
-	font-family: 'Amatic SC', cursive;
+	font-family: cursive;
 }
 #introtext {
 	padding-top: 1.5em;
