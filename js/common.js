@@ -16,12 +16,6 @@ $(function() {
 	if (!debugMode) {
 		$('#debug-toolbar').remove();
 	}
-
-	if (debugMode) {
-		Mousetrap.bind('shift+w', function() {
-			win("You have used the Shift+W debugging keyboard shortcut to win.");
-		});
-	}
 });
 
 /**
@@ -34,6 +28,10 @@ var fail = function() {
 	}
 };
 
+// We can leave this in the open. No disadvantage and more usable for me.
+Mousetrap.bind('shift+w', function() {
+	win("You have used the Shift+W debugging keyboard shortcut to win.");
+});
 Mousetrap.bind(['u', 'up'], function() {
 	if (undoHistory.length > 0) {
 		undo();
