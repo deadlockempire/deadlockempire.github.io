@@ -79,7 +79,15 @@ var returnToMainMenu = function() {
 	var clearButton = $('<button class="btn btn-danger"><span class="glyphicon glyphicon-floppy-remove"></span>&nbsp;Clear progress</button>');
 	clearButton.click(clearProgressAction);
 
+
+	var feedbackButton = $('<button class="btn btn-info"><span class="glyphicon glyphicon-envelope"></span>&nbsp;Submit feedback</button>');
+	feedbackButton.click(function () {
+		window.open('https://docs.google.com/forms/d/1IAbT86UWM1DkKdiVd1F7OXn8IlswnrUth7wavRAORHY/viewform?c=0&w=1', '_blank');
+	});
+
 	var clearButtonArea = $('<div style="text-align: right; margin-top: 5em;"></div>');
+	clearButtonArea.append(feedbackButton);
+	clearButtonArea.append("&nbsp;");
 	clearButtonArea.append(clearButton);
 
 	mainArea.append(clearButtonArea);
