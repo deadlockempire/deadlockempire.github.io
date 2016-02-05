@@ -6,12 +6,15 @@ var openWinScreen = function() {
 };
 
 var win = function(reason) {
-	sendEvent('Gameplay', 'level-won', gameState.getLevelId());
-
 	if (levelWasCleared) {
 		return;
 	}
-	localStorage.setItem('level_' + gameState.getLevelId(), "solved");
+	if (wasLevelCompleted(gameState.getLevelId())) {
+		sendEvent('Gameplay', 'level-won-again', gameState.getLevelId());
+	} else {
+		sendEvent('Gameplay', 'level-won-first-time', gameState.getLevelId());
+		localStorage.setItem('level_' + gameState.getLevelId(), "solved");
+	}
 	winReason = reason;
 	levelWasCleared = true;
 
