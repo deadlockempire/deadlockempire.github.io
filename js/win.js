@@ -9,7 +9,12 @@ var win = function(reason) {
 	if (levelWasCleared) {
 		return;
 	}
-	localStorage.setItem('level_' + gameState.getLevelId(), "solved");
+	if (wasLevelCompleted(gameState.getLevelId())) {
+		sendEvent('Gameplay', 'level-won-again', gameState.getLevelId());
+	} else {
+		sendEvent('Gameplay', 'level-won-first-time', gameState.getLevelId());
+		localStorage.setItem('level_' + gameState.getLevelId(), "solved");
+	}
 	winReason = reason;
 	levelWasCleared = true;
 
@@ -29,6 +34,7 @@ var win = function(reason) {
 	if (!areThereMoreLevels()) {
 		// game finished
 		$('#win-message').append("<br><br>You mastered all the lessons of The Deadlock Empire. Thank you for playing!");
+		$('#win-message').append('<br>Any thoughts about the game or ideas for improvement? We\'d like to hear those! Just fill out <a href="http://goo.gl/forms/i05ukNUMmB">this form</a>.');
 		$('#win-next-level').hide();
 	} else {
 		$('#win-next-level').show();
@@ -42,6 +48,8 @@ var areThereMoreLevels = function() {
 };
 
 var lose = function(reason) {
+	sendEvent('Gameplay', 'level-lost', gameState.getLevelId());
+
 	loseScreen.css({display: 'flex'}).fadeIn(400);
 	var text = "";
 	if (gameState.getLevel().failureText) {

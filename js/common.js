@@ -16,6 +16,12 @@ $(function() {
 	if (!debugMode) {
 		$('#debug-toolbar').remove();
 	}
+
+	if (debugMode) {
+		Mousetrap.bind('shift+w', function() {
+			win("You have used the Shift+W debugging keyboard shortcut to win.");
+		});
+	}
 });
 
 /**
@@ -28,12 +34,19 @@ var fail = function() {
 	}
 };
 
-
-Mousetrap.bind('shift+w', function() {
-	win("You have used the Shift+W debugging keyboard shortcut to win.");
-});
 Mousetrap.bind(['u', 'up'], function() {
 	if (undoHistory.length > 0) {
 		undo();
 	}
 });
+
+var sendEvent = function(category, action, label) {
+	if (ga) {
+		ga('send', {
+			hitType: 'event',
+			eventCategory: category,
+			eventAction: action,
+			eventLabel: label
+		});
+	}
+};
