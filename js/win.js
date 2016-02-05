@@ -6,6 +6,8 @@ var openWinScreen = function() {
 };
 
 var win = function(reason) {
+	sendEvent('Gameplay', 'level-won', gameState.getLevelId());
+
 	if (levelWasCleared) {
 		return;
 	}
@@ -42,6 +44,8 @@ var areThereMoreLevels = function() {
 };
 
 var lose = function(reason) {
+	sendEvent('Gameplay', 'level-lost', gameState.getLevelId());
+
 	loseScreen.css({display: 'flex'}).fadeIn(400);
 	var text = "";
 	if (gameState.getLevel().failureText) {

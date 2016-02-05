@@ -135,6 +135,7 @@ var undo = function() {
 };
 
 var resetLevel = function() {
+	sendEvent('Gameplay', 'level-restart', gameState.getLevelId());
 	startLevel(gameState.getLevelId());
 };
 
@@ -147,11 +148,17 @@ var levelWasCleared = false;
 
 var goToNextLevel = function() {
 	var next = findNextLevelInCampaign(gameState.getLevelId());
+	sendEvent('Gameplay', 'level-next-entered', next);
 	startLevel(next);
 	winScreen.fadeOut(300);
 };
 
 var startLevel = function(levelName) {
+	if (!localStorage.getItem('level_' + levelName + '_opened')) {
+		sendEvent('Gameplay', 'level-opened-first', levelName);
+		localStorage.setItem('level_' + levelName + '_opened', true);
+	}
+
 	levelWasCleared = false;
 	undoHistory = [];
 	var level = levels[levelName];
@@ -407,6 +414,7 @@ var route = function() {
 	} else {
 		var levelId = location.hash.replace('#', '');
 		if (levelId in levels) {
+			sendEvent('Gameplay', 'level-entered-hash', levelId);
 			startLevel(levelId);
 		} else {
 			console.warn("hash does not correspond to level, returning to main menu", location.hash);
@@ -416,6 +424,7 @@ var route = function() {
 };
 
 var navigateToLevel = function(level) {
+	sendEvent('Gameplay', 'level-started-from-menu', level);
 	history.pushState({level: level}, level, "#" + level);
 	route();
 };
@@ -424,6 +433,7 @@ var navigateToLevel = function(level) {
  * @param {string} levelIdToDisplay Optional. Level to scroll to.
  */
 var navigateToMainMenu = function(levelIdToDisplay) {
+	sendEvent('Gameplay', 'navigate-to-menu', levelIdToDisplay);
 	history.pushState({menu: true}, "menu", "#menu");
 	route();
 	if (levelIdToDisplay) {
