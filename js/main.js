@@ -87,6 +87,10 @@ var isThreadFinished = function(thread) {
 };
 
 var stepThread = function(thread) {
+	if (isLevelPristine()) {
+		sendEvent('Gameplay', 'level-first-step', gameState.getLevelId());
+	}
+
 	var program = gameState.getProgramOfThread(thread);
 	var threadState = gameState.threadState[thread];
 	var pc = threadState.programCounter[0];
