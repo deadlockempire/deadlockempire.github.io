@@ -87,7 +87,7 @@ var redraw = function() {
 	undoButton.removeClass('btn-default');
 	undoButton.addClass(undoEnabled ? 'btn-info' : 'btn-default');
 
-	if (levelWasCleared && areThereMoreLevels()) {
+	if (levelWasCleared) {
 		nextChallengeButton.show();
 		wonBanner.show();
 	} else {
