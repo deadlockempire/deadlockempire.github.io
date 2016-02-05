@@ -2,7 +2,7 @@ levels["H1-ManualResetEvent"] = new Level(
     "H1-ManualResetEvent",
     "Manual Reset Event",
     "Introduces the ManualResetEventSlim class, a no-fuss simple primitive.",
-    "<div class='story-intro'>We are pushing the enemy back. There's one more thing that needs to be done - we must learn to fight the Deadlock Empire's most modern weaponry.</div>" +
+    "<div class='story-intro'>We are pushing the enemy back. The next thing we need to do - we must learn to fight the Deadlock Empire's most modern weaponry.</div>" +
     "The <b>ManualResetEventSlim</b> (which supersedes the older ManualResetEvent that is maintained for backwards compatibility only) is an object with a single boolean flag and three methods - Wait, Set and Reset. The Wait() method blocks if the \"reset event\" is \"signaled\" (it starts out nonsignaled). Whether the event is signaled or not is set manually by the programmer using the methods Set() and Reset().<br><br>" +
     "For example, you might want to block a thread until some long computation finishes on another thread. To do this, you might create a ManualResetEvent named 'computationFinished' and call 'computationFinished.Wait()' on the first thread and 'computationFinished.Set()' on the computing thread after the computation is complete.",
     "<div class='story-outro'>Enemy neutralized. Let's see what's coming next.</div>" +
@@ -115,7 +115,7 @@ levels["H4-Barrier"] = new Level(
     "<div class='story-intro'>Soldiers of the Deadlock Empire let out a mighty cheer as a new device rolls out from their factories. It is a giant armored <b>wall</b>, covered in spikes and it is now rolling on its mighty wheels towards your troops, casting fireballs from its magical engines. You would do well to destroy this new weapon before it crushes your armies.</div>" +
     "The <a href='https://msdn.microsoft.com/en-us/library/system.threading.barrier'>Barrier class</a> is quite safe when used correctly, though it must have been difficult to create correctly for the developers of the .NET framework. The Barrier has a fixed <i>number of participants</i> - in this case, <b>two</b>. It has only one useful method - <i>.SignalAndWait()</i> that blocks until all participants reach it. Then, all participant threads are let through the barrier and the barrier resets.",
     "<div class='story-outro'>Three courageous heroes punched their way to the Barrier. The Barrier shoots fireballs but your heroes are agile and evade successfully. In the end, the Barrier crumbles.<br><br>" +
-    "It's another victory for the Sequentialists! The Empire's modern weapons have been turned to dust and all that remains is to take on the Parallel Wizard himself.</div>It is highly recommended that you set the participant count to exactly the number of threads using the barrier in any real-world code.",
+    "It's another victory for the Sequentialists! The Empire's modern weapons have been turned to dust. Now we shall see what we can do about his conventional armies.</div>It is highly recommended that you set the participant count to exactly the number of threads using the barrier in any real-world code.",
     [
         new Thread([
             createOuterWhile(),
@@ -124,7 +124,7 @@ levels["H4-Barrier"] = new Level(
             new IfInstruction(new LessThanExpression(new VariableExpression("fireballCharge"), new LiteralExpression(2)), "if"),
             new FailureInstruction(),
             new EndIfInstruction("if"),
-            new FlavorInstruction("fireball();"),
+            new FlavorInstruction("fireball()"),
             createOuterWhileEnd()
         ]),
         new Thread([
