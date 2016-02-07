@@ -53,7 +53,7 @@ var MonitorTryEnterExpression = function (monitorName) {
 };
 var MonitorExitInstruction = function(monitorName) {
     this.code = "<span class='static'>Monitor</span>.Exit(" + monitorName + ");";
-    this.tooltip = "Atomic. Releases a lock. If this thread had this locked multiple times, decrements the timer only. If this thread does not own this lock, an exception is thrown (and you win the level).";
+    this.tooltip = "Atomic. Releases a lock. If this thread had this locked multiple times, decrements the counter once only. If this thread does not own this lock, an exception is thrown (and you win the level).";
     this.execute = function(threadState, globalState) {
         var monitor = globalState[monitorName];
         if (monitor.lastLockedByThread == threadState.id)
