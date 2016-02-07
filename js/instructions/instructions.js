@@ -57,7 +57,7 @@ var GameOverInstruction = function() {
 	};
 };
 var FailureInstruction = function() {
-	this.code = "<span class='failure-statement'>failure-statement</span>;";
+	this.code = "<span class='failure-statement'>Debug.Assert(false)</span>;";
 	this.tooltip = "If you execute this statement, you will win this level.";
 	this.execute = function(threadState, globalState) {
 		win("You executed a failure instruction.");

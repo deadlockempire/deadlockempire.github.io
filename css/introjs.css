@@ -105,8 +105,8 @@ tr.introjs-showElement > th {
   background:     -ms-linear-gradient(top, #ff3019 0%, #cf0404 100%); /* IE10+ */
   background:      -o-linear-gradient(top, #ff3019 0%, #cf0404 100%); /* Opera 11.10+ */
   background:         linear-gradient(to bottom, #ff3019 0%, #cf0404 100%);  /* W3C */
-  width: 20px;
-  height:20px;
+  width: 30px;
+  height:30px;
   line-height: 20px;
   border: 3px solid white;
   border-radius: 50%;

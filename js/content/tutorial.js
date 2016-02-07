@@ -30,11 +30,12 @@ var loadTutorial1 = function() {
     $("h1").attr("data-intro", "This game consists of <i>challenges</i>. Each challenge has a name. Press 'Enter' or click the button to continue.").attr("data-step", 1);
     $("#storyIntro").attr("data-intro", "Each challenge begins with a short explanation of what it's about or what you want you want to do. In short, your objective is always to break the program somehow.").attr("data-step", 2);
     $(".thread").first().attr("data-intro", "This is one of the two threads that compose the program. Note that each thread has its own 'Step' button.").attr("data-step", 4);
-    $(".current-instruction").first().attr("data-intro", "The left thread is about to execute this \"instruction\" (a comment, really).").attr("data-step", 5);
+    $(".current-instruction").first().attr("data-intro", "The left thread is about to execute this \"instruction\" (a comment, really).<br><br>You may mouse over it to view a tooltip.").attr("data-step", 5);
     $(".stepforwards").first().attr("data-intro", "Press this button to advance the corresponding thread by one instruction forwards.").attr("data-step", 6);
     $(".undobutton").first().attr("data-intro", "In case you make a mistake, you can click 'Undo' to return one step backwards.").attr("data-step", 7);
     $(".global-state").first().attr("data-intro", "The program also contains global (static) variables which are displayed here.").attr("data-step", 8);
-    $("#instruction-0-2").add("#instruction-1-2").attr("data-intro", "In this level, your objective is to step through the programs in such an order that both critical sections are \"active instructions\" at the same time.<br><br>Good luck!").attr("data-step", 9);
+    $("#instruction-0-2").attr("data-intro", "This is a critical section.<br><br>You may mouse over it to view a tooltip.").attr("data-step", 9);
+    $("#instruction-1-2").attr("data-intro", "In this level, your objective is to step through the programs in such an order that both critical sections are \"active instructions\" at the same time.<br><br>Good luck!").attr("data-step", 10);
     var intro = introJs();
     intro.onhintclose(function (stepid) {
         console.log('hint closed', stepId);
