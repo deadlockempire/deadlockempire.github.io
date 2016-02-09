@@ -249,7 +249,7 @@ var levels = {
 		"Finally, a lot of C# code just uses a simple pattern of locking provided by the <code>lock</code> statement, which handles most common cases nicely and is easier than fiddling with <code>Monitor</code>. <code>lock (obj) { ... }</code> is translated by the compiler to a <code>Monitor.Enter</code>/<code>Exit</code> pair on <code>obj</code>. As a bonus, it also properly handles exceptions. It's easy to forget this when you use <code>Monitor</code> directly: if anything between <code>Enter</code> and <code>Exit</code> throws an exception and the lock is not released by an exception handler (e.g., in a <code>finally</code> block), it forever remains locked by the thread which threw the exception, which is not good.<br><br>" +
 		"Have a look at the <a href='https://msdn.microsoft.com/en-us/library/c5kehkcz.aspx'>documentation for the lock statement</a> if you'd like to know more.<br><br>Play with these two threads. See what happens when you lock the lock in one thread and try to lock it again in another one?" +
 		"",
-		"<div class='story-outro'>As soon as you revealed to us the way to get under the lock armor, our mages let out a volley of cold fire against the dragons. We slaughtered them and as the dragons feel, the invading army retreated.</div>" +
+		"<div class='story-outro'>As soon as you revealed to us the way to get under the lock armor, our mages let out a volley of cold fire against the dragons. We slaughtered them and as the dragons flee, the invading army retreated.</div>" +
 		"Locks are the most commonly used synchronization primitive. It is very useful to know them.",
 		[
 			new Thread([
