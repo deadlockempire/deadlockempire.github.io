@@ -21,10 +21,10 @@ var ManualResetEventWait = function(name) {
     this.tooltip = "Atomic. Blocks until the ManualResetEventSlim's state is set to 'signaled'.";
     this.isBlocking = function(threadState, globalState) {
         var mres = globalState[name];
-	if (!mres.value) {
-		return false;
-	}
-	return "Waiting for signal (<code>" + name + ".Set()</code>)";
+        if (!mres.value) {
+            return "Waiting for signal (<code>" + name + ".Set()</code>)";
+        }
+        return false;
     };
     this.execute = function(threadState, globalState) {
         moveToNextInstruction(threadState);

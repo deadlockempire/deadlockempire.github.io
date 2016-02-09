@@ -3,8 +3,9 @@ levels["H1-ManualResetEvent"] = new Level(
     "Manual Reset Event",
     "Introduces the ManualResetEventSlim class, a no-fuss simple primitive.",
     "<div class='story-intro'>We are pushing the enemy back. The next thing we need to do - we must learn to fight the Deadlock Empire's most modern weaponry.</div>" +
-    "The <b>ManualResetEventSlim</b> (which supersedes the older ManualResetEvent that is maintained for backwards compatibility only) is an object with a single boolean flag and three methods - Wait, Set and Reset. The Wait() method blocks if the \"reset event\" is \"signaled\" (it starts out nonsignaled). Whether the event is signaled or not is set manually by the programmer using the methods Set() and Reset().<br><br>" +
-    "For example, you might want to block a thread until some long computation finishes on another thread. To do this, you might create a ManualResetEvent named 'computationFinished' and call 'computationFinished.Wait()' on the first thread and 'computationFinished.Set()' on the computing thread after the computation is complete.",
+    "The <b>ManualResetEventSlim</b> (which supersedes the older ManualResetEvent that is maintained for backwards compatibility only) is an object with a single boolean flag and three methods - Wait, Set and Reset. The Wait() method blocks <b>until</b> the \"reset event\" is \"signaled\" (it starts out nonsignaled). Whether the event is signaled or not is set manually by the programmer using the methods Set() and Reset().<br><br>" +
+    "For example, you might want to block a thread until some long computation finishes on another thread. To do this, you might create a ManualResetEvent named 'computationFinished' and call 'computationFinished.Wait()' on the first thread and 'computationFinished.Set()' on the computing thread after the computation is complete.<br><br>" +
+    "<small>BUGFIX (February 9, 2016): Previously, the <code>.Wait()</code> errorneously blocked when the reset event was signaled (the reverse of what it does in C#). This has been fixed.</small>",
     "<div class='story-outro'>Enemy neutralized. Let's see what's coming next.</div>" +
     "You've done well. Using ManualResetEventSlim is trickier if you use both Set() and Reset() rather than only Set().",
     [
