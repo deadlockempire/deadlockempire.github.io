@@ -1,0 +1,266 @@
+GDD Parallel Programming Simulator
+
+MAIN MENU
+=========
+"Parallel Programming Simulator"
+Left menu:
+1. Tutorial
+2. First Level
+3. Second Level
+...
+8. Last Level
+A. Bonus Level: Peterson's Algorithm
+
+Right menu:
+1. Manual    -> Shows Princess Civilization-like manual screen.
+2. Quit Game -> Quits game without confirmation
+
+LEVEL SCREEN
+============
+Objective: Your objective, in a single line, is displayed at the top.
+Hint: Hints are displayed underneath the objective, along with the button, "Additional Hints", which gives additional hints in another GamePhase.
+
+Then, there are 2 to 3 source codes.
+Source codes have lines. Each line is a single instruction. Source codes have an active instruction.
+When you mouse over a line, a tooltip is given.
+
+Manipulations:
+- Undo Last Action [Backspace]
+- Advance, but inside (use non-atomicity).
+- Advance [Space / 1 / 2 / 3 (a numeral advances the thread, Space advances current thread]
+- Context Switch [Tab]
+- Spurious wakeup
+- Cache write-through.
+- Move instruction up.
+- Move instruction down.
+- Reset.
+- Expand instruction into atomic instructions.
+
+Tutorial: Tutorial hints are displayed at the bottom of the screen. There is a button "Next [K]" to proceed.
+Tutorial will come later.
+
+== LEVELS ==
+1. Tutorial: Advancing.
+Objective: Execute the failure instruction.
+Hint: In all levels of this game, your objective is to demonstrate the program is not thread-safe by doing one of three things: having two threads enter the critical section simulatenously, by causing a deadlock or by executing the failure instruction which represents a position in the source the program should never reach. This is the tutorial level so all you need to do is to advance execution in this single-thread program until you execute the failure instruction. To do this, keep pressing 'Space'.
+
+a = 1;
+a = a * 2;
+if (a == 2) {
+ failure_instruction();
+}
+
+2. Tutorial: Multithreading.
+Objective: Make both threads be in the critical section at the same time.
+Hint: In multithreaded programming, a "critical section" is a piece of code that should be executed by only one thread at a time. If two threads are in a critical section at the same time, errors may result. In this level, your goal is to execute the context switches in such a way that both threads can both be in the critical section at the same time.
+
+GLOBAL:
+int a = 0;
+
+ONE:
+while (a != 0) {
+  null-instruction;
+} 
+a = 1;
+critical_section();
+a = 0;
+
+TWO: 
+while (a != 0) {
+	null-instruction;
+}
+a = 1;
+critical_section();
+a = 0;
+
+3. Tutorial: Deadlocks.
+Objective: Make sure a deadlock occurs.
+
+GLOBAL:
+object mutex = new object();
+object mutex2 = new object();
+
+ONE:
+Debug.Print("Locking one.");
+Monitor.Enter(mutex);
+Debug.Print("Locking two.");
+Monitor.Enter(mutex2);
+critical_section();
+Debug.Print("Unlocking two.");
+Monitor.Exit(mutex2);
+Debug.Print("Unlocking one.");
+Monitor.Exit(mutex);
+
+TWO:
+Debug.Print("Locking two.");
+Monitor.Enter(mutex2);
+Debug.Print("Locking one.");
+Monitor.Enter(mutex);
+critical_section();
+Debug.Print("Unlocking one.");
+Monitor.Exit(mutex);
+Debug.Print("Unlocking two.");
+Monitor.Exit(mutex2);
+
+4. Confused Counter
+Objective: Make sure that at the end of execution, the variable "counter" does not contain the value "2".
+
+GLOBAL:
+int counter = 0;
+int second = 0;
+
+ONE:
+business_logic();
+counter = counter + 1;
+second = second + 1;
+if (second == 2 && counter != 2) {
+ failure;
+}
+
+TWO:
+business_logic();
+counter = counter + 1;
+second = second + 1;
+if (second == 2 && counter != 2) {
+ failure;
+}
+
+5. Peterson's Algorithm Extended
+Objective: Make it so that at least two threads are in the critical section simultaneously.
+
+GLOBAL:
+bool flagOne = false;
+bool flagTwo = false;
+bool flagThree = false;
+int turn = 0;
+
+ONE:
+flagOne = true;
+turn = 1;
+while ( (flagTwo || flagThree) && turn == 1 ) {
+ null-instruction;
+}
+critical_section();
+flagOne = false;
+
+TWO:
+flagTwo = true;
+turn = 2;
+while ( (flagOne || flagThree) && turn == 2 ) {
+ null-instruction;
+}
+critical_section();
+flagTwo = false;
+
+THREE:
+flagThree = true;
+turn = 3;
+while ( (flagTwo || flagOne) && turn == 3 ) {
+ null-instruction;
+}
+critical_section();
+flagThree = false;
+
+
+6. Producer-Consumer
+Objective: Attempt something that is not thread-safe.
+
+GLOBAL: 
+Queue<int> queue;
+
+ONE:
+while (true) {
+ queue.Enqueue(1);
+}
+
+TWO: 
+while (true) {
+  if (queue.Count > 0) {
+     int value = queue.Dequeue();
+	 Debug.Print(value);
+  }
+}
+
+
+7. Producer-Consumer 2
+Objective: Produce an exception.
+
+GLOBAL: 
+ConcurrentQueue<int> queue;
+
+ONE:
+while (true) {
+ queue.Enqueue(1);
+}
+
+TWO: 
+while (true) {
+  if (queue.Count > 0) {
+     int value = queue.Dequeue();
+	 Debug.Print(value);
+  }
+}
+
+THREE: 
+while (true) {
+  if (queue.Count > 0) {
+     int value = queue.Dequeue();
+	 Debug.Print(value);
+  }
+}
+
+8. Producer-Consumer with Condition Variables
+ONE:
+Monitor.Enter(mutex);
+while (queue.Count == 10) {
+  Monitor.Wait(mutex);
+}
+queue.Enqueue(2);
+Monitor.Pulse();
+Monitor.Exit(mutex);
+
+TWO:
+Monitor.Enter(mutex);
+while (queue.Count == 0) {
+  Monitor.Wait(mutex);
+}
+int a = queue.Dequeue();
+Debug.Print(a);
+Monitor.Pulse();
+Monitor.Exit(mutex);
+
+(again correctly, but with IFs instead of WHILEs)
+(again, but with spurious wakeups)
+
+
+== INSTRUCTIONS ==
+- Failure Instruction
+Atomic.
+If this instruction is executed, the program crashes or otherwise fails. If you manage to execute this instruction in a level, you win the level immediately.
+- Assignment (VARIABLE, EXPRESSION)
+Expands to Read(NEW_TEMP_VAR, EXPRESSION) and Write(VARIABLE, NEW_TEMP_VAR).
+This instruction evaluates the expression EXPRESSION, stores the result in a temporary variable, then assigns the result to the variable VARIABLE. 
+- Read (TEMPORARY_VARIABLE, EXPRESSION)
+Atomic if expression is atomic, otherwise non-atomic.
+Stores the value of the expression into temporary variable.
+- Write (VARIABLE, TEMPORARY_VARIABLE)
+Atomic if not double not struct, otherwise non-atomic.
+Copies the value.
+- Compute (TEMPORARY_VARIABLE, TEMPORARY_VARIABLE, TEMPORARY_VARIABLE)
+Atomic if not double not struct, otherwise non-atomic.
+Performs an arithmetic operation and returns the result.
+- If (EXPRESSION, THEN)
+Non-atomic.
+Evaluates EXPRESSION. If it evaluates to true, moves the program counter to THEN, otherwise skips THEN.
+
+== TYPES ==
+- TEMPORARY_VARIABLE (name, value)
+- VARIABLE (name, value, volatility)
+
+== EXPRESSIONS ==
+- Literal (VALUE).
+Atomic. Has a value.
+- Variable (NAME).
+Atomic if not double not struct, otherwise non-atomic.
+- Binary operator (ARG1, ARG2).
+Expands to Read(NEW_VAR_1, ARG1), Read(NEW_VAR_2, ARG2), Compute(RESULT, NEW_VAR_1, NEW_VAR_2).
