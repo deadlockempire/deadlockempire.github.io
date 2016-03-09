@@ -35,6 +35,39 @@ var ObjectVariable = function(name) {
     this.name = name;
     this.type = 'System.Object';
 };
+var RefCountVariable = function(name) {
+	this.name = name;
+	this.type = 'ArcObject'
+	this.value = null;
+};
+var RefCountObject = function(name) {
+	this.name = name;
+	this.refCount = 1;
+	this.deallocating = false;
+};
+RefCountObject.nameCounts = {};
+var ArcAutoreleasePool = function() {
+	this.objects = [];
+	this.add = function(object) {
+		if (object !== null) {
+			this.objects.push(object);
+		}
+	}
+	this.drain = function(threadState, globalState) {
+		for (var object in objects) {
+			if (object.deallocating) {
+				win("Attempt to release a deallocated object.");
+			}
+			else {
+				object.refCount -= 1;
+				if (object.refCount == 0) {
+					object.deallocating = true;
+				}
+			}
+		}
+		this.objects = [];
+	};
+};
 /**
  * Returns the variable value in human-readable form.
  * @param variable A variable.
@@ -54,6 +87,8 @@ var ToString = function(variable) {
             return "";
         case "System.Threading.SemaphoreSlim":
             return "[counter: " + value + "]";
+		case "ArcObject":
+			return value === null ? "[null]" : (value.deallocating ? "[deallocating]" : "[object refcount: " + value.refCount + "]");
 
     }
     if (type.indexOf('System.Collections.Generic.Queue') == 0) {

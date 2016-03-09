@@ -100,6 +100,7 @@ var stepThread = function(thread) {
 			program[pc].minorInstructions[threadState.programCounter[1]].execute(threadState, gameState.globalState, program);
 		} else {
 			program[pc].execute(threadState, gameState.globalState, program);
+			threadState.localVariables = [];
 		}
 		checkForVictoryConditions();
 		redraw();
@@ -114,6 +115,12 @@ var expandThread = function(thread) {
 	redraw();
 };
 
+var nextObjectName = function(type) {
+	var count = gameState.objectCounts[type] || 0;
+	gameState.objectCounts[type] = ++count;
+	return type + " " + count;
+}
+
 var undoHistory = [];
 
 var isLevelPristine = function() {
@@ -123,7 +130,8 @@ var isLevelPristine = function() {
 var saveForUndo = function() {
 	var state = {
 		threadState: gameState.threadState,
-		globalState: gameState.globalState
+		globalState: gameState.globalState,
+		objecCounts: gameState.objectCounts,
 	};
 	undoHistory.push(JSON.stringify(state));
 };
@@ -135,6 +143,7 @@ var undo = function() {
 	// and globalState. Properly (de)serialize?
 	gameState.threadState = last.threadState;
 	gameState.globalState = last.globalState;
+	gameState.objectCounts = last.objectCounts;
 	redraw();
 };
 
@@ -341,6 +350,7 @@ var startLevel = function(levelName) {
 	mainArea.append('<div class="clearboth"></div>');
 
 	mainArea.append('<div class="global-state"></div>');
+	mainArea.append('<div class="global-objects"></div>');
 
 	redraw();
 	if (level.id == "T1-Interface") {
@@ -374,7 +384,8 @@ var autoindentLevels = function() {
 				if (instruction instanceof EndIfInstruction ||
 					instruction instanceof EndIfLongInstruction ||
 					instruction instanceof ElseInstruction ||
-					instruction instanceof EndWhileInstruction) {
+					instruction instanceof EndWhileInstruction ||
+					instruction instanceof EndArcAutoreleasePoolInstruction) {
 					indent--;
 				}
 				instruction.indent = indent;
@@ -386,7 +397,8 @@ var autoindentLevels = function() {
 				if (instruction instanceof IfInstruction ||
 					instruction instanceof IfLongInstruction ||
 					instruction instanceof ElseInstruction ||
-					instruction instanceof WhileInstruction) {
+					instruction instanceof WhileInstruction ||
+					instruction instanceof ArcAutoreleasePoolInstruction) {
 					indent++;
 				}
 			}
