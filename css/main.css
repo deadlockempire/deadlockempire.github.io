@@ -175,6 +175,11 @@ div.clearboth {
 	/* margin-left: .5em; */
 }
 
+.value > .glyphicon-heart {
+	color: red;
+	padding-left: 5pt;
+}
+
 .expansion {
 	background-color: white;
 }

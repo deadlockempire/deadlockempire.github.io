@@ -6,14 +6,22 @@ var campaign = [
         ]
     },*/
     {
+        name : "Objective-C ARC",
+		description : "Understanding Automatic Reference Counting.",
+        levels : [
+			"ARC0-RetainRelease",
+			"ARC1-SimpleArc",
+			"ARC2-StrongNonAtomic"
+        ]
+    },
+    {
         name : "Tutorial",
         description : "Learn to fight.",
         levels : [
             "T1-Interface",
             "T2-Expansion"
         ]
-    }
-    ,
+    },
     {
         name : "Unsynchronized Code",
         description : "The war has begun. <i>The Deadlock Empire</i> attacks!",

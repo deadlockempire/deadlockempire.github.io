@@ -31,6 +31,45 @@ var updateProgramCounters = function() {
 	}
 };
 
+var updateGlobalObjects = function() {
+	var area = $('.global-objects');
+	var objects = [];
+	for (var key in gameState.globalState) {
+		var object = gameState.globalState[key].value;
+		if (object instanceof RefCountObject && objects.indexOf(object) < 0) {
+			objects.push(object);
+		}
+	}
+	gameState.threadState.forEach(function (thread) {
+		for (var key in thread.localVariables) {
+			var variable = thread.localVariables[key];
+			var object = variable.value;
+			if (object instanceof RefCountObject && objects.indexOf(object) < 0) {
+				objects.push(object);
+			}
+		}	
+	});
+	if (objects.length === 0) {
+		area.html("");
+		return;
+	}
+	area.html("<hr>");
+	objects.forEach(function (object) {
+		var representation = $('<div class="refcount-object"></div>');
+		representation.append($('<span class="name"></span>').text(object.name));
+		if (object.deallocating) {
+			representation.append($('<span class="value"></span>').text(" [deallocating]"));
+		} else {
+			var valueSpan = $('<span class="value"></span>');
+			for (var i = 0; i < object.refCount; ++i) {
+				valueSpan.append($('<span class="glyphicon glyphicon-heart"></span>'));
+			}
+			representation.append(valueSpan);
+		}
+		area.append(representation);
+	});
+};
+
 var updateGlobalVariables = function() {
 	var area = $('.global-state');
 	area.html("<hr>");
@@ -80,6 +119,7 @@ var updateGlobalVariables = function() {
 var redraw = function() {
 	updateProgramCounters();
 	updateGlobalVariables();
+	updateGlobalObjects();
 
 	var undoEnabled = (undoHistory.length > 0);
 	undoButton.attr('disabled', !undoEnabled);

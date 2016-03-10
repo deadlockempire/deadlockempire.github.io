@@ -6,7 +6,9 @@ var GameState = function() {
 	// thread state:
 	// {
 	//	programCounter: [(number of current instruction), (number of current subinstruction)],
-	//	expanded: (boolean: is current major instruction expanded)
+	//	expanded: (boolean: is current major instruction expanded),
+	//  localVariables: (array of temporary local variables),
+	//  arcAutoreleasePools: (array of ArcAutoreleasePools)
 	// }
 	this.threadState = null;
 
@@ -21,6 +23,9 @@ var GameState = function() {
 	//	'lockCount': (lock count, 0 if none)
 	// }
 	this.globalState = null;
+
+	// object counts by type name, used to generate unique names
+	this.objectCounts = {};
 
 	/** Level */
 	this.level = null;
@@ -37,10 +42,13 @@ GameState.prototype.resetForLevel = function(level) {
 		this.threadState[i] = {
 			programCounter: [0, 0],
 			id: i,
-			expanded: false
+			expanded: false,
+			localVariables: [],
+			arcAutoreleasePools: [new ArcAutoreleasePool()]
 		};
 	}
 	this.globalState = level.createFreshGlobalState();
+	this.objectCounts = {};
 };
 
 GameState.prototype.getLevel = function() {

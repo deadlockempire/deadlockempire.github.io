@@ -1,3 +1,7 @@
+var NullExpression = function(name) {
+    this.evaluate = function() { return null; };
+    this.code = "<span class='keyword'>" + name + "</span>";
+};
 var LiteralExpression = function(value) {
     this.evaluate = function() { return value; };
     if ((value === false) || (value === true)) {
