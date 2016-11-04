@@ -1,21 +1,25 @@
 var IntegerVariable = function (name, defaultValue) {
     this.name = name;
-    this.type = "System.Int32";
+    this.relativeUrl = "System.Int32";
+    this.type = this.relativeUrl;
     this.value = defaultValue;
 };
 var CountdownEventVariable = function (name, count) {
     this.name = name;
-    this.type = "System.Threading.CountdownEvent";
+    this.relativeUrl = "System.Threading.CountdownEvent";
+    this.type = this.relativeUrl;
     this.value = count;
 };
 var ManualResetEventVariable = function (name, value) {
     this.name = name;
-    this.type = "System.Threading.ManualResetEventSlim";
+    this.relativeUrl = "System.Threading.ManualResetEventSlim";
+    this.type = this.relativeUrl;
     this.value = value;
 };
 var BarrierVariable = function (name, participantCount) {
     this.name = name;
-    this.type = "System.Threading.Barrier";
+    this.relativeUrl = "System.Threading.Barrier";
+    this.type = this.relativeUrl;
     this.value = participantCount;
     this.numberOfParticipants = participantCount;
     this.hasArrived = [];
@@ -23,17 +27,20 @@ var BarrierVariable = function (name, participantCount) {
 };
 var SemaphoreVariable = function(name, value) {
     this.name = name;
-    this.type = 'System.Threading.SemaphoreSlim';
+    this.relativeUrl = 'System.Threading.SemaphoreSlim';
+    this.type = this.relativeUrl;
     this.value = value;
 };
 var QueueVariable = function(name, innerType, value) {
     this.name = name;
-    this.type = 'System.Collections.Generic.Queue<' + innerType + '>';
+    this.relativeUrl = 'System.Collections.Generic.Queue';
+    this.type = this.relativeUrl + '<' + innerType + '>';
     this.value = value;
 };
 var ObjectVariable = function(name) {
     this.name = name;
-    this.type = 'System.Object';
+    this.relativeUrl = 'System.Object';
+    this.type = this.relativeUrl;
 };
 /**
  * Returns the variable value in human-readable form.

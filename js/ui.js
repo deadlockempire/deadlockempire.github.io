@@ -37,7 +37,7 @@ var updateGlobalVariables = function() {
 	for (var key in gameState.globalState) {
 		var variable = gameState.globalState[key];
 		var representation = $('<div class="variable"></div>');
-		representation.append($('<a href="https://msdn.microsoft.com/en-us/library/' + variable.type + '" class="type"></a>').text(variable.type));
+		representation.append($('<a href="https://msdn.microsoft.com/en-us/library/' + variable.relativeUrl + '" class="type"></a>').text(variable.type));
 		representation.append($('<span class="name"></span>').text(variable.name));
 		if (variable.value == "unimportant") {
 
@@ -135,6 +135,12 @@ var updateMSDNLinks = function() {
 		if (!$(this).hasClass("msdn-link")) {
 			if (this.href.indexOf("msdn.microsoft.com") !== -1) {
 				$(this).addClass("msdn-link");
+				$(this).attr('target', '_blank');
+			}
+		}
+    if (!$(this).hasClass("wikipedia-link")) {
+			if (this.href.indexOf("en.wikipedia.org") !== -1) {
+				$(this).addClass("wikipedia-link");
 				$(this).attr('target', '_blank');
 			}
 		}
