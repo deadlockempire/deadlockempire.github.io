@@ -17,11 +17,7 @@ var levels = {
             ])
         ],
         {
-            "a" : {
-                name : "a",
-                type : "System.Int32",
-                value : 0
-            }
+            "a" : new IntegerVariable("a", 0)
         }
     ),
     "2-flags": new Level(
@@ -65,11 +61,7 @@ var levels = {
             ], "Second Army")
         ],
         {
-            "flag" : {
-                name : "flag",
-                type : "System.Boolean",
-                value : false
-            }
+            "flag" : new BooleanVariable("flag", false)
         }
     ),
     "3-simpleCounter" : new Level(
@@ -213,26 +205,10 @@ var levels = {
 
         ],
         {
-            "flag1" : {
-                name : "flag1",
-                type : "System.Boolean",
-                value : false
-            },
-            "flag2" : {
-                name : "flag2",
-                type : "System.Boolean",
-                value : false
-            },
-            "flag3" : {
-                name : "flag3",
-                type : "System.Boolean",
-                value : false
-            },
-            turn : {
-                name : "turn",
-                type : "System.Int32",
-                value : 2
-            }
+            "flag1" : new BooleanVariable("flag1", false),
+            "flag2" : new BooleanVariable("flag2", false),
+            "flag3" : new BooleanVariable("flag3", false),
+            "turn" : new IntegerVariable("turn", 2)
         }
     ),
     "L1-lock": new Level(
@@ -274,16 +250,8 @@ var levels = {
         ])
         ],
         {
-            "mutex": {
-                name : "mutex",
-                type : "System.Object",
-                value : "unimportant"
-            },
-            "i": {
-                name : "i",
-                type : "System.Int32",
-                value : 0
-            }
+            "mutex": new ObjectVariable("mutex", "unimportant"),
+            "i": new IntegerVariable("i", 0)
         }
     ),
     "L2-deadlock": new Level(
@@ -310,17 +278,8 @@ var levels = {
             ])
         ],
         {
-            "mutex" : {
-                name : "mutex",
-                type : "System.Object",
-                value : "unimportant"
-            },
-            "mutex2" : {
-                name : "mutex2",
-                type : "System.Object",
-                value : "unimportant"
-            }
-
+            "mutex" : new ObjectVariable("mutex", "unimportant"),
+            "mutex2" : new ObjectVariable("mutex2", "unimportant")
         }
     ),
     "L3-complexer": new Level(
@@ -371,12 +330,8 @@ var levels = {
         {
             "mutex" : new ObjectVariable("mutex"),
             "mutex2" : new ObjectVariable("mutex2"),
-            "mutex3" :  new ObjectVariable("mutex3"),
-            "flag":  {
-                name : "flag",
-                type : "System.Boolean",
-                value : false
-            }
+            "mutex3" : new ObjectVariable("mutex3"),
+            "flag": new BooleanVariable("flag", false)
         }
     ),
     "S1-simple" : new Level(
@@ -444,11 +399,7 @@ var levels = {
         ]
         ,
         {
-            "ss" : {
-                name : "ss",
-                type : "System.Threading.SemaphoreSlim",
-                value : 0
-            },
+            "ss" : new ManualResetEventVariable("ss", 0),
             "queue" : new QueueVariable("queue", "Dragon", 0)
         }
     ),
@@ -514,11 +465,7 @@ var levels = {
             ])
         ],
         {
-            "mutex" : {
-                name : "mutex",
-                type : "System.Object",
-                value : "unimportant"
-            },
+            "mutex" : new ObjectVariable("mutex", "unimportant"),
             "queue" : new QueueVariable("queue", "int", 0)
         }
     )

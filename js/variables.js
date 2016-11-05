@@ -1,3 +1,9 @@
+var BooleanVariable = function (name, defaultValue) {
+    this.name = name;
+    this.relativeUrl = "System.Boolean";
+    this.type = this.relativeUrl;
+    this.value = defaultValue;
+};
 var IntegerVariable = function (name, defaultValue) {
     this.name = name;
     this.relativeUrl = "System.Int32";

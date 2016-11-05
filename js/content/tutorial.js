@@ -19,11 +19,7 @@ levels["T1-Interface"] = new Level("T1-Interface",
         ])
     ],
     {
-        "flag" : {
-            name : "flag",
-            type : "System.Boolean",
-            value : true
-        }
+        "flag" : new BooleanVariable("flag", true)
     }
 );
 var loadTutorial1 = function() {
@@ -68,10 +64,6 @@ levels["T2-Expansion"] = new Level("T2-Expansion",
         ])
     ],
     {
-        "a" : {
-            name : "a",
-            type : "System.Int32",
-            value : 0
-        }
+        "a" : new IntegerVariable("a", 0)
     }
 );
