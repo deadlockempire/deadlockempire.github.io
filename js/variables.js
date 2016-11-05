@@ -27,19 +27,19 @@ var BarrierVariable = function (name, participantCount) {
 };
 var SemaphoreVariable = function(name, value) {
     this.name = name;
-    this.relativeUrl = 'System.Threading.SemaphoreSlim';
+    this.relativeUrl = "System.Threading.SemaphoreSlim";
     this.type = this.relativeUrl;
     this.value = value;
 };
 var QueueVariable = function(name, innerType, value) {
     this.name = name;
-    this.relativeUrl = 'System.Collections.Generic.Queue';
-    this.type = this.relativeUrl + '<' + innerType + '>';
+    this.relativeUrl = "7977ey2c";
+    this.type = "System.Collections.Generic.Queue" + "<" + innerType + ">";
     this.value = value;
 };
 var ObjectVariable = function(name) {
     this.name = name;
-    this.relativeUrl = 'System.Object';
+    this.relativeUrl = "System.Object";
     this.type = this.relativeUrl;
 };
 /**
@@ -63,7 +63,7 @@ var ToString = function(variable) {
             return "[counter: " + value + "]";
 
     }
-    if (type.indexOf('System.Collections.Generic.Queue') == 0) {
+    if (type.indexOf("System.Collections.Generic.Queue") == 0) {
         return "[number of enqueued items: " + value + "]";
     }
     return null;
