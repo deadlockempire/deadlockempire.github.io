@@ -94,7 +94,7 @@ levels["D2-Sorcerer"] = new Level(
     ],
     {
         "conduit": new ObjectVariable("conduit"),
-        "energyBursts": new QueueVariable("energyBursts", "EnergyBurst", 3)
+        "energyBursts": new QueueVariable("energyBursts", new ObjectType("EnergyBurst"), 3)
     }
 );
 levels["D4-Boss"] = new Level(

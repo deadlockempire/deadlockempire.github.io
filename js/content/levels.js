@@ -90,11 +90,7 @@ var levels = {
             ], "Three-Headed Dragon")
         ],
         {
-            "counter": {
-                name: "counter",
-                type: "System.Int32",
-                value : 0
-            }
+            "counter": new IntegerVariable("counter", 0)
         }
     ),
     "4-confusedCounter" : new Level(
@@ -121,16 +117,8 @@ var levels = {
             ])
         ],
         {
-            "first": {
-                name: "first",
-                type: "System.Int32",
-                value : 0
-            },
-            "second": {
-                name: "second",
-                type: "System.Int32",
-                value : 0
-            }
+            "first": new IntegerVariable("first", 0),
+            "second": new IntegerVariable("second", 0)
         }
     ),
     "5-peterson": new Level(
@@ -400,7 +388,7 @@ var levels = {
         ,
         {
             "ss" : new ManualResetEventVariable("ss", 0),
-            "queue" : new QueueVariable("queue", "Dragon", 0)
+            "queue" : new QueueVariable("queue", new ObjectType("Dragon"), 0)
         }
     ),
     "S3-producerConsumer" : new Level(
@@ -425,7 +413,7 @@ var levels = {
             ], "The Consumer")
         ],
         {
-            "queue" : new QueueVariable("queue", "Golem", 0)
+            "queue" : new QueueVariable("queue", new ObjectType("Golem"), 0)
         }
     ),
     "CV1-simple": new Level(
@@ -466,7 +454,7 @@ var levels = {
         ],
         {
             "mutex" : new ObjectVariable("mutex", "unimportant"),
-            "queue" : new QueueVariable("queue", "int", 0)
+            "queue" : new QueueVariable("queue", new IntegerType(), 0)
         }
     )
 };
