@@ -94,14 +94,19 @@ var LanguageDependentDoBegin = function() {
 }
 
 var LanguageDependentDoBeginInWhileLoop = function() {
-    return LanguageDependentDo(); // C#
+    return LanguageDependentBegin(); // C#
 }
 
 var LanguageDependentElse = function() {
     return keywordCode("else"); // C# or Delphi
 }
+
 var LanguageDependentEnd = function() {
     return "}"; // C#
+}
+
+var LanguageDependentEndInstruction = function() {
+    return LanguageDependentEnd(); // C#
 }
 
 var LanguageDependentEndElseBegin = function() {
