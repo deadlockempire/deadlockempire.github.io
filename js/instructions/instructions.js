@@ -153,7 +153,7 @@ var IfInstruction = function(expression, name) {
 };
 
 var EndIfInstruction = function(name) {
-    this.code = instructionCode(LanguageDependentEnd());
+    this.code = LanguageDependentEndInstruction();
     this.tooltip = "This is the end of a simple \"if\" statement.";
     this.name = name;
     this.execute = function(threadState) {
@@ -193,7 +193,7 @@ var ElseInstruction = function(name) {
 };
 
 var EndIfLongInstruction = function(name) {
-    this.code = instructionCode(LanguageDependentEnd());
+    this.code = LanguageDependentEndInstruction();
     this.tooltip = "This is the end of a complex \"if\" statement.";
     this.name = name;
     this.execute = function(threadState) {
@@ -301,7 +301,7 @@ var createOuterWhileEnd = function() {
 };
 
 var EndWhileInstruction = function( name) {
-    this.code = instructionCode(LanguageDependentEnd());
+    this.code = LanguageDependentEndInstruction();
     this.tooltip = "Marks the end of a while loop.";
     this.name = name;
     this.execute = function(threadState, globalState, threadProgram) {
