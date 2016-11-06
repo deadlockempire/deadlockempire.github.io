@@ -69,7 +69,7 @@ levels["D2-Sorcerer"] = new Level(
             new MonitorEnterInstruction("conduit"),
             new CommentInstruction("I summon mana for you, dragon!"),
             new CommentInstruction("Incinerate the enemies!"),
-            createEnqueueUnsafe("energyBursts", "new EnergyBurst()"),
+            createEnqueueUnsafe("energyBursts", LanguageDependentConstruction("EnergyBurst")),
             new MonitorExitInstruction("conduit"),
             createOuterWhileEnd()
         ], "Sorcerer"), new Thread([
@@ -94,7 +94,7 @@ levels["D2-Sorcerer"] = new Level(
     ],
     {
         "conduit": new ObjectVariable("conduit"),
-        "energyBursts": new QueueVariable("energyBursts", "EnergyBurst", 3)
+        "energyBursts": new QueueVariable("energyBursts", new ObjectType("EnergyBurst"), 3)
     }
 );
 levels["D4-Boss"] = new Level(

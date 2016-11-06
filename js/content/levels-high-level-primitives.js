@@ -32,9 +32,9 @@ levels["H1-ManualResetEvent"] = new Level(
     }
 );
 levels["H2-CountdownEvent"] = new Level(
-  "H2-CountdownEvent",
-  "Countdown Event",
-  "Introduces the CountdownEvent class, a more powerful barrier but also trickier.",
+    "H2-CountdownEvent",
+    "Countdown Event",
+    "Introduces the CountdownEvent class, a more powerful barrier but also trickier.",
     "<div class='story-intro'>The Countdown Dragons are a threat to us - this newest Empire weapon flies right up to you and self-destructs at the worst possible moment, sending ripples of doom throughout our armies.</div>" +
     "The <b><a href='https://msdn.microsoft.com/en-us/library/system.threading.countdownevent'>CountdownEvent</a></b> class has an internal counter and is initialized with a number. " +
     "Its <a href='https://msdn.microsoft.com/en-us/library/dd321954'>.Signal()</a> method atomically decrements the counter. Its <a href='https://msdn.microsoft.com/en-us/library/dd270769'>.Wait()</a> method blocks the calling thread until the counter reaches zero. You can use this primitive to wait until all threads finished their work if you know the size of the work, for example. Its advantage compared to the <a href='https://msdn.microsoft.com/en-us/library/system.threading.barrier'>Barrier</a> is that you can wait without signalling, and that you can signal multiple times from the same thread.<br><br>" +

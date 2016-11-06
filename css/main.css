@@ -374,6 +374,10 @@ a.msdn-link {
 	/* TODO: somehow style MSDN links */
 }
 
+a.wikipedia-link {
+	/* TODO: somehow style wikipedia links */
+}
+
 .story-intro, .story-outro {
 	font-style: italic;
 	margin-bottom: 1em;

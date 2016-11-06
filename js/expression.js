@@ -1,82 +1,72 @@
 var LiteralExpression = function(value) {
-    this.evaluate = function() { return value; };
-    if ((value === false) || (value === true)) {
-	    this.code = "<span class='keyword'>" + value.toString() + "</span>";
-    } else {
-	    this.code = value.toString();
-    }
+    this.evaluate = function() {
+        return value;
+    };
+    this.code = LanguageDependentLiteralExpression(value);
 };
 var VariableExpression = function(name) {
-    this.evaluate = function(threadState, globalState) { return globalState[name].value; };
-    this.code = name;
+    this.evaluate = function(threadState, globalState) {
+        return globalState[name].value;
+    };
+    this.code = LanguageDependentIdentifierCapitalisation(name);
 };
-var AdditionExpression = function(left, right) {
-    this.evaluate = function(threadState, globalState) { return left.evaluate(threadState, globalState) +
-            right.evaluate(threadState, globalState); };
-    this.code = left.code + " + " + right.code;
+var AdditionExpression = function(left, right, separator) {
+    this.evaluate = function(threadState, globalState) {
+        return left.evaluate(threadState, globalState) + right.evaluate(threadState, globalState);
+    };
+    this.code = BinaryOperatorCode(left.code, right.code, "+", separator);
 };
-var ModuloExpression = function (left, right) {
+var ModuloExpression = function (left, right, separator) {
     this.evaluate = function (threadState, globalState) {
-        return left.evaluate(threadState, globalState) %
-            right.evaluate(threadState, globalState);
+        return left.evaluate(threadState, globalState) %  right.evaluate(threadState, globalState);
     };
-    this.code = left.code + " % " + right.code;
+    this.code = BinaryOperatorCode(left.code, right.code, LanguageDependentIntegerModulusOperator(), separator);
 };
-var SubtractionExpression = function(left, right) {
-    this.evaluate = function(threadState, globalState) { return left.evaluate(threadState, globalState) -
-        right.evaluate(threadState, globalState); };
-    this.code = left.code + " - " + right.code;
+var SubtractionExpression = function(left, right, separator) {
+    this.evaluate = function(threadState, globalState) {
+        return left.evaluate(threadState, globalState) - right.evaluate(threadState, globalState);
+    };
+    this.code = BinaryOperatorCode(left.code, right.code, "-", separator);
 };
-var EqualityExpression =
-    function (left, right) {
-        this.evaluate = function(threadState, globalState)  {
-            return left.evaluate(threadState, globalState) == right.evaluate(threadState, globalState);
-        };
-        this.code = left.code + " == " + right.code;
-
+var EqualityExpression = function (left, right, separator) {
+    this.evaluate = function(threadState, globalState)  {
+        return left.evaluate(threadState, globalState) == right.evaluate(threadState, globalState);
     };
-var LessThanExpression =
-    function (left, right) {
-        this.evaluate = function(threadState, globalState)  {
-            return left.evaluate(threadState, globalState) < right.evaluate(threadState, globalState);
-        };
-        this.code = left.code + " < " + right.code;
-
+    this.code = BinaryOperatorCode(left.code, right.code, LanguageDependentValueEqualityOperator(), separator);
+};
+var LessThanExpression = function (left, right, separator) {
+    this.evaluate = function(threadState, globalState)  {
+        return left.evaluate(threadState, globalState) < right.evaluate(threadState, globalState);
     };
-var AndExpression =
-    function (left, right) {
-        this.evaluate = function(threadState, globalState)  {
-            return left.evaluate(threadState, globalState) && right.evaluate(threadState, globalState);
-        };
-        this.code = left.code + " && " + right.code;
+    this.code = BinaryOperatorCode(left.code, right.code, "<", separator);
+};
+var AndExpression = function (left, right, separator) {
+    this.evaluate = function(threadState, globalState)  {
+        return left.evaluate(threadState, globalState) && right.evaluate(threadState, globalState);
     };
-var OrExpression =
-    function (left, right) {
-        this.evaluate = function(threadState, globalState)  {
-            return left.evaluate(threadState, globalState) || right.evaluate(threadState, globalState);
-        };
-        this.code = left.code + " || " + right.code;
+    this.code = LanguageDependentAndOperatorCode(left.code, right.code, separator);
+};
+var OrExpression = function (left, right, separator) {
+    this.evaluate = function(threadState, globalState)  {
+        return left.evaluate(threadState, globalState) || right.evaluate(threadState, globalState);
     };
-var InequalityExpression =
-    function (left, right) {
-        this.evaluate = function(threadState, globalState)  {
-            return left.evaluate(threadState, globalState) != right.evaluate(threadState, globalState);
-        };
-        this.code = left.code + " != " + right.code;
-
+    this.code = BinaryOperatorCode(left.code, right.code, LanguageDependentBooleanOrOperator(), separator);
+};
+var InequalityExpression = function (left, right, separator) {
+    this.evaluate = function(threadState, globalState)  {
+        return left.evaluate(threadState, globalState) != right.evaluate(threadState, globalState);
     };
-var GreaterThanExpression =
-    function (left, right) {
-        this.evaluate = function(threadState, globalState)  {
-            return left.evaluate(threadState, globalState) > right.evaluate(threadState, globalState);
-        };
-        this.code = left.code + " > " + right.code;
+    this.code = BinaryOperatorCode(left.code, right.code, LanguageDependentValueInequalityOperator(), separator);
+};
+var GreaterThanExpression = function (left, right, separator) {
+    this.evaluate = function(threadState, globalState)  {
+        return left.evaluate(threadState, globalState) > right.evaluate(threadState, globalState);
     };
-var GreaterOrEqualExpression =
-    function (left, right) {
-        this.evaluate = function(threadState, globalState)  {
-            return left.evaluate(threadState, globalState) >= right.evaluate(threadState, globalState);
-        };
-        this.code = left.code + " >= " + right.code;
-
+    this.code = BinaryOperatorCode(left.code, right.code, ">", separator);
+};
+var GreaterOrEqualExpression = function (left, right, separator) {
+    this.evaluate = function(threadState, globalState)  {
+        return left.evaluate(threadState, globalState) >= right.evaluate(threadState, globalState);
     };
+    this.code = BinaryOperatorCode(left.code, right.code, ">=", separator);
+};

@@ -33,7 +33,8 @@ var MinorDequeue = function(queue) {
     };
 };
 var QueueNotEmptyExpression = function(queue) {
-    this.code = queue + ".Count > 0";
+    var expression = new GreaterThanExpression(new VariableExpression(instanceMemberExpressionCode(queue, "Count")), new LiteralExpression(0));
+    this.code = expression.code;
     this.tooltip = "Returns true if the queue is not empty.";
     this.evaluate = function (threadState, globalState) {
       if (globalState[queue].value > 0) {
@@ -44,7 +45,8 @@ var QueueNotEmptyExpression = function(queue) {
     };
 };
 var QueueIsEmptyExpression = function(queue) {
-    this.code = queue + ".Count == 0";
+    var expression = new EqualityExpression(new VariableExpression(instanceMemberExpressionCode(queue, "Count")), new LiteralExpression(0));
+    this.code = expression.code;
     this.tooltip = "Returns true if the queue is empty.";
     this.evaluate = function (threadState, globalState) {
         if (globalState[queue].value == 0) {
@@ -62,13 +64,14 @@ var MinorBecomesConsistent = function(queue) {
         moveToNextInstruction(threadState);
     };
 };
-var createEnqueueUnsafe = function(queue, number) {
+var createEnqueueUnsafe = function(queue, item) {
     var minorInstructions = [
         new MinorBecomesInconsistent(queue),
         new MinorEnqueue(queue),
         new MinorBecomesConsistent(queue)
     ];
-    var v = new ExpandableInstruction(queue + ".Enqueue(" + number + ");", minorInstructions);
+
+    var v = new ExpandableInstruction(instanceMethodExpressionCode(queue, "Enqueue", item), minorInstructions);
     v.tooltip = "[Expandable] Adds an object to the end of the queue. This operation is not atomic nor thread-safe.";
     return v;
 };
@@ -78,7 +81,7 @@ var createDequeueUnsafe = function(queue) {
         new MinorDequeue(queue),
         new MinorBecomesConsistent(queue)
     ];
-    var v = new ExpandableInstruction(queue + ".Dequeue();", minorInstructions);
+    var v = new ExpandableInstruction(instanceMethodExpressionCode(queue, "Dequeue"), minorInstructions);
     v.tooltip = "[Expandable] Removes an object from the front of the queue. Raises an exception if the queue is empty. This operation is not atomic nor thread-safe.";
     return v;
 };
