@@ -1,11 +1,23 @@
+var staticCode = function(identifier) {
+    return spanTag("static", identifier);
+};
+
+var staticMethodExpressionCode = function(className, methodName, parameters) {
+    return dereferenceMemberCode(staticCode(className), methodName) + ParenthesisedExpressionCode(parameters);
+};
+
+var staticMonitorMethodExpressionCode = function(methodName, monitorName) {
+    return staticMethodExpressionCode("Monitor", methodName, LanguageDependentIdentifierCapitalisation(monitorName));
+};
+
 var MonitorEnterInstruction = function(monitorName) {
-    this.code = "<span class='static'>Monitor</span>.Enter(" + monitorName + ");";
+    this.code = instructionCode(staticMonitorMethodExpressionCode("Enter", monitorName));
     this.tooltip = "Atomic. Acquires a lock. If this thread already owns this lock, the lock counter is incremented. If another thread currently owns this lock, this call blocks until the lock is released.";
     this.isBlocking = function(threadState, globalState) {
         var monitor = globalState[monitorName];
         if (monitor.lastLockedByThread != null &&
             monitor.lastLockedByThread != threadState.id) {
-            return "Waiting for " + gameState.getLevel().getThreadName(monitor.lastLockedByThread) + " to unlock <code>" + monitorName + "</code>.";
+            return "Waiting for " + gameState.getLevel().getThreadName(monitor.lastLockedByThread) + " to unlock <code>" + LanguageDependentIdentifierCapitalisation(monitorName) + "</code>.";
         } else {
             return false;
         }
@@ -30,7 +42,7 @@ var MonitorEnterInstruction = function(monitorName) {
     }
 };
 var MonitorTryEnterExpression = function (monitorName) {
-    this.code = "<span class='static'>Monitor</span>.TryEnter(" + monitorName + ")";
+    this.code = staticMonitorMethodExpressionCode("TryEnter", monitorName);
     this.tooltip = "Atomic. Checks whether the current thread can lock the specified object. If yes, it locks the object and returns true. If no, returns false.";
     this.evaluate = function(threadState, globalState) {
         var monitor = globalState[monitorName];
@@ -52,7 +64,7 @@ var MonitorTryEnterExpression = function (monitorName) {
     }
 };
 var MonitorExitInstruction = function(monitorName) {
-    this.code = "<span class='static'>Monitor</span>.Exit(" + monitorName + ");";
+    this.code = instructionCode(staticMonitorMethodExpressionCode("Exit", monitorName));
     this.tooltip = "Atomic. Releases a lock. If this thread had this locked multiple times, decrements the counter once  only. If this thread does not own this lock, an exception is thrown (and you win the level).";
     this.execute = function(threadState, globalState) {
         var monitor = globalState[monitorName];
@@ -72,7 +84,7 @@ var MonitorExitInstruction = function(monitorName) {
     }
 };
 var SemaphoreTryWaitExpression = function(semaphoreName) {
-    this.code = semaphoreName + ".Wait(500)";
+    this.code = instanceMethodExpressionCode(semaphoreName, "Wait", 500);
     this.tooltip = "Blocks the thread until the semaphore has a positive value or the specified timeout elapses. In the first case, it decrements the semaphore and returns true. In the second case, it returns false.<br><br>In this game, you can always step through this expression. What happens will be determined by whether the semaphore currently has a positive value.";
     this.evaluate = function(threadState, globalState) {
         if (globalState[semaphoreName].value > 0) {
@@ -85,13 +97,13 @@ var SemaphoreTryWaitExpression = function(semaphoreName) {
     }
 };
 var SemaphoreWaitInstruction = function(semaphoreName) {
-    this.code = semaphoreName + ".Wait();";
+    this.code = instructionCode(instanceMethodExpressionCode(semaphoreName, "Wait"));
     this.tooltip = "Atomic. Attempts to decrease the semaphore counter by one. If the semaphore is already at 0, this call blocks until another thread increases the counter by calling Release().";
     this.isBlocking = function (threadState, globalState) {
         if (globalState[semaphoreName].value > 0) {
             return false;
         } else {
-            return "Waiting for another thread to call <code>" + semaphoreName + ".Release()</code>.";
+            return "Waiting for another thread to call <code>" + LanguageDependentIdentifierCapitalisation(semaphoreName) + ".Release()</code>.";
         }
     };
     this.execute = function(threadState, globalState) {
@@ -106,7 +118,7 @@ var SemaphoreWaitInstruction = function(semaphoreName) {
 };
 
 var SemaphoreReleaseInstruction = function(semaphoreName) {
-    this.code = semaphoreName + ".Release();";
+    this.code = instructionCode(instanceMethodExpressionCode(semaphoreName, "Release"));
     this.tooltip = "Atomic. Increments the semaphore counter by one.";
     this.execute = function(threadState, globalState) {
         globalState[semaphoreName].value ++;
@@ -140,11 +152,11 @@ var MinorAwaitWakeUp = function(mutex) {
     this.code = "wait until woken up";
     this.execute = function(threadState) { moveToNextInstruction(threadState); };
     this.isBlocking = function(threadState) {
-	    if (!threadState.asleep) {
-		    return false;
-	    } else {
-		    return "Waiting for pulse on <code>" + mutex + "</code>.";
-	    }
+        if (!threadState.asleep) {
+            return false;
+        } else {
+            return "Waiting for pulse on <code>" + LanguageDependentIdentifierCapitalisation(mutex) + "</code>.";
+        }
     };
     this.tooltip = "This thread won't receive priority until it is woken up by a pulse. When the pulse arrives, you may step forwards as normal.";
 };
@@ -153,7 +165,7 @@ var MinorInternalMonitorEnter = function(mutex) {
         var monitor = globalState[mutex];
         if (monitor.lastLockedByThread != null &&
             monitor.lastLockedByThread != threadState.id) {
-            return "Waiting for " + gameState.getLevel().getThreadName(monitor.lastLockedByThread) + " to unlock <code>" + mutex + "</code>.";
+            return "Waiting for " + gameState.getLevel().getThreadName(monitor.lastLockedByThread) + " to unlock <code>" + LanguageDependentIdentifierCapitalisation(mutex) + "</code>.";
         } else {
             return false;
         }
@@ -164,7 +176,7 @@ var MinorInternalMonitorEnter = function(mutex) {
         monitor.lockCount = 1;
         moveToNextInstruction(threadState);
     };
-    this.code = "Monitor.Enter(" + mutex + ");";
+    this.code = instructionCode(staticMonitorMethodExpressionCode("Enter", mutex));
     this.tooltip = "This thread won't receive priority until it can reacquire the lock.";
 };
 var createMonitorWait = function(mutex) {
@@ -173,12 +185,12 @@ var createMonitorWait = function(mutex) {
         new MinorAwaitWakeUp(mutex),
         new MinorInternalMonitorEnter(mutex)
     ];
-    var v = new ExpandableInstruction("<span class='static'>Monitor</span>.Wait(" + mutex + ");", minorInstructions);
+    var v = new ExpandableInstruction(staticMonitorMethodExpressionCode("Wait", mutex), minorInstructions);
     v.tooltip = "[Expandable] Releases the lock and puts the thread to sleep until it is woken up by a pulse.";
     return v;
 };
 var MonitorPulse = function(mutex) {
-    this.code = "<span class='static'>Monitor</span>.Pulse(" + mutex + ");";
+    this.code = instructionCode(staticMonitorMethodExpressionCode("Pulse", mutex));
     this.tooltip = "Sends a wake-up signal to a random thread waiting on the specified mutex, if any.";
     this.execute = function (threadState, globalState) {
         var monitor = globalState[mutex];
@@ -200,7 +212,7 @@ var MonitorPulse = function(mutex) {
     };
 };
 var MonitorPulseAll = function(mutex) {
-    this.code = "<span class='static'>Monitor</span>.PulseAll(" + mutex + ");";
+    this.code = instructionCode(staticMonitorMethodExpressionCode("PulseAll", mutex));
     this.tooltip = "Sends a wake-up signal to all threads waiting on the specified mutex, if any.";
     this.execute = function (threadState, globalState) {
         var monitor = globalState[mutex];
@@ -220,11 +232,13 @@ var MonitorPulseAll = function(mutex) {
     };
 };
 var InterlockedIncrement = function(name) {
-    this.code =  "<span class='static'>Interlocked</span>.Increment(<span class='keyword'>ref</span> " + name + ");";
+    var expression = LanguageDependentInterlockedIncrement(name);
+    this.code = instructionCode(expression);
+
+
     this.tooltip = "Atomic. Atomically increments the variable by 1.";
     this.execute = function (threadState, globalState) {
         globalState[name].value++;
         moveToNextInstruction(threadState);
     }
 };
-

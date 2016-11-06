@@ -69,7 +69,7 @@ levels["D2-Sorcerer"] = new Level(
             new MonitorEnterInstruction("conduit"),
             new CommentInstruction("I summon mana for you, dragon!"),
             new CommentInstruction("Incinerate the enemies!"),
-            createEnqueueUnsafe("energyBursts", "new EnergyBurst()"),
+            createEnqueueUnsafe("energyBursts", LanguageDependentConstruction("EnergyBurst")),
             new MonitorExitInstruction("conduit"),
             createOuterWhileEnd()
         ], "Sorcerer"), new Thread([

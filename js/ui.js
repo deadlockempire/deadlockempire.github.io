@@ -40,8 +40,8 @@ var updateGlobalVariables = function() {
         var variableString = ToString(variable);
         var variableValue = variable.value;
         var representation = $('<div class="variable"></div>');
-        representation.append($('<a href="https://msdn.microsoft.com/en-us/library/' + type.relativeUrl + '" class="type"></a>').text(type.name));
-        representation.append($('<span class="name"></span>').text(variable.name));
+        representation.append($('<a href="https://msdn.microsoft.com/en-us/library/' + type.relativeUrl + '" class="type"></a>').text(type.displayName));
+        representation.append($('<span class="name"></span>').text(variable.displayName));
 
         if (variableValue == "unimportant") {
             // intentionally left blank
@@ -52,23 +52,28 @@ var updateGlobalVariables = function() {
             }
         } else {
             representation.append($('<span class="equalSign"></span>').text('='));
-
-            var valueRepr;
             var typeName = type.name;
-            if (typeName == "System.String") {
-                valueRepr = '"' + variableValue + '"';
-            }
-            else if (typeName.indexOf("Semaphore") != -1) {
-                valueRepr = 'SemaphoreSlim [count: ' + variableValue + ']';
-            }
-            else if (typeName.indexOf("Queue") != -1) {
-                valueRepr = 'Queue [element count: ' + variableValue + ']';
-            }
-            else {
-                valueRepr = variableValue.toString();
-            }
 
-            representation.append($('<span class="value"></span>').text(valueRepr));
+            if (typeName == "System.Boolean") {
+                var booleanExpression = new LiteralExpression(variableValue);
+                representation.append(booleanExpression.code); // it already has the 'span class="keyword"'
+            } else {
+                var valueRepr;
+                if (typeName == "System.String") {
+                    valueRepr = '"' + variableValue + '"';
+                }
+                else if (typeName.indexOf("Semaphore") != -1) {
+                    valueRepr = 'SemaphoreSlim [count: ' + variableValue + ']';
+                }
+                else if (typeName.indexOf("Queue") != -1) {
+                    valueRepr = 'Queue [element count: ' + variableValue + ']';
+                }
+                else {
+                    valueRepr = variableValue.toString();
+                }
+
+                representation.append($('<span class="value"></span>').text(valueRepr));
+            }
         }
 
         representation.append(";");
@@ -147,7 +152,7 @@ var updateMSDNLinks = function() {
                 $(this).attr('target', '_blank');
             }
         }
-    if (!$(this).hasClass("wikipedia-link")) {
+        if (!$(this).hasClass("wikipedia-link")) {
             if (this.href.indexOf("en.wikipedia.org") !== -1) {
                 $(this).addClass("wikipedia-link");
                 $(this).attr('target', '_blank');

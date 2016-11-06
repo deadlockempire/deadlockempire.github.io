@@ -13,7 +13,7 @@ var levels = {
                     new LiteralExpression(2))),
                 new IfInstruction(new EqualityExpression(new VariableExpression("a"), new LiteralExpression(3)), "if"),
                 new FailureInstruction(),
-                new EndIfInstruction("}", "if")
+                new EndIfInstruction("if")
             ])
         ],
         {
@@ -140,8 +140,9 @@ var levels = {
                     new OrExpression(
                         new EqualityExpression(new VariableExpression("turn"), new LiteralExpression(2)),
                         new EqualityExpression(new VariableExpression("turn"), new LiteralExpression(3))
-                    )
-                ), "wait", "while ((flag2 || flag3) &&\n         (turn == 2 || turn == 3)) {"),
+                    ),
+                    "\n         "
+                ), "wait"),
                 new EmptyStatement(),
                 new EndWhileInstruction("wait"),
                 new CriticalSectionInstruction(),
@@ -161,8 +162,9 @@ var levels = {
                     new OrExpression(
                         new EqualityExpression(new VariableExpression("turn"), new LiteralExpression(1)),
                         new EqualityExpression(new VariableExpression("turn"), new LiteralExpression(3))
-                    )
-                ), "wait", "while ((flag1 || flag3) &&\n         (turn == 1 || turn == 3)) {"),
+                    ),
+                    "\n         "
+                ), "wait"),
                 new EmptyStatement(),
                 new EndWhileInstruction("wait"),
                 new CriticalSectionInstruction(),
@@ -182,8 +184,9 @@ var levels = {
                     new OrExpression(
                         new EqualityExpression(new VariableExpression("turn"), new LiteralExpression(2)),
                         new EqualityExpression(new VariableExpression("turn"), new LiteralExpression(1))
-                    )
-                ), "wait", "while ((flag2 || flag1) &&\n         (turn == 2 || turn == 1)) {"),
+                    ),
+                    "\n         "
+                ), "wait"),
                 new EmptyStatement(),
                 new EndWhileInstruction("wait"),
                 new CriticalSectionInstruction(),
@@ -336,24 +339,24 @@ var levels = {
         [
             new Thread([
                 createOuterWhile(),
-                new SemaphoreWaitInstruction("ss"),
+                new SemaphoreWaitInstruction("semaphore"),
                 new CriticalSectionInstruction(),
-                new SemaphoreReleaseInstruction("ss"),
+                new SemaphoreReleaseInstruction("semaphore"),
                 createOuterWhileEnd()
             ]),
             new Thread([
                 createOuterWhile(),
-                new IfLongInstruction(new SemaphoreTryWaitExpression("ss"), "if"),
+                new IfLongInstruction(new SemaphoreTryWaitExpression("semaphore"), "if"),
                 new CriticalSectionInstruction(),
-                new SemaphoreReleaseInstruction("ss"),
+                new SemaphoreReleaseInstruction("semaphore"),
                 new ElseInstruction("if"),
-                new SemaphoreReleaseInstruction("ss"),
+                new SemaphoreReleaseInstruction("semaphore"),
                 new EndIfLongInstruction("if"),
                 createOuterWhileEnd()
             ])
         ],
         {
-            "ss" : new SemaphoreVariable("ss", 0)
+            "semaphore" : new SemaphoreVariable("semaphore", 0)
         }
     ),
     "S2-producerConsumer" : new Level(
@@ -371,7 +374,7 @@ var levels = {
         [
             new Thread([
                 createOuterWhile(),
-                new IfLongInstruction(new SemaphoreTryWaitExpression("ss"), "if"),
+                new IfLongInstruction(new SemaphoreTryWaitExpression("semaphore"), "if"),
                 createDequeueUnsafe("queue"),
                 new ElseInstruction("if"),
                 new CommentInstruction("Nothing in the queue."),
@@ -380,14 +383,14 @@ var levels = {
             ]),
             new Thread([
                 createOuterWhile(),
-                new SemaphoreReleaseInstruction("ss"),
-                createEnqueueUnsafe("queue", "new Dragon()"),
+                new SemaphoreReleaseInstruction("semaphore"),
+                createEnqueueUnsafe("queue", LanguageDependentConstruction("Dragon")),
                 createOuterWhileEnd()
             ])
         ]
         ,
         {
-            "ss" : new ManualResetEventVariable("ss", 0),
+            "semaphore" : new ManualResetEventVariable("semaphore", 0),
             "queue" : new QueueVariable("queue", new ObjectType("Dragon"), 0)
         }
     ),
@@ -401,7 +404,7 @@ var levels = {
         [
             new Thread([
                 createOuterWhile(),
-                createEnqueueUnsafe("queue", "new Golem()"),
+                createEnqueueUnsafe("queue", LanguageDependentConstruction("Golem")),
                 createOuterWhileEnd()
             ], "The Producer"),
             new Thread([

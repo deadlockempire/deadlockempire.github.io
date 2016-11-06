@@ -1,183 +1,184 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<!--<link href='https://fonts.googleapis.com/css?family=Amatic+SC' rel='stylesheet' type='text/css'>-->
-		<link href='https://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" href="css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
-		<link rel="stylesheet" href="css/introjs.css">
-		<link rel='icon' href='img/favicon.png'>
-<!--		<link rel="stylesheet" href="css/bootstrap-solarized-dark.css">
+  <head>
+    <meta charset="utf-8">
+    <!--<link href='https://fonts.googleapis.com/css?family=Amatic+SC' rel='stylesheet' type='text/css'>-->
+    <link href='https://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/introjs.css">
+    <link rel='icon' href='img/favicon.png'>
+<!--    <link rel="stylesheet" href="css/bootstrap-solarized-dark.css">
 -->
-		<link rel="stylesheet" href="css/main.css">
-		<title>The Deadlock Empire</title>
+    <link rel="stylesheet" href="css/main.css">
+    <title>The Deadlock Empire</title>
 
-		<script src="js/3rdparty/jquery.js"></script>
-		<script src="js/3rdparty/bootstrap.min.js"></script>
-		<script src="js/3rdparty/bootbox.min.js"></script>
-		<script src="js/3rdparty/intro.js"></script>
-		<script src="js/3rdparty/mousetrap.min.js"></script>
+    <script src="js/3rdparty/jquery.js"></script>
+    <script src="js/3rdparty/bootstrap.min.js"></script>
+    <script src="js/3rdparty/bootbox.min.js"></script>
+    <script src="js/3rdparty/intro.js"></script>
+    <script src="js/3rdparty/mousetrap.min.js"></script>
 
-		<script src="js/game_state.js"></script>
-		<script src="js/ui.js"></script>
-		<script src="js/win.js"></script>
-		<script src="js/common.js"></script>
-		<script src="js/expression.js"></script>
-		<script src="js/variables.js"></script>
-		<script src="js/instructions/instructions.js"></script>
-		<script src="js/instructions/instructions-synchronization.js"></script>
-		<script src="js/instructions/instructions-high-level-synchronization.js"></script>
-		<script src="js/instructions/instructions-queue.js"></script>
-		<script src="js/level.js"></script>
-		<script src="js/thread.js">s</script>
-		<script src="js/main.js"></script>
-		<script src="js/menu.js"></script>
+    <script src="js/game_state.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/win.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/expression.js"></script>
+    <script src="js/variables.js"></script>
+    <script src="js/instructions/instructions.js"></script>
+    <script src="js/instructions/instructions-synchronization.js"></script>
+    <script src="js/instructions/instructions-high-level-synchronization.js"></script>
+    <script src="js/instructions/instructions-queue.js"></script>
+    <script src="js/level.js"></script>
+    <script src="js/thread.js">s</script>
+    <script src="js/main.js"></script>
+    <script src="js/menu.js"></script>
 
-		<script src="js/content/levels.js"></script>
-		<script src="js/content/dragons.js"></script>
-		<script src="js/content/tutorial.js"></script>
-		<script src="js/content/levels-high-level-primitives.js"></script>
-		<script src="js/content/campaign.js"></script>
+    <script src="js/content/levels.js"></script>
+    <script src="js/content/dragons.js"></script>
+    <script src="js/content/tutorial.js"></script>
+    <script src="js/content/levels-high-level-primitives.js"></script>
+    <script src="js/content/campaign.js"></script>
 
-		<!--
-			Google Analytics.
+    <!--
+      Google Analytics.
 
-			We are deeply sorry if you are offended by our
-			collection of pageview data. We suggest using tracking
-			protection - for example, modern versions of Firefox
-			can automatically disable any tracking scripts.
-			Thank you for playing The Deadlock Empire and we hope
-			you can forgive us for infringing on your privacy.
+      We are deeply sorry if you are offended by our
+      collection of pageview data. We suggest using tracking
+      protection - for example, modern versions of Firefox
+      can automatically disable any tracking scripts.
+      Thank you for playing The Deadlock Empire and we hope
+      you can forgive us for infringing on your privacy.
 
-			http://hudecekpetr.cz/friend.html
-		-->
-		<script>
-			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      http://hudecekpetr.cz/friend.html
+    -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-			ga('create', 'UA-73203312-1', 'auto');
-			ga('send', 'pageview');
-		</script>
+      ga('create', 'UA-73203312-1', 'auto');
+      ga('send', 'pageview');
+    </script>
 
-		<!-- Open Graph tags to customize Facebook link previews. -->
-		<meta property="og:url" content="https://deadlockempire.github.io">
-		<meta property="og:title" content="The Deadlock Empire">
-		<meta property="og:description" content="Slay dragons, learn
-		concurrency! Play the cunning Scheduler, exploit flawed
-		programs and defeat the armies of the Parallel Wizard.">
-		<meta property="og:image" content="http://deadlockempire.github.io/img/logo-large.png">
+    <!-- Open Graph tags to customize Facebook link previews. -->
+    <meta property="og:url" content="https://deadlockempire.github.io">
+    <meta property="og:title" content="The Deadlock Empire">
+    <meta property="og:description" content="Slay dragons, learn
+    concurrency! Play the cunning Scheduler, exploit flawed
+    programs and defeat the armies of the Parallel Wizard.">
+    <meta property="og:image" content="http://deadlockempire.github.io/img/logo-large.png">
 
-	</head>
-	<body>
-		<!-- Load Facebook SDK for JavaScript -->
-		<div id="fb-root"></div>
-		<script>
-		(function(d, s, id) {
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) return;
-			js = d.createElement(s); js.id = id;
-			js.src =
-				"//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.2&appId=100259203407083";
-			fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-		</script>
+  </head>
+  <body>
+    <!-- Load Facebook SDK for JavaScript -->
+    <div id="fb-root"></div>
+    <script>
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src =
+        "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.2&appId=100259203407083";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    </script>
 
-		<div  id="mainContainer">
-		<div class="container">
-			<div id="game-window">
-			<div id="debug-toolbar" style="border: 1px solid black; width: 100%; margin: 2px; padding: 2px;">
-				This is the toolbar. | Select level:
-				<select id="levelSelect" >
-				</select>
-				<button class="btn btn-default" id="start">Start</button>
-				|
-				<button class="btn btn-default" id="goToMain">Go To Main Menu</button>
-				|
-				<button class="btn btn-default" id="clearProgress">Clear Saved Progress</button>
-			</div>
-			<div id="mainarea">
-			</div>
-			<div id="alert" style="display: none; border: 1px solid black;">
-				<button class="btn btn-default" id="alertHide">[Hide]</button>
-				<span id="alertCaption" style="font-weight: bold;">Title</span><br>
-				<span id="alertText">This is the alert message.</span>
-			</div>
-			<footer>
-				<span class="fb-share-button"
-					data-href="https://deadlockempire.github.io"
-					data-layout="button_count">
-				</span>
+    <div  id="mainContainer">
+    <div class="container">
+      <div id="game-window">
+      <div id="debug-toolbar" style="border: 1px solid black; width: 100%; margin: 2px; padding: 2px;">
+        This is the toolbar. | Select level:
+        <select id="levelSelect" >
+        </select>
+        <button class="btn btn-default" id="start">Start</button>
+        |
+        <button class="btn btn-default" id="goToMain">Go To Main Menu</button>
+        |
+        <button class="btn btn-default" id="clearProgress">Clear Saved Progress</button>
+      </div>
+      <div id="mainarea">
+      </div>
+      <div id="alert" style="display: none; border: 1px solid black;">
+        <button class="btn btn-default" id="alertHide">[Hide]</button>
+        <span id="alertCaption" style="font-weight: bold;">Title</span><br>
+        <span id="alertText">This is the alert message.</span>
+      </div>
+      <footer>
+        <span class="fb-share-button"
+          data-href="https://deadlockempire.github.io"
+          data-layout="button_count">
+        </span>
 
-				<span id="credits">
-					Got any ideas or feedback? Both are much
-					appreciated at <a href="http://goo.gl/forms/i05ukNUMmB">this form</a>.<br>
-					GitHub: <a href="https://github.com/deadlockempire/deadlockempire.github.io">deadlockempire/deadlockempire.github.io</a>.
-					Made by <a href="http://hudecekpetr.cz">Petr Hudeček</a>
-					and <a href="http://rny.cz">Michal Pokorný</a> at
-					HackCambridge 2016.
-				</span>
-			</footer>
-			</div>
+        <span id="credits">
+          Got any ideas or feedback? Both are much
+          appreciated at <a href="http://goo.gl/forms/i05ukNUMmB">this form</a>.<br>
+          GitHub: <a href="https://github.com/deadlockempire/deadlockempire.github.io">deadlockempire/deadlockempire.github.io</a>.
+          Made by <a href="http://hudecekpetr.cz">Petr Hudeček</a>
+          and <a href="http://rny.cz">Michal Pokorný</a> at
+          HackCambridge 2016.
+        </span>
+      </footer>
+      </div>
 
-		</div>
+    </div>
 
-		<div id="win-screen">
-			<div class="container">
-				<div class="top-section">
-					<span class="icon glyphicon glyphicon-ok"></span>
+    <div id="win-screen">
+      <div class="container">
+        <div class="top-section">
+          <span class="icon glyphicon glyphicon-ok"></span>
 
-					<h3>
-						<span id="win-congratulation">
-						You win!
-						</span>
-					</h3>
+          <h3>
+            <span id="win-congratulation">
+            You win!
+            </span>
+          </h3>
 
-					<div class="victory-condition">
-					</div>
-				</div>
+          <div class="victory-condition">
+          </div>
+        </div>
 
-				<div class="win-part">
-					<div id="win-message"></div>
-				</div>
+        <div class="win-part">
+          <div id="win-message"></div>
+        </div>
 
-				<div class="buttons">
-					<button id="dismiss-win" class="btn btn-default">Back to the code</button>
-					<button id="win-go-to-menu" class="btn btn-default">Return to Main Menu</button>
-					<button id="win-next-level" class="btn btn-primary">Next challenge&nbsp;
-						<span class="glyphicon glyphicon-chevron-right"></span></button>
-				</div>
-			</div>
-		</div>
+        <div class="buttons">
+          <button id="dismiss-win" class="btn btn-default">Back to the code</button>
+          <button id="win-go-to-menu" class="btn btn-default">Return to Main Menu</button>
+          <button id="win-next-level" class="btn btn-primary">Next challenge&nbsp;
+            <span class="glyphicon glyphicon-chevron-right"></span></button>
+        </div>
+      </div>
+    </div>
 
-		<div id="lose-screen">
-			<div class="container">
-				<div class="top-section">
-					<span class="icon glyphicon glyphicon-remove"></span>
+    <div id="lose-screen">
+      <div class="container">
+        <div class="top-section">
+          <span class="icon glyphicon glyphicon-remove"></span>
 
-					<h3>
-						<span id="fail-heading">
-						Challenge lost!
-						</span>
-					</h3>
-				</div>
+          <h3>
+            <span id="fail-heading">
+            Challenge lost!
+            </span>
+          </h3>
+        </div>
 
-				<div class="lose-part">
-					<div id="lose-message"></div>
+        <div class="lose-part">
+          <div id="lose-message"></div>
 
-					<div class="failure-condition">
-					</div>
-				</div>
+          <div class="failure-condition">
+          </div>
+        </div>
 
-				<div class="buttons">
-					<button id="lose-restart" class="btn btn-primary">Reset and try again</button>
-					<button id="lose-step-back" class="btn btn-default">Return to code and undo last step</button>
-					<button id="lose-go-to-menu" class="btn btn-default">Return to Main Menu</button>
-				</div>
-			</div>
-		</div>		</div>
+        <div class="buttons">
+          <button id="lose-restart" class="btn btn-primary">Reset and try again</button>
+          <button id="lose-step-back" class="btn btn-default">Return to code and undo last step</button>
+          <button id="lose-go-to-menu" class="btn btn-default">Return to Main Menu</button>
+        </div>
+      </div>
+    </div>    </div>
 
-	</body>
+  </body>
 </html>

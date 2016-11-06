@@ -5,6 +5,7 @@ var BooleanType = function() {
 };
 var BooleanVariable = function (name, defaultValue) {
     this.name = name;
+    this.displayName = LanguageDependentIdentifierCapitalisation(name);
     this.type = new BooleanType();
     this.value = defaultValue;
 };
@@ -16,6 +17,7 @@ var IntegerType = function() {
 };
 var IntegerVariable = function (name, defaultValue) {
     this.name = name;
+    this.displayName = LanguageDependentIdentifierCapitalisation(name);
     this.type = new IntegerType();
     this.value = defaultValue;
 };
@@ -27,6 +29,7 @@ var CountdownEventType = function() {
 };
 var CountdownEventVariable = function (name, count) {
     this.name = name;
+    this.displayName = LanguageDependentIdentifierCapitalisation(name);
     this.type = new CountdownEventType();
     this.value = count;
 };
@@ -38,6 +41,7 @@ var ManualResetEventType = function() {
 };
 var ManualResetEventVariable = function (name, value) {
     this.name = name;
+    this.displayName = LanguageDependentIdentifierCapitalisation(name);
     this.type = new ManualResetEventType();
     this.value = value;
 };
@@ -49,6 +53,7 @@ var BarrierVariableType = function() {
 };
 var BarrierVariable = function (name, participantCount) {
     this.name = name;
+    this.displayName = LanguageDependentIdentifierCapitalisation(name);
     this.type = new BarrierVariableType();
     this.value = participantCount;
     this.numberOfParticipants = participantCount;
@@ -63,6 +68,7 @@ var SemaphoreType = function() {
 };
 var SemaphoreVariable = function(name, value) {
     this.name = name;
+    this.displayName = LanguageDependentIdentifierCapitalisation(name);
     this.type = new SemaphoreType();
     this.value = value;
 };
@@ -74,6 +80,7 @@ var QueueType = function(innerType) {
 };
 var QueueVariable = function(name, innerType, value) {
     this.name = name;
+    this.displayName = LanguageDependentIdentifierCapitalisation(name);
     this.type = new QueueType(innerType);
     this.value = value;
 };
@@ -83,13 +90,14 @@ var ObjectType = function(name) {
     this.relativeUrl = this.name;
     if (name != null) {
         this.name = name;
-        this.displayName = name;
+        this.displayName = LanguageDependentClassName(name);
     } else {
         this.displayName = "object";
     }
 }
 var ObjectVariable = function(name) {
     this.name = name;
+    this.displayName = LanguageDependentIdentifierCapitalisation(name);
     this.type = new ObjectType();
 };
 
