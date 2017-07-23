@@ -59,4 +59,11 @@ Pokorný](http://rny.cz) on [HackCambridge 2016](https://www.hackcambridge.com/)
 
 License
 ===
-GPL2
+
+This software uses the [Bootstrap framework](http://getbootstrap.com). Bootstrap is copyright Twitter, Inc. and available under the [MIT License](https://github.com/twbs/bootstrap/blob/master/LICENSE).
+
+The Bootstrap framework ships with a no-cost version of the [GLYPHICONS](http://glyphicons.com/license/) icon/font set. The copyright of GLYPHICONS is retained by its creators.
+
+All other software in this repository is licensed under the GNU General Public License Version 2. Please see the license file (`COPYING`) for complete information.
+
+All contributors retain copyright to their contributions to this project.
