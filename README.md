@@ -13,21 +13,8 @@ hear about your experience with The Deadlock Empire: which parts you enjoyed,
 which were too difficult, what confused you, or anything else - shoot us
 an e-mail at `prvak.cnx+deadlockempire@gmail.com`.
 
-If you'd like to contribute code, running a local copy of The Deadlock Empire
-should be easy:
-```
-git clone https://github.com/deadlockempire/deadlockempire.github.io
-# open deadlockempire.github.io/index.html in a browser
-```
-
-Please send any contributions in a pull request against the `devel` branch.
-We will try our best to respond as quickly as we can. We would appreciate if
-you could test that your contribution works and if you could use a feature
-branch.
-
-Since the `master` branch is automatically deployed to
-[https://deadlockempire.github.io](https://deadlockempire.github.io),
-we update it less frequently than `devel`.
+For complete information on how to contribute to The Deadlock Empire, please
+see the [CONTRIBUTORS](./CONTRIBUTORS.md) file.
 
 Acknowledgements
 ===
