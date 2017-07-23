@@ -4,7 +4,7 @@ We gladly welcome all contributions. Especially, we <3 pull requests, bug
 reports and ideas for features or new challenges. We would also be happy to
 hear about your experience with The Deadlock Empire: which parts you enjoyed,
 which were too difficult, what confused you, or anything else - shoot us
-an e-mail at `[prvak.cnx+deadlockempire@gmail.com](mailto:prvak.cnx+deadlockempire@gmail.com)`.
+an e-mail at `prvak.cnx+deadlockempire@gmail.com`.
 
 ## Cloning & Testing locally
 
