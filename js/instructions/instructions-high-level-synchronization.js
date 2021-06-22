@@ -32,7 +32,7 @@ var ManualResetEventWait = function(name) {
 };
 var CountdownEventSignal = function(name) {
     this.code = instructionCode(instanceMethodExpressionCode(name, "Signal"));
-    this.tooltip = "Atomic. Decrements the CountdownEvent's countdown timer by one. Throws an exception if the timer is already at zero.";
+    this.tooltip = "Atomic. Decrements the CountdownEvent's countdown timer by one. Throws an exception if the timer is already at zero (and you win the level).";
     this.execute = function(threadState, globalState) {
         var mres = globalState[name];
         if (mres.value == 0) {
