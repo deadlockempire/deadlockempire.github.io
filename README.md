@@ -42,7 +42,7 @@ and a lock icon, both from Wikimedia Commons.
 Credits
 ===
 Made by [Petr Hudeček](http://hudecekpetr.cz) and [Michal
-Pokorný](http://rny.cz) on [HackCambridge 2016](https://www.hackcambridge.com/).
+Pokorný](http://agentydragon.com) on [HackCambridge 2016](https://www.hackcambridge.com/).
 
 License
 ===
