@@ -366,7 +366,7 @@ var levels = {
         "<div class='story-intro'>You pick your target - one dragon-producing factory is sending its creations directly into an armory that outfits the machines with destructive weapons. If you disrupt this supply line, you will greatly reduce the number of dragons at the Empire's disposal.</div>" +
         "In <a href='https://en.wikipedia.org/wiki/Producer–consumer_problem'>producer-consumer scenarios</a>, one thread produces some items that another thread consumes. " +
         "For example, one thread could accept work requests from a user, and another thread could take outstanding requests and fulfill them.<br>" +
-        "Even through the producer-consumer problem might look trivial, it has some subtle complexity to it. For example, what if the consumer needs a lot of time to consume one item, while the producer produces items as fast as it can? We could run out of memory.<br>" +
+        "Even though the producer-consumer problem might look trivial, it has some subtle complexity to it. For example, what if the consumer needs a lot of time to consume one item, while the producer produces items as fast as it can? We could run out of memory.<br>" +
         'Semaphores are useful for producer-consumer problems. Remember the "coin stack" analogy: each item in the queue is represented by a coin; when the producer produces a new one, it adds a coin, and when the consumer consumes an item, it removes a coin.<br><br>' +
         "In this challenge, your goal is cause an exception to be raised.<br>",
         "<div class='story-outro'>Alarms sound over the lands but you hear only the sweet sound of victory. Soon, the Sequentialists will win and everything will happen in order, as was meant to be.</div>" +
